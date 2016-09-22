@@ -23,12 +23,6 @@ export default styles = StyleSheet.create({
     },
 
     // Actual designs
-    CreatEventPage: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'flex-start',
-    backgroundColor: '#F5FCFF',
-    },
 
     // Login
 
