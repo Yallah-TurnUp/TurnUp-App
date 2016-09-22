@@ -18,7 +18,7 @@ export default class CreateEventPage extends Component {
 
     render() {
         return (
-            <View style={[styles.CreateEventPage, {backgroundColor: 'grey'}]}>
+            <View style={{backgroundColor: 'grey'}}>
              <View style={{paddingVertical: 20, paddingHorizontal: 163, backgroundColor: 'orange'}}>
                                     <Text style={styles.welcome}>TurnUp</Text>
                                 </View>
