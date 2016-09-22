@@ -24,6 +24,7 @@ export default styles = StyleSheet.create({
 
     // Actual designs
 
+
     // Generic stuff
     fullscreenContainer: {
         flex: 1,
@@ -35,6 +36,15 @@ export default styles = StyleSheet.create({
     topBar: {
         height: 60,
         backgroundColor: '#F28500'
+    },
+
+    header: {
+        flex: -1,
+        height: 60,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        backgroundColor: '#FF9800'
     },
 
     // Login
@@ -74,7 +84,12 @@ export default styles = StyleSheet.create({
         justifyContent: 'center'
     },
 
-    loginCredentialPhoto: {
+    loginCredentialPhoto1: {
+        width: 30,
+        height: 20
+    },
+
+    loginCredentialPhoto2:  {
         width: 20,
         height: 20
     },
@@ -95,6 +110,7 @@ export default styles = StyleSheet.create({
         textAlign: 'center'
     },
 
+<<<<<<< HEAD
     // Information enrichment screen
 
     topContainer: {
@@ -111,6 +127,19 @@ export default styles = StyleSheet.create({
         backgroundColor: "rgba(0,0,0,0.58)",
         height: 60
     }
+=======
+    // CreateEvent
+
+    eventTypeSelector: {
+        flex: 1,
+        height: 110,
+        marginRight: 5,
+        marginLeft: 5,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    },
+>>>>>>> f40213d5f5e8b5541708f3476508c01fb6ebcd91
 });
 
 
