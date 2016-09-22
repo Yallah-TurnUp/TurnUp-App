@@ -3,7 +3,8 @@
  */
 
 const images = {
-    trollface: require('../images/handsome_shuai.png')
+    profile: require('../images/handsome_shuai.png')
+    bird: require('../images/turnup_bird.png')
 }
 
 export default images;
