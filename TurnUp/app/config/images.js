@@ -6,7 +6,7 @@ const images = {
     profile: require('../images/handsome_shuai.png'),
     bird: require('../images/turnup_bird.png'),
     email: require('../images/email.png'),
-    password: require('../images/password.png')
+    password: require('../images/password.png'),
     trollface: require('../images/handsome_shuai.png'),
     host_logo: require('../images/host_logo.png'),
     man_logo: require('../images/man_logo.png'),
