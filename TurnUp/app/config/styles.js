@@ -19,7 +19,7 @@ export default styles = StyleSheet.create({
         textAlign: 'center',
         margin: 10,
         color: 'white',
-        fontFamily: 'SourceSansPro-Regular'
+        fontFamily: 'SourceSansPro-Light'
     },
 
     // Actual designs
@@ -44,7 +44,9 @@ export default styles = StyleSheet.create({
         height: 80,
         backgroundColor: 'rgba(255,255,255,0.63)',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        marginTop: 30,
+        marginBottom: 20
     },
 
     loginCredentialLine: {
@@ -63,5 +65,21 @@ export default styles = StyleSheet.create({
     loginCredentialPhoto: {
         width: 20,
         height: 20
+    },
+
+    loginSignInButton: {
+        width: 112,
+        height: 36,
+        elevation: 1,
+        backgroundColor: '#FF9800',
+        justifyContent: 'center'
+    },
+
+    loginSignInButtonText: {
+        flex: 0,
+        fontSize: 14,
+        fontFamily: 'SourceSansPro-Light',
+        color: 'white',
+        textAlign: 'center'
     }
 });

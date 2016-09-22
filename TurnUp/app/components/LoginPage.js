@@ -8,7 +8,8 @@ import {
     TouchableOpacity,
     Text,
     Image,
-    TextInput
+    TextInput,
+    TouchableNativeFeedback
 } from 'react-native';
 import styles from '../config/styles.js';
 import images from '../config/images.js';
@@ -85,11 +86,12 @@ export default class LoginPage extends Component {
                                           blurListener={() => this._passwordBlurListener()}
                                           isPassword={this.state.hidePassword}/>
                 </View>
-                <TouchableOpacity onPress={() => this._handlePress()}>
-                    <View style={{paddingVertical: 10, paddingHorizontal: 20, backgroundColor: 'black'}}>
-                        <Text style={styles.welcome}>Sign in</Text>
+                <TouchableNativeFeedback onPress={() => this._handlePress()}
+                                         background={TouchableNativeFeedback.Ripple('red')}>
+                    <View style={styles.loginSignInButton}>
+                        <Text style={styles.loginSignInButtonText}>Sign in</Text>
                     </View>
-                </TouchableOpacity>
+                </TouchableNativeFeedback>
             </View>
         )
     }
