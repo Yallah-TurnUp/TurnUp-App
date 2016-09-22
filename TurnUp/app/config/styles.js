@@ -42,11 +42,26 @@ export default styles = StyleSheet.create({
     loginCredentials: {
         width: 280,
         height: 80,
-        opacity: 0.63,
-        backgroundColor: 'white'
+        backgroundColor: 'rgba(255,255,255,0.63)',
+        alignItems: 'center',
+        justifyContent: 'center'
     },
 
     loginCredentialLine: {
-        flex: 1
+        flex: 1,
+        flexDirection: 'row'
+    },
+
+    loginCredentialLeftPortion: {
+        flex: -1,
+        width: 40,
+        height: 40,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+
+    loginCredentialPhoto: {
+        width: 20,
+        height: 20
     }
 });
