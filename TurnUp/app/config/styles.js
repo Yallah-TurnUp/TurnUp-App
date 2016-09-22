@@ -67,7 +67,12 @@ export default styles = StyleSheet.create({
         justifyContent: 'center'
     },
 
-    loginCredentialPhoto: {
+    loginCredentialPhoto1: {
+        width: 30,
+        height: 20
+    },
+
+    loginCredentialPhoto2:  {
         width: 20,
         height: 20
     },
