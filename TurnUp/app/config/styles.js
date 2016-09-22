@@ -15,12 +15,7 @@ export default styles = StyleSheet.create({
         backgroundColor: '#F5FCFF',
     },
     welcome: {
-        fontSize: 20,CreatEventPage: {
-                         flex: 1,
-                         justifyContent: 'center',
-                         alignItems: 'flex-start',
-                         backgroundColor: '#F5FCFF',
-                         },
+        fontSize: 20,
         textAlign: 'center',
         margin: 10,
         color: 'white',
@@ -28,7 +23,12 @@ export default styles = StyleSheet.create({
     },
 
     // Actual designs
-
+    CreatEventPage: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    backgroundColor: '#F5FCFF',
+    },
 
     // Login
 
