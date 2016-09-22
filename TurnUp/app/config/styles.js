@@ -23,7 +23,14 @@ export default styles = StyleSheet.create({
     },
 
     // Actual designs
-
+    header: {
+        flex: -1,
+        height: 60,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        backgroundColor: '#FF9800'
+    },
     // Login
 
     loginScreen: {
@@ -80,7 +87,19 @@ export default styles = StyleSheet.create({
         fontFamily: 'SourceSansPro-Light',
         color: 'white',
         textAlign: 'center'
-    }
+    },
+
+    // CreateEvent
+
+    eventTypeSelector: {
+        flex: 1,
+        height: 110,
+        marginRight: 5,
+        marginLeft: 5,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    },
 });
 
 

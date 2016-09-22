@@ -7,6 +7,7 @@ import {
     View,
     TouchableOpacity,
     Text,
+    Image
 } from 'react-native';
 import styles from '../config/styles.js';
 import images from '../config/images.js';
@@ -18,11 +19,18 @@ export default class CreateEventPage extends Component {
 
     render() {
         return (
-            <View style={{backgroundColor: 'grey'}}>
-             <View style={{paddingVertical: 20, paddingHorizontal: 163, backgroundColor: 'orange'}}>
-                                    <Text style={styles.welcome}>TurnUp</Text>
-                                </View>
-                <Text style={styles.welcome}>This is CreateEventPage!</Text>
+            <View style={{backgroundColor: '#e6e6e6'}}>
+                <View style={styles.header}>
+                    <Image source={images.trollface} style={{width: 50, height: 50, marginLeft: 5}} />
+                    <Text style={{fontSize: 15, fontWeight: 'bold', backgroundColor: 'steelblue'}}>Turn Up</Text>
+                    <Image source={images.host_logo} style={{width: 50, height: 50, marginRight: 5}} />
+                </View>
+                <View style={styles.eventTypeSelector}>
+                    <Image source={images.guitar_logo} style={{width: 80, height: 80}}/>
+                    <Image source={images.beer_logo} style={{width: 80, height: 80}}/>
+                    <Image source={images.book_logo} style={{width: 80, height: 80}}/>
+                    <Image source={images.basketball_logo} style={{width: 80, height: 80}}/>
+                </View>
                 <TouchableOpacity onPress={() => this._handlePress()}>
                 </TouchableOpacity>
             </View>
