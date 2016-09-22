@@ -28,7 +28,8 @@ class LoginCredentialsLine extends Component {
         return (
             <View style={styles.loginCredentialLine}>
                 <View style={styles.loginCredentialLeftPortion}>
-                    <Image source={this.props.image} style={styles.loginCredentialPhoto}/>
+                    <Image source={this.props.image1} style={styles.loginCredentialPhoto1}/>
+                    <Image source={this.props.image2} style={styles.loginCredentialPhoto2}/>
                 </View>
                 <TextInput {...loginCredentialsDefaultProps}
                            value={this.props.field}
@@ -75,18 +76,18 @@ export default class LoginPage extends Component {
     render() {
         return (
             <View style={styles.loginScreen}>
-                <Image source={images.trollface} style={styles.loginTurnup}/>
+                <Image source={images.bird} style={styles.loginTurnup}/>
                 <View style={styles.loginCredentials}>
-                    <LoginCredentialsLine image={images.trollface} field={this.state.email}
+                    <LoginCredentialsLine image1={images.email} field={this.state.email}
                                           changeListener={(email) => this.setState({email: email})}
                                           focusListener={() => this.setState({email: ""})}/>
-                    <LoginCredentialsLine image={images.trollface}  field={this.state.displayedPassword}
+                    <LoginCredentialsLine image2={images.password}  field={this.state.displayedPassword}
                                           changeListener={(password) => this.setState({displayedPassword: password, password: password})}
                                           focusListener={() => this._passwordFocusListener()}
                                           blurListener={() => this._passwordBlurListener()}
                                           isPassword={this.state.hidePassword}/>
                 </View>
-                <TouchableNativeFeedback onPress={() => this._handlePress()}
+                <TouchableNativeFeedback onPressOut={() => this._handlePress()}
                                          background={TouchableNativeFeedback.Ripple('red')}>
                     <View style={styles.loginSignInButton}>
                         <Text style={styles.loginSignInButtonText}>Sign in</Text>

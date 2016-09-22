@@ -28,6 +28,21 @@ export default styles = StyleSheet.create({
     },
 
     // Actual designs
+
+
+    // Generic stuff
+    fullscreenContainer: {
+        flex: 1,
+        justifyContent: 'space-between',
+        alignItems: 'stretch',
+        backgroundColor: 'white'
+    },
+
+    topBar: {
+        height: 60,
+        backgroundColor: '#F28500'
+    },
+
     header: {
         flex: -1,
         height: 60,
@@ -82,7 +97,12 @@ export default styles = StyleSheet.create({
         justifyContent: 'center'
     },
 
-    loginCredentialPhoto: {
+    loginCredentialPhoto1: {
+        width: 30,
+        height: 20
+    },
+
+    loginCredentialPhoto2:  {
         width: 20,
         height: 20
     },
@@ -90,7 +110,7 @@ export default styles = StyleSheet.create({
     loginSignInButton: {
         width: 112,
         height: 36,
-        elevation: 1,
+        elevation: 2,
         backgroundColor: '#FF9800',
         justifyContent: 'center'
     },
@@ -101,6 +121,22 @@ export default styles = StyleSheet.create({
         fontFamily: 'SourceSansPro-Light',
         color: 'white',
         textAlign: 'center'
+    },
+
+    // Information enrichment screen
+
+    topContainer: {
+        flex: -1,
+        alignItems: 'stretch',
+        backgroundColor: "#F28500"
+    },
+
+    topTabButtonsContainer: {
+        height: 50
+    },
+
+    dateTimeScroller: {
+        height: 60
     },
 
     // CreateEvent

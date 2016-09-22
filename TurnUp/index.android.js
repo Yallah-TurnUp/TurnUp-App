@@ -12,10 +12,10 @@ import {
 
 import LoginPage from './app/components/LoginPage.js';
 import CreateEventPage from './app/components/CreateEventPage.js';
-import CreateInvitedPage from './app/components/CreateInvitationPage.js';
 import ExplorePage from './app/components/ExplorePage.js';
 import InvitedPage from './app/components/InvitedPage.js';
 import HostPage from './app/components/HostPage.js';
+import CreateInvitationPage from './app/components/CreateInvitationPage.js';
 
 class PageTwo extends Component {
   _handlePress() {
@@ -133,7 +133,7 @@ class TurnUp extends Component {
   render() {
     return (
       <Navigator
-        initialRoute={{id: 1, }}
+        initialRoute={{id: 3, }}
         renderScene={this._renderScene}
         configureScene={this._configureScene} />
     );
