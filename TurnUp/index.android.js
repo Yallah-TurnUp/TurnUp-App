@@ -10,6 +10,8 @@ import {
   TouchableOpacity
 } from 'react-native';
 
+import LoginPage from './app/components/LoginPage.js';
+
 var SCREEN_WIDTH = require('Dimensions').get('window').width;
 var BaseConfig = Navigator.SceneConfigs.FloatFromRight;
 
@@ -19,35 +21,6 @@ var CustomLeftToRightGesture = Object.assign({}, BaseConfig.gestures.pop, {
   // Make it so we can drag anywhere on the screen
   edgeHitWidth: SCREEN_WIDTH,
 });
-
-var CustomSceneConfig = Object.assign({}, BaseConfig, {
-  // A very tighly wound spring will make this transition fast
-  springTension: 100,
-  springFriction: 1,
-  // Use our custom gesture defined above
-  gestures: {
-    pop: CustomLeftToRightGesture,
-  }
-});
-
-class PageOne extends Component {
-  _handlePress() {
-    this.props.navigator.push({id: 2,});
-  }
-
-  render() {
-    return (
-        <View style={[styles.container, {backgroundColor: 'green'}]}>
-          <Text style={styles.welcome}>Greetings!</Text>
-          <TouchableOpacity onPress={() => this._handlePress()}>
-            <View style={{paddingVertical: 10, paddingHorizontal: 20, backgroundColor: 'black'}}>
-              <Text style={styles.welcome}>Go to page two</Text>
-            </View>
-          </TouchableOpacity>
-       </View>
-     )
-  }
-}
 
 class PageTwo extends Component {
   _handlePress() {
@@ -144,7 +117,7 @@ class LastPage extends Component {
 class TurnUp extends Component {
   _renderScene(route, navigator) {
     if (route.id === 1) {
-      return <PageOne navigator={navigator} />
+      return <LoginPage navigator={navigator} />
     } else if (route.id === 2) {
       return <PageTwo navigator={navigator} />
     } else if (route.id === 3) {
