@@ -1,32 +1,80 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
+'use strict';
 
 import React, { Component } from 'react';
 import {
   AppRegistry,
   StyleSheet,
   Text,
-  View
+  View,
+  Navigator,
+  TouchableOpacity
 } from 'react-native';
 
-class TurnUp extends Component {
+var SCREEN_WIDTH = require('Dimensions').get('window').width;
+var BaseConfig = Navigator.SceneConfigs.FloatFromRight;
+
+var CustomLeftToRightGesture = Object.assign({}, BaseConfig.gestures.pop, {
+  // Make it snap back really quickly after canceling pop
+  snapVelocity: 8,
+  // Make it so we can drag anywhere on the screen
+  edgeHitWidth: SCREEN_WIDTH,
+});
+
+class PageOne extends Component {
+  _handlePress() {
+    this.props.navigator.push({id: 2,});
+  },
+
+  render() {
+    <View style={[styles.container, {backgroundColor: 'green'}]}>
+      <Text style={styles.welcome}>Greetings!</Text>
+      <TouchableOpacity onPress={this._handlePress}>
+        <View style={{paddingVertical: 10, paddingHorizontal: 20, backgroundColor: 'black'}}>
+          <Text style={styles.welcome}>Go to page two</Text>
+        </View>
+      </TouchableOpacity>
+     </View>
+  }
+}
+
+class PageTwo extends Component {
+  _handlePress() {
+    this.props.navigator.pop();
+  },
+
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.ios.js
-        </Text>
-        <Text style={styles.instructions}>
-          Press Cmd+R to reload,{'\n'}
-          Cmd+D or shake for dev menu
-        </Text>
-      </View>
+      <View style={[styles.container, {backgroundColor: 'purple'}]}>
+        <Text style={styles.welcome}>This is page two!</Text>
+        <TouchableOpacity onPress={this._handlePress}>
+          <View style={{paddingVertical: 10, paddingHorizontal: 20, backgroundColor: 'black'}}>
+            <Text style={styles.welcome}>Go back</Text>
+          </View>
+        </TouchableOpacity>
+       </View>
+    )
+  },
+});
+
+class TurnUp extends Component {
+  _renderScene(route, navigator) {
+    if (route.id === 1) {
+      return <PageOne navigator={navigator} />
+    } else if (route.id === 2) {
+      return <PageTwo navigator={navigator} />
+    }
+  },
+
+  _configureScene() {
+    return BaseConfig;
+  },
+
+  render() {
+    return (
+      <Navigator
+        initialRoute={{id: 1, }}
+        renderScene={this._renderScene}
+        configureScene={this._configureScene} />
     );
   }
 }
@@ -42,11 +90,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
     margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
+    color: 'white',
   },
 });
 
