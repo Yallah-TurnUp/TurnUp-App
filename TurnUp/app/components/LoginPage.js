@@ -54,7 +54,7 @@ export default class LoginPage extends Component {
     }
 
     _handlePress() {
-        this.props.navigator.push({id: 2,});
+        this.props.navigator.push({id: 3,});
     }
 
     _passwordFocusListener() {

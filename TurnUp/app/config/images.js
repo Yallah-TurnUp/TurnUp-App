@@ -13,6 +13,9 @@ const images = {
     beer_logo: require('../images/beer-logo.png'),
     facebook_login: require('../images/facebook_login.png'),
     google_login: require('../images/google_login.png'),
+    explore_logo: require('../images/explore_logo.png'),
+    hosted_logo: require('../images/hosted_logo.png'),
+    surprise_logo: require('../images/surprise_logo.png'),
 }
 
 export default images;
