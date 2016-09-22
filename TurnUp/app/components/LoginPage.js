@@ -77,10 +77,10 @@ export default class LoginPage extends Component {
             <View style={styles.loginScreen}>
                 <Image source={images.bird} style={styles.loginTurnup}/>
                 <View style={styles.loginCredentials}>
-                    <LoginCredentialsLine image={images.bird} field={this.state.email}
+                    <LoginCredentialsLine image={images.email} field={this.state.email}
                                           changeListener={(email) => this.setState({email: email})}
                                           focusListener={() => this.setState({email: ""})}/>
-                    <LoginCredentialsLine image={images.bird}  field={this.state.displayedPassword}
+                    <LoginCredentialsLine image={images.password}  field={this.state.displayedPassword}
                                           changeListener={(password) => this.setState({displayedPassword: password, password: password})}
                                           focusListener={() => this._passwordFocusListener()}
                                           blurListener={() => this._passwordBlurListener()}
