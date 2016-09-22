@@ -12,6 +12,7 @@ import {
 
 import LoginPage from './app/components/LoginPage.js';
 import CreateEventPage from './app/components/CreateEventPage.js';
+import CreateInvitationPage from './app/components/CreateInvitationPage.js';
 
 class PageTwo extends Component {
   _handlePress() {
@@ -112,7 +113,7 @@ class TurnUp extends Component {
     } else if (route.id === 2) {
       return <CreateEventPage navigator={navigator} />
     } else if (route.id === 3) {
-      return <PageThree navigator={navigator} />
+      return <CreateInvitationPage navigator={navigator} />
     } else if (route.id < 6) {
       return <GeneralPage navigator={navigator} pageNumber={route.id}/>
     } else {
@@ -127,7 +128,7 @@ class TurnUp extends Component {
   render() {
     return (
       <Navigator
-        initialRoute={{id: 1, }}
+        initialRoute={{id: 3, }}
         renderScene={this._renderScene}
         configureScene={this._configureScene} />
     );

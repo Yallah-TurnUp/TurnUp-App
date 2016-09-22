@@ -24,6 +24,19 @@ export default styles = StyleSheet.create({
 
     // Actual designs
 
+    // Generic stuff
+    fullscreenContainer: {
+        flex: 1,
+        justifyContent: 'space-between',
+        alignItems: 'stretch',
+        backgroundColor: 'white'
+    },
+
+    topBar: {
+        height: 60,
+        backgroundColor: '#F28500'
+    },
+
     // Login
 
     loginScreen: {
@@ -69,7 +82,7 @@ export default styles = StyleSheet.create({
     loginSignInButton: {
         width: 112,
         height: 36,
-        elevation: 1,
+        elevation: 2,
         backgroundColor: '#FF9800',
         justifyContent: 'center'
     },
@@ -80,6 +93,23 @@ export default styles = StyleSheet.create({
         fontFamily: 'SourceSansPro-Light',
         color: 'white',
         textAlign: 'center'
+    },
+
+    // Information enrichment screen
+
+    topContainer: {
+        flex: -1,
+        alignItems: 'stretch',
+        backgroundColor: "#F28500"
+    },
+
+    topTabButtonsContainer: {
+        height: 50
+    },
+
+    dateTimeScroller: {
+        backgroundColor: "rgba(0,0,0,0.58)",
+        height: 60
     }
 });
 
