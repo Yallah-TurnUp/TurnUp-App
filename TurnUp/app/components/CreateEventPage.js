@@ -6,9 +6,10 @@ import React, { Component } from 'react';
 import {
     View,
     TouchableOpacity,
-    Text
+    Text,
 } from 'react-native';
 import styles from '../config/styles.js';
+import images from '../config/images.js';
 
 export default class CreateEventPage extends Component {
     _handlePress() {
@@ -17,12 +18,12 @@ export default class CreateEventPage extends Component {
 
     render() {
         return (
-            <View style={[styles.container, {backgroundColor: 'green'}]}>
+            <View style={[styles.CreateEventPage, {backgroundColor: 'grey'}]}>
+             <View style={{paddingVertical: 20, paddingHorizontal: 163, backgroundColor: 'orange'}}>
+                                    <Text style={styles.welcome}>TurnUp</Text>
+                                </View>
                 <Text style={styles.welcome}>This is CreateEventPage!</Text>
                 <TouchableOpacity onPress={() => this._handlePress()}>
-                    <View style={{paddingVertical: 10, paddingHorizontal: 20, backgroundColor: 'black'}}>
-                        <Text style={styles.welcome}>Go crazy</Text>
-                    </View>
                 </TouchableOpacity>
             </View>
         )
