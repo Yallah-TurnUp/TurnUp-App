@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 
 import LoginPage from './app/components/LoginPage.js';
+import CreateEventPage from './app/components/CreateEventPage.js';
 
 class PageTwo extends Component {
   _handlePress() {
@@ -109,7 +110,7 @@ class TurnUp extends Component {
     if (route.id === 1) {
       return <LoginPage navigator={navigator} />
     } else if (route.id === 2) {
-      return <PageTwo navigator={navigator} />
+      return <CreateEventPage navigator={navigator} />
     } else if (route.id === 3) {
       return <PageThree navigator={navigator} />
     } else if (route.id < 6) {
@@ -126,7 +127,7 @@ class TurnUp extends Component {
   render() {
     return (
       <Navigator
-        initialRoute={{id: 1, }}
+        initialRoute={{id: 2, }}
         renderScene={this._renderScene}
         configureScene={this._configureScene} />
     );
