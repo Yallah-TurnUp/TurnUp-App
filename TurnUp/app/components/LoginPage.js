@@ -33,6 +33,7 @@ class LoginCredentialsLine extends Component {
                            value={this.props.field}
                            onChangeText={this.props.changeListener}
                            onFocus={this.props.focusListener}
+                           onBlur={this.props.blurListener}
                            secureTextEntry={this.props.isPassword}
                 />
             </View>
@@ -45,7 +46,9 @@ export default class LoginPage extends Component {
         super(props);
         this.state = {
             email: "your email address",
-            password: "password"
+            password: "",
+            hidePassword: false,
+            displayedPassword: "password"
         }
     }
 
@@ -53,23 +56,34 @@ export default class LoginPage extends Component {
         this.props.navigator.push({id: 2,});
     }
 
+    _passwordFocusListener() {
+        this.setState({
+            displayedPassword: "",
+            password: "",
+            hidePassword: true
+        })
+    }
+
+    _passwordBlurListener() {
+        this.setState({
+            displayedPassword: this.state.displayedPassword.length > 0 ? this.state.displayedPassword : "password",
+            hidePassword: this.state.displayedPassword.length > 0
+        })
+    }
+
     render() {
         return (
             <View style={styles.loginScreen}>
                 <Image source={images.trollface} style={styles.loginTurnup}/>
                 <View style={styles.loginCredentials}>
-                    <LoginCredentialsLine image={images.trollface}
-                                          field={this.state.email}
+                    <LoginCredentialsLine image={images.trollface} field={this.state.email}
                                           changeListener={(email) => this.setState({email: email})}
-                                          focusListener={() => this.setState({email: ""})}
-                                          isPassword={false}
-                    />
-                    <LoginCredentialsLine image={images.trollface}
-                                          field={this.state.password}
-                                          changeListener={(password) => this.setState({password: password})}
-                                          focusListener={() => this.setState({password: ""})}
-                                          isPassword={true}
-                    />
+                                          focusListener={() => this.setState({email: ""})}/>
+                    <LoginCredentialsLine image={images.trollface}  field={this.state.displayedPassword}
+                                          changeListener={(password) => this.setState({displayedPassword: password, password: password})}
+                                          focusListener={() => this._passwordFocusListener()}
+                                          blurListener={() => this._passwordBlurListener()}
+                                          isPassword={this.state.hidePassword}/>
                 </View>
                 <TouchableOpacity onPress={() => this._handlePress()}>
                     <View style={{paddingVertical: 10, paddingHorizontal: 20, backgroundColor: 'black'}}>
