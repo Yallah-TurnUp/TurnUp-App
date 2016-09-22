@@ -10,20 +10,12 @@ import {
   TouchableOpacity
 } from 'react-native';
 
-var SCREEN_WIDTH = require('Dimensions').get('window').width;
 var BaseConfig = Navigator.SceneConfigs.FloatFromRight;
-
-var CustomLeftToRightGesture = Object.assign({}, BaseConfig.gestures.pop, {
-  // Make it snap back really quickly after canceling pop
-  snapVelocity: 8,
-  // Make it so we can drag anywhere on the screen
-  edgeHitWidth: SCREEN_WIDTH,
-});
 
 class PageOne extends Component {
   _handlePress() {
     this.props.navigator.push({id: 2,});
-  },
+  }
 
   render() {
     <View style={[styles.container, {backgroundColor: 'green'}]}>
@@ -40,7 +32,7 @@ class PageOne extends Component {
 class PageTwo extends Component {
   _handlePress() {
     this.props.navigator.pop();
-  },
+  }
 
   render() {
     return (
@@ -53,8 +45,8 @@ class PageTwo extends Component {
         </TouchableOpacity>
        </View>
     )
-  },
-});
+  }
+}
 
 class TurnUp extends Component {
   _renderScene(route, navigator) {
@@ -63,11 +55,11 @@ class TurnUp extends Component {
     } else if (route.id === 2) {
       return <PageTwo navigator={navigator} />
     }
-  },
+  }
 
   _configureScene() {
     return BaseConfig;
-  },
+  }
 
   render() {
     return (
