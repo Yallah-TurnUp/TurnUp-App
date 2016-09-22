@@ -110,7 +110,6 @@ export default styles = StyleSheet.create({
         textAlign: 'center'
     },
 
-<<<<<<< HEAD
     // Information enrichment screen
 
     topContainer: {
@@ -126,8 +125,8 @@ export default styles = StyleSheet.create({
     dateTimeScroller: {
         backgroundColor: "rgba(0,0,0,0.58)",
         height: 60
-    }
-=======
+    },
+
     // CreateEvent
 
     eventTypeSelector: {
@@ -139,7 +138,6 @@ export default styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center'
     },
->>>>>>> f40213d5f5e8b5541708f3476508c01fb6ebcd91
 });
 
 
