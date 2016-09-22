@@ -123,7 +123,6 @@ export default styles = StyleSheet.create({
     },
 
     dateTimeScroller: {
-        backgroundColor: "rgba(0,0,0,0.58)",
         height: 60
     },
 
