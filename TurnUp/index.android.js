@@ -19,7 +19,7 @@ class PageTwo extends Component {
 
   render() {
     return (
-      <View style={[styles.container, {backgroundColor: 'purple'}]}>
+      <View style={[styles.container, {backgroundColor: 'green'}]}>
         <Text style={styles.welcome}>This is page two!</Text>
         <TouchableOpacity onPress={() => this._handlePress()}>
           <View style={{paddingVertical: 10, paddingHorizontal: 20, backgroundColor: 'black'}}>
