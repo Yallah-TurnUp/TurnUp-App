@@ -18,7 +18,7 @@ import images from '../config/images.js';
 import { TopBar } from './TabsPage.js';
 
 var screenWidth = Dimensions.get('window').width;
-        const cellWidth = (screenWidth * 0.7 );
+        const cellWidth = (screenWidth * 0.55 );
 var screenHeight = Dimensions.get('window').height;
         const cellHeight = (screenHeight * 0.65 );
 

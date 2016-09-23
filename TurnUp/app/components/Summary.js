@@ -36,7 +36,7 @@ class EventsCellView extends Component {
     }
 }
 
-export default class InvitedPage extends Component {
+export default class Summary extends Component {
     constructor(props) {
         super(props);
 
@@ -71,13 +71,13 @@ export default class InvitedPage extends Component {
                     <Image source={images.summary_top} style={{width: cellWidth , height: 140, marginTop: 10}}/>
                 </View>
                 <View style={{flex:1, justifyContent: 'center', alignItems: 'center'}}>
-                    <Image source={images.summary_input} style={{height: 45, width: cellWidth}}/>
+                    <Image source={images.summary_input} style={{height: 30, width: cellWidth}}/>
                 </View>
-                <View style={{flex:1, justifyContent: 'center', alignItems: 'center', height: 60}}>
+                <View style={{flex:1, justifyContent: 'center', alignItems: 'center', height: 100}}>
                     <ListView {...EventsCellViewProps} dataSource={this.state.dataSource}/>
                 </View>
                 <View style={{flex:1, justifyContent: 'center', alignItems: 'center'}}>
-                    <Image source={images.summary_location} style={{height: 40, width: cellWidth}}/>
+                    <Image source={images.summary_location} style={{height: 30, width: cellWidth}}/>
                 </View>
                 <View style={{flex:2, justifyContent: 'center', alignItems: 'center'}}>
                     <Image source={images.event_1} style={{width: cellWidth, height: 120}}/>
