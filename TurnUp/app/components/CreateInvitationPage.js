@@ -23,7 +23,7 @@ const cellHorizontalMargins = {
     marginRight: cellMargin
 };
 const numberAndTextScrollViewProps = {
-    renderRow: (rowData) => <NumberAndTextCellView number={rowData.day} text={rowData.dayName}/>,
+    renderRow: (rowData) => <NumberAndTextCellView number={rowData.number} text={rowData.text}/>,
     horizontal: true,
     showsHorizontalScrollIndicator: false
 };
@@ -33,6 +33,9 @@ const tabIds = {
     selectTime: 'selectTime',
     selectLocation: 'selectLocation'
 };
+
+
+const ds = new ListView.DataSource({rowHasChanged: (row1, row2) => row1 !== row2});
 
 class NumberAndTextCellView extends Component {
     render() {
@@ -52,13 +55,12 @@ class NumberAndTextCellView extends Component {
 
 export default class CreateInvitationPage extends Component {
     constructor(props) {
-        super(props);
-        const ds = new ListView.DataSource({rowHasChanged: (row1, row2) => row1 !== row2});
+        super(props)
         this.state = {
             dataSource: ds.cloneWithRows(this._daysAhead()),
-            searchTerm: "Enter names",
-            currentTabId: tabIds.selectDate
-        };
+            currentTabId: tabIds.selectDate,
+            searchTerm: "Enter names"
+        }
     }
 
     _daysAhead() {
@@ -68,13 +70,26 @@ export default class CreateInvitationPage extends Component {
         var curr = new Date();
         for (let i = 0; i < 100; i++) {
             days[i] = {
-                day: curr.getDate(),
-                dayName: dayNames[curr.getDay()]
+                number: curr.getDate(),
+                text: dayNames[curr.getDay()]
             };
             curr = new Date(curr);
             curr.setDate(curr.getDate() + 1);
         }
         return days;
+    }
+
+    _hoursOfTheDay() {
+        var hours = [];
+        for (let i = 0; i < 24; i++) {
+            var hour_number = ((i + 8) % 12) + 1; // 1 to 12 not 0 to 11; starts from 9
+            var hour_text = ((i + 9) % 24) < 12 ? "AM" : "PM";
+            hours[i] = {
+                number: hour_number,
+                text: hour_text
+            }
+        }
+        return hours
     }
 
     _handleBack() {
@@ -87,19 +102,25 @@ export default class CreateInvitationPage extends Component {
 
     _handleCalendar() {
         if (this.state.currentTabId !== tabIds.selectDate) {
-
+            this.setState({
+                currentTabId: tabIds.selectDate,
+                dataSource: ds.cloneWithRows(this._daysAhead()),
+            });
         }
     }
 
     _handleClock() {
         if (this.state.currentTabId !== tabIds.selectTime) {
-
+            this.setState({
+                currentTabId: tabIds.selectTime,
+                dataSource: ds.cloneWithRows(this._hoursOfTheDay()),
+            });
         }
     }
 
     _handleLocation() {
         if (this.state.currentTabId !== tabIds.selectLocation) {
-
+            this.setState({currentTabId: tabIds.selectLocation});
         }
     }
 
@@ -112,22 +133,31 @@ export default class CreateInvitationPage extends Component {
                         <TouchableNativeFeedback onPressOut={() => this._handleCalendar()}
                                                  background={TouchableNativeFeedback.Ripple('red')}
                                                  style={{flex: 1}}>
-                            <View style={styles.tabBarButton}>
-                                <Image source={images.calendar} style={{width: 25, height: 25}}/>
+                            <View style={this.state.currentTabId === tabIds.selectDate ?
+                                styles.selectedTabBarButton : styles.tabBarButton}>
+                                <Image source={this.state.currentTabId === tabIds.selectDate ?
+                                    images.calendar_selected : images.calendar}
+                                       style={{width: 25, height: 25}}/>
                             </View>
                         </TouchableNativeFeedback>
                         <TouchableNativeFeedback onPressOut={() => this._handleClock()}
                                                  background={TouchableNativeFeedback.Ripple('red')}
                                                  style={{flex: 1}}>
-                            <View style={styles.tabBarButton}>
-                                <Image source={images.clock} style={{width: 25, height: 25}}/>
+                            <View style={this.state.currentTabId === tabIds.selectTime ?
+                                styles.selectedTabBarButton : styles.tabBarButton}>
+                                <Image source={this.state.currentTabId === tabIds.selectTime ?
+                                    images.clock_selected : images.clock}
+                                       style={{width: 25, height: 25}}/>
                             </View>
                         </TouchableNativeFeedback>
                         <TouchableNativeFeedback onPressOut={() => this._handleLocation()}
                                                  background={TouchableNativeFeedback.Ripple('red')}
                                                  style={{flex: 1}}>
-                            <View style={styles.tabBarButton}>
-                                <Image source={images.location_pin} style={{width: 25, height: 25}}/>
+                            <View style={this.state.currentTabId === tabIds.selectLocation ?
+                                styles.selectedTabBarButton : styles.tabBarButton}>
+                                <Image source={this.state.currentTabId === tabIds.selectLocation ?
+                                    images.location_pin_selected : images.location_pin}
+                                       style={{width: 25, height: 25}}/>
                             </View>
                         </TouchableNativeFeedback>
                     </View>

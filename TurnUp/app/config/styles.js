@@ -130,6 +130,13 @@ export default styles = StyleSheet.create({
         justifyContent: 'center'
     },
 
+    selectedTabBarButton: {
+        flex: 1,
+        backgroundColor: '#FF9800',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+
     dateTimeScroller: {
         height: 60
     },
