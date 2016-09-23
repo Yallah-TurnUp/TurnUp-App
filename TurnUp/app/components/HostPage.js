@@ -23,9 +23,9 @@ class ImageListView extends Component {
         var screenWidth = Dimensions.get('window').width;
         const cellWidth = (screenWidth * 0.9 ); // margin is on both sides
         return (
-            <View backgroundColor="transparent" width={cellWidth} height={150}
+            <View backgroundColor="transparent" width={cellWidth} height={175}
                 style={{justifyContent: 'space-between', alignItems: 'center'}}>
-                <Image source={images[this.props.name]} style={{alignItems: 'stretch', width: cellWidth, height: 135}} />
+                <Image source={images[this.props.name]} style={{alignItems: 'stretch', width: cellWidth, height: 150}} />
             </View>
         )
     }

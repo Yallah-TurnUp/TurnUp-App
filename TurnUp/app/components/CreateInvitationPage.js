@@ -16,6 +16,8 @@ import {
 import styles from '../config/styles.js';
 import images from '../config/images.js';
 
+import { TopBar } from './TabsPage.js';
+
 const cellMargin = 0.20;
 const cellCount = 6;
 const cellHorizontalMargins = {
@@ -44,8 +46,7 @@ class NumberAndTextCellView extends Component {
         return (
             <View backgroundColor="rgba(0,0,0,0.58)"
                   width={cellWidth}
-                  style={[cellHorizontalMargins, {justifyContent: 'center', alignItems: 'center'}]}
-            >
+                  style={[cellHorizontalMargins, {justifyContent: 'center', alignItems: 'center'}]}>
                 <Text style={{flex: 0, fontSize: 20, fontFamily: "SourceSansPro-Semibold", color: 'white'}}>{this.props.number}</Text>
                 <Text style={{flex: 0, fontSize: 12, fontFamily: "SourceSansPro-Regular", color: 'white'}}>{this.props.text}</Text>
             </View>
@@ -55,7 +56,7 @@ class NumberAndTextCellView extends Component {
 
 export default class CreateInvitationPage extends Component {
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
             dataSource: ds.cloneWithRows(this._daysAhead()),
             currentTabId: tabIds.selectDate,
@@ -93,11 +94,11 @@ export default class CreateInvitationPage extends Component {
     }
 
     _handleBack() {
-
+        this.props.navigator.pop();
     }
 
     _handleLetsGo() {
-
+        this.props.navigator.push({id: 12});
     }
 
     _handleCalendar() {
@@ -128,7 +129,7 @@ export default class CreateInvitationPage extends Component {
         return (
             <View style={styles.fullscreenContainer}>
                 <View style={styles.topContainer}>
-                    <View style={styles.topBar}><Text>Thing</Text></View>
+                    <TopBar centerImage={images.turnup_title}/>
                     <View style={styles.topTabButtonsContainer}>
                         <TouchableNativeFeedback onPressOut={() => this._handleCalendar()}
                                                  background={TouchableNativeFeedback.Ripple('red')}

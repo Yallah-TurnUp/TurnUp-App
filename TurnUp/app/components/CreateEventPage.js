@@ -97,8 +97,6 @@ export default class CreateEventPage extends Component {
                 <View style={{backgroundColor:'white', flex: 1, alignItems: 'stretch'}}>
                     <ListView {...ImageListViewProps} dataSource={this.state.dataSource} />
                 </View>
-                <TouchableOpacity onPress={() => this._handlePress()}>
-                </TouchableOpacity>
             </View>
         )
     }

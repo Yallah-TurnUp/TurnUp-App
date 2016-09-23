@@ -18,6 +18,7 @@ import SummaryPreviewPage from './app/components/SummaryPreview.js';
 import SummaryPage from './app/components/Summary.js';
 import HostPage from './app/components/HostPage.js';
 import TabsPage from './app/components/TabsPage.js';
+import Summary from './app/components/Summary.js';
 
 class LastPage extends Component {
   _handleBack() {
@@ -76,6 +77,10 @@ class TurnUp extends Component {
       return <CreateEventPage navigator={navigator} />
     } else if (route.id === 11) {
       return <CreateInvitationPage navigator={navigator} />
+    } else if (route.id === 12) {
+      return <SummaryPreviewPage navigator={navigator} />
+    } else if (route.id === 13) {
+      return <Summary navigator={navigator} />
     } else {
       return <LastPage navigator={navigator} />
     }
@@ -91,7 +96,7 @@ class TurnUp extends Component {
   render() {
     return (
       <Navigator
-        initialRoute={{id: 2, }}
+        initialRoute={{id: 1, }}
         renderScene={this._renderScene}
         configureScene={this._configureScene} />
     );

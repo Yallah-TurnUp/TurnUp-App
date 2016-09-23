@@ -156,7 +156,7 @@ export default styles = StyleSheet.create({
 
     selectedTabBarButton: {
         flex: 1,
-        backgroundColor: '#FF9800',
+        backgroundColor: '#F28500',
         alignItems: 'center',
         justifyContent: 'center'
     },

@@ -9,6 +9,9 @@ import {
 } from 'react-native';
 import styles from '../config/styles.js';
 import images from '../config/images.js';
+
+import { TopBar } from './TabsPage.js';
+
 var screenWidth = Dimensions.get('window').width;
         const cellWidth = (screenWidth * 0.95);
 var screenHeight = Dimensions.get('window').height;
@@ -34,10 +37,6 @@ class EventsCellView extends Component {
 }
 
 export default class InvitedPage extends Component {
-    _handlePress() {
-        this.props.navigator.push({id: 2,});
-    }
-
     constructor(props) {
         super(props);
 
@@ -59,14 +58,15 @@ export default class InvitedPage extends Component {
             return peopleName;
         }
 
+    _popSelf() {
+        this.props.navigator.pop()
+    }
+
     render() {
         return (
             <View style={{flex: 1, flexDirection: 'column', justifyContent: 'space-between', backgroundColor: '#e6e6e6'}}>
-                <View style={styles.header}>
-                    <Image source={images.back} style={{width: 40, height: 40, marginLeft: 10}} />
-                    <Image source={images.summary_title} style={{height: 60, width:140}}/>
-                    <Image source={images.forward} style={{width: 40, height: 40, marginRight: 10}} />
-                </View>
+                <TopBar leftButton={images.back} centerImage={images.summary_title}
+                        leftButtonHandler={() => this._popSelf()}/>
                 <View style={{justifyContent: 'center', alignItems: 'center'}}>
                     <Image source={images.summary_top} style={{width: cellWidth , height: 140, marginTop: 10}}/>
                 </View>
@@ -82,8 +82,6 @@ export default class InvitedPage extends Component {
                 <View style={{flex:2, justifyContent: 'center', alignItems: 'center'}}>
                     <Image source={images.event_1} style={{width: cellWidth, height: 120}}/>
                 </View>
-                    <TouchableOpacity onPress={() => this._handlePress()}>
-                    </TouchableOpacity>
             </View>
         )
     }
