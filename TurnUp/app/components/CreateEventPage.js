@@ -63,9 +63,9 @@ export default class CreateEventPage extends Component {
         return (
             <View style={{flex: 1, flexDirection: 'column', justifyContent: 'space-between', backgroundColor: '#e6e6e6'}}>
                 <View style={styles.header}>
-                    <Image source={images.back} style={{width: 50, height: 50, marginLeft: 10}} />
+                    <Image source={images.back} style={{width: 40, height: 40, marginLeft: 10}} />
                     <Image source={images.turnup_title} style={{height: 60, width:110}}/>
-                    <Image source={images.forward} style={{width: 50, height: 50, marginRight: 10}} />
+                    <Image source={images.forward} style={{width: 40, height: 40, marginRight: 10}} />
                 </View>
                 <View style={styles.eventTypeSelector}>
                     <Image source={images.beer_logo} style={{width: 80, height: 80}}/>

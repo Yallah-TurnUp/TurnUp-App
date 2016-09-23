@@ -152,7 +152,7 @@ export default styles = StyleSheet.create({
     },
 
     eventCells: {
-       height: 200
+       height: 180
     }
 });
 

@@ -45,7 +45,9 @@ const images = {
     event_1: require('../images/event_1.png'),
     event_2: require('../images/event_2.png'),
     forward: require('../images/FORWARD.png'),
-    event_2: require('../images/event_2.png')
+    summary_input: require('../images/summary_input.png'),
+    summary_location: require('../images/summary_location.png'),
+    summary_top: require('../images/summary_top.png')
 }
 
 export default images;
