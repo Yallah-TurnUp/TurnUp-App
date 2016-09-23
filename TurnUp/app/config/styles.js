@@ -38,13 +38,8 @@ export default styles = StyleSheet.create({
         backgroundColor: 'white'
     },
 
-    topBar: {
-        height: 60,
-        backgroundColor: '#F28500'
-    },
-
     header: {
-        flex: -1,
+        flex: 0,
         height: 60,
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -60,6 +55,22 @@ export default styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#FF9800'
     },
+
+    tabsContainer: {
+        flex: 1,
+        justifyContent: 'space-between',
+        alignItems: 'stretch',
+        backgroundColor: 'white'
+    },
+
+    tabsBar: {
+        flex: 0,
+        height: 60,
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        backgroundColor: '#FF9800'
+    },
+
     // Login
 
     loginScreen: {

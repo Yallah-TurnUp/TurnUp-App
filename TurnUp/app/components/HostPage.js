@@ -6,9 +6,11 @@ import React, { Component } from 'react';
 import {
     View,
     TouchableOpacity,
-    Text
+    Text,
+    Image
 } from 'react-native';
 import styles from '../config/styles.js';
+import images from '../config/images.js';
 
 export default class HostPage extends Component {
     _handlePress() {
