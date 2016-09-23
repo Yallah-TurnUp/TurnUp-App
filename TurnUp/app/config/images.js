@@ -16,7 +16,10 @@ const images = {
     filter_logo: require('../images/filter_logo.png'),
     beer_logo: require('../images/beer-logo.png'),
     facebook_login: require('../images/facebook_login.png'),
-    google_login: require('../images/google_login.png')
+    google_login: require('../images/google_login.png'),
+    location_pin: require('../images/location.png'),
+    clock: require('../images/clock.png'),
+    calendar: require('../images/calendar.png')
 }
 
 export default images;

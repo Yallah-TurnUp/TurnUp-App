@@ -10,9 +10,11 @@ import {
     Dimensions,
     ListView,
     TextInput,
-    TouchableNativeFeedback
+    TouchableNativeFeedback,
+    Image
 } from 'react-native';
 import styles from '../config/styles.js';
+import images from '../config/images.js';
 
 const cellMargin = 0.20;
 const cellCount = 6;
@@ -72,12 +74,53 @@ export default class CreateInvitationPage extends Component {
 
     }
 
+    _handleLetsGo() {
+
+    }
+
+    _handleCalendar() {
+
+    }
+
+    _handleClock() {
+
+    }
+
+    _handleLocation() {
+
+    }
+
     render() {
         return (
             <View style={styles.fullscreenContainer}>
                 <View style={styles.topContainer}>
                     <View style={styles.topBar}><Text>Thing</Text></View>
-                    <View style={styles.topTabButtonsContainer}><Text>Top tab buttons</Text></View>
+                    <View style={styles.topTabButtonsContainer}>
+                        <TouchableNativeFeedback onPressOut={() => this._handleCalendar()}
+                                                 background={TouchableNativeFeedback.Ripple('red')}
+                                                 style={{flex: 1}}
+                        >
+                            <View style={styles.tabBarButton}>
+                                <Image source={images.calendar} style={{width: 25, height: 25}}/>
+                            </View>
+                        </TouchableNativeFeedback>
+                        <TouchableNativeFeedback onPressOut={() => this._handleClock()}
+                                                 background={TouchableNativeFeedback.Ripple('red')}
+                                                 style={{flex: 1}}
+                        >
+                            <View style={styles.tabBarButton}>
+                                <Image source={images.clock} style={{width: 25, height: 25}}/>
+                            </View>
+                        </TouchableNativeFeedback>
+                        <TouchableNativeFeedback onPressOut={() => this._handleLocation()}
+                                                 background={TouchableNativeFeedback.Ripple('red')}
+                                                 style={{flex: 1}}
+                        >
+                            <View style={styles.tabBarButton}>
+                                <Image source={images.location_pin} style={{width: 25, height: 25}}/>
+                            </View>
+                        </TouchableNativeFeedback>
+                    </View>
                 </View>
                 <View style={{flex: 1, justifyContent: 'space-between'}}>
                     <View style={styles.dateTimeScroller}>
@@ -98,7 +141,7 @@ export default class CreateInvitationPage extends Component {
                                     <Text style={styles.enrichmentButtonText}>Back</Text>
                                 </View>
                             </TouchableNativeFeedback>
-                            <TouchableNativeFeedback onPressOut={() => this._handleBack()}
+                            <TouchableNativeFeedback onPressOut={() => this._handleLetsGo()}
                                                      background={TouchableNativeFeedback.Ripple('red')}>
                                 <View style={styles.enrichmentNavigationButton}>
                                     <Text style={styles.enrichmentButtonText}>Let's Go</Text>

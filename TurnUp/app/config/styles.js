@@ -119,7 +119,15 @@ export default styles = StyleSheet.create({
     },
 
     topTabButtonsContainer: {
-        height: 50
+        height: 50,
+        flexDirection: 'row'
+    },
+
+    tabBarButton: {
+        flex: 1,
+        backgroundColor: 'white',
+        alignItems: 'center',
+        justifyContent: 'center'
     },
 
     dateTimeScroller: {
