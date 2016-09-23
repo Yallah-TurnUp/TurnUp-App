@@ -13,7 +13,8 @@ import {
 import LoginPage from './app/components/LoginPage.js';
 import CreateEventPage from './app/components/CreateEventPage.js';
 import ExplorePage from './app/components/ExplorePage.js';
-import InvitedPage from './app/components/InvitedPage.js';
+import SummaryPreviewPage from './app/components/SummaryPreview.js';
+import SummaryPage from './app/components/Summary.js';
 import HostPage from './app/components/HostPage.js';
 import CreateInvitationPage from './app/components/CreateInvitationPage.js';
 
@@ -118,8 +119,10 @@ class TurnUp extends Component {
     } else if (route.id === 3) {
       return <ExplorePage navigator={navigator} />
     } else if (route.id === 4) {
-      return <InvitedPage navigator={navigator} />
-    } else if (route.id < 6) {
+      return <SummaryPreviewPage navigator={navigator} />
+    } else if (route.id === 5) {
+      return <SummaryPage navigator={navigator} />
+    } else if (route.id < 7) {
       return <GeneralPage navigator={navigator} pageNumber={route.id}/>
     } else {
       return <LastPage navigator={navigator} />
@@ -133,7 +136,7 @@ class TurnUp extends Component {
   render() {
     return (
       <Navigator
-        initialRoute={{id: 3, }}
+        initialRoute={{id: 5, }}
         renderScene={this._renderScene}
         configureScene={this._configureScene} />
     );

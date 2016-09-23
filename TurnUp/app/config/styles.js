@@ -150,6 +150,10 @@ export default styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center'
     },
+
+    eventCells: {
+       height: 200
+    }
 });
 
 
