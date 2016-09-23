@@ -33,7 +33,7 @@ class EventsCellView extends Component {
     }
 }
 
-export default class InvitedPage extends Component {
+export default class Summary extends Component {
     _handlePress() {
         this.props.navigator.push({id: 2,});
     }
@@ -61,23 +61,23 @@ export default class InvitedPage extends Component {
 
     render() {
         return (
-            <View style={{flex: 1, flexDirection: 'column', justifyContent: 'space-between', backgroundColor: '#e6e6e6'}}>
+            <View style={{flex: 1, flexDirection: 'column', justifyContent: 'space-between', alignItems: 'stretch', backgroundColor: '#e6e6e6'}}>
                 <View style={styles.header}>
-                    <Image source={images.back} style={{width: 40, height: 40, marginLeft: 10}} />
+                    <Image source={images.back} style={{width: 30, height: 30, marginLeft: 10}} />
                     <Image source={images.summary_title} style={{height: 60, width:140}}/>
-                    <Image source={images.forward} style={{width: 40, height: 40, marginRight: 10}} />
+                    <Image source={images.forward} style={{width: 30, height: 30, marginRight: 10}} />
                 </View>
                 <View style={{justifyContent: 'center', alignItems: 'center'}}>
                     <Image source={images.summary_top} style={{width: cellWidth , height: 140, marginTop: 10}}/>
                 </View>
                 <View style={{flex:1, justifyContent: 'center', alignItems: 'center'}}>
-                    <Image source={images.summary_input} style={{height: 45, width: cellWidth}}/>
+                    <Image source={images.summary_input} style={{height: 30, width: cellWidth}}/>
                 </View>
-                <View style={{flex:1, justifyContent: 'center', alignItems: 'center', height: 60}}>
+                <View style={{flex:1, justifyContent: 'center', alignItems: 'center', height: 100}}>
                     <ListView {...EventsCellViewProps} dataSource={this.state.dataSource}/>
                 </View>
                 <View style={{flex:1, justifyContent: 'center', alignItems: 'center'}}>
-                    <Image source={images.summary_location} style={{height: 40, width: cellWidth}}/>
+                    <Image source={images.summary_location} style={{height: 30, width: cellWidth}}/>
                 </View>
                 <View style={{flex:2, justifyContent: 'center', alignItems: 'center'}}>
                     <Image source={images.event_1} style={{width: cellWidth, height: 120}}/>

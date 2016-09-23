@@ -91,7 +91,7 @@ class TurnUp extends Component {
   render() {
     return (
       <Navigator
-        initialRoute={{id: 2, }}
+        initialRoute={{id: 4, }}
         renderScene={this._renderScene}
         configureScene={this._configureScene} />
     );

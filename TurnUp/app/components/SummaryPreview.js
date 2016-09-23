@@ -14,7 +14,7 @@ import {
 import styles from '../config/styles.js';
 import images from '../config/images.js';
 var screenWidth = Dimensions.get('window').width;
-        const cellWidth = (screenWidth * 0.7 );
+        const cellWidth = (screenWidth * 0.55 );
 var screenHeight = Dimensions.get('window').height;
         const cellHeight = (screenHeight * 0.65 );
 
@@ -27,9 +27,9 @@ export default class InvitedPage extends Component {
         return (
             <View style={{flex: 1, flexDirection: 'column', justifyContent: 'space-between', backgroundColor: '#e6e6e6'}}>
                 <View style={styles.header}>
-                    <Image source={images.back} style={{width: 50, height: 50, marginLeft: 10}} />
+                    <Image source={images.back} style={{width: 30, height: 30, marginLeft: 10}} />
                     <Image source={images.summary_title} style={{height: 60, width:140}}/>
-                    <Image source={images.host_logo} style={{width: 50, height: 50, marginLeft: 10}} />
+                    <Image source={images.forward} style={{width: 30, height: 30, marginLeft: 10}} />
                 </View>
                 <View style={{alignItems: 'center'}}>
                     <Image source={images.summary_eye} style={{width: 180, height: 40, marginTop: 10, marginBottom: 10}}/>
