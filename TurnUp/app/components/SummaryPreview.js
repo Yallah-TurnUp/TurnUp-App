@@ -34,7 +34,7 @@ export default class InvitedPage extends Component {
                 <View style={{alignItems: 'center'}}>
                     <Image source={images.summary_eye} style={{width: 180, height: 40, marginTop: 10, marginBottom: 10}}/>
                 </View>
-                <View style={{flex:3, justifyContent: 'space-between', alignItems: 'center'}}>
+                <View style={{flex:3, justifyContent: 'flex-start', alignItems: 'center', elevation: 10}}>
                     <Image source={images.summary_preview} style={{height: cellHeight, width: cellWidth}}/>
                 </View>
                 <View style={{flex:-1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#FF9800'}}>

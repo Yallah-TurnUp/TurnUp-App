@@ -1,7 +1,3 @@
-/**
- * Created by dat on 22/09/2016.
- */
-
 import React, { Component } from 'react';
 import {
     View,
@@ -31,7 +27,7 @@ export default class InvitedPage extends Component {
                     <Image source={images.summary_title} style={{height: 60, width:140}}/>
                     <Image source={images.host_logo} style={{width: 50, height: 50, marginLeft: 10}} />
                 </View>
-                <View style={{alignItems: 'center'}}>
+                <View style={{flex:1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
                     <Image source={images.summary_eye} style={{width: 180, height: 40, marginTop: 10, marginBottom: 10}}/>
                 </View>
                 <View style={{flex:3, justifyContent: 'space-between', alignItems: 'center'}}>

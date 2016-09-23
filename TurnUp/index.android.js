@@ -12,6 +12,10 @@ import {
 
 import LoginPage from './app/components/LoginPage.js';
 import CreateEventPage from './app/components/CreateEventPage.js';
+import ExplorePage from './app/components/ExplorePage.js';
+import SummaryPreviewPage from './app/components/SummaryPreview.js';
+import SummaryPage from './app/components/Summary.js';
+import HostPage from './app/components/HostPage.js';
 import CreateInvitationPage from './app/components/CreateInvitationPage.js';
 
 class PageTwo extends Component {
@@ -113,9 +117,13 @@ class TurnUp extends Component {
     } else if (route.id === 2) {
       return <CreateEventPage navigator={navigator} />
     } else if (route.id === 3) {
-      return <CreateInvitationPage navigator={navigator} />
-    } else if (route.id < 6) {
-      return <GeneralPage navigator={navigator} pageNumber={route.id}/>
+      return <ExplorePage navigator={navigator} />
+    } else if (route.id === 4) {
+      return <SummaryPreviewPage navigator={navigator} />
+    } else if (route.id === 5) {
+      return <SummaryPage navigator={navigator} />
+    } else if (route.id < 7) {
+      return <HostPage navigator={navigator} pageNumber={route.id}/>
     } else {
       return <LastPage navigator={navigator} />
     }
@@ -128,7 +136,7 @@ class TurnUp extends Component {
   render() {
     return (
       <Navigator
-        initialRoute={{id: 3, }}
+        initialRoute={{id: 4, }}
         renderScene={this._renderScene}
         configureScene={this._configureScene} />
     );

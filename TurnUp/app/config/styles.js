@@ -21,6 +21,11 @@ export default styles = StyleSheet.create({
         color: 'white',
         fontFamily: 'SourceSansPro-Light'
     },
+    separator: {
+        flex: 1,
+        height: 0.1,
+        backgroundColor: '#8E8E8E',
+    },
 
     // Actual designs
 
@@ -47,6 +52,14 @@ export default styles = StyleSheet.create({
         backgroundColor: '#FF9800'
     },
 
+    footer: {
+        flex: -1,
+        height: 60,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        backgroundColor: '#FF9800'
+    },
     // Login
 
     loginScreen: {
@@ -173,14 +186,18 @@ export default styles = StyleSheet.create({
     // CreateEvent
 
     eventTypeSelector: {
-        flex: 1,
-        height: 110,
+        flex: 0,
+        height: 100,
         marginRight: 5,
         marginLeft: 5,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center'
     },
+
+    eventCells: {
+       height: 200
+    }
 });
 
 
