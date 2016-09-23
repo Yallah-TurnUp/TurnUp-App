@@ -199,10 +199,8 @@ export default styles = StyleSheet.create({
     eventTypeSelector: {
         flex: 0,
         height: 100,
-        marginRight: 5,
-        marginLeft: 5,
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'space-around',
         alignItems: 'center'
     },
 

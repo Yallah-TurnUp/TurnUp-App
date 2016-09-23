@@ -12,6 +12,7 @@ import {
 
 import LoginPage from './app/components/LoginPage.js';
 import CreateEventPage from './app/components/CreateEventPage.js';
+import CreateInvitationPage from './app/components/CreateInvitationPage.js';
 import ExplorePage from './app/components/ExplorePage.js';
 import SummaryPreviewPage from './app/components/SummaryPreview.js';
 import SummaryPage from './app/components/Summary.js';
@@ -67,13 +68,20 @@ class TurnUp extends Component {
       return <SummaryPage navigator={navigator} />
     } else if (route.id < 7) {
       return <HostPage navigator={navigator} pageNumber={route.id}/>
+    } else if (route.id === 10) {
+      return <CreateEventPage navigator={navigator} />
+    } else if (route.id === 11) {
+      return <CreateInvitationPage navigator={navigator} />
     } else {
       return <LastPage navigator={navigator} />
     }
   }
 
-  _configureScene() {
-    return Navigator.SceneConfigs.FadeAndroid;
+  _configureScene(route) {
+    if (route.id === 10) {
+        return Navigator.SceneConfigs.HorizontalSwipeJump;
+    }
+    return Navigator.SceneConfigs.PushFromRight;
   }
 
   render() {

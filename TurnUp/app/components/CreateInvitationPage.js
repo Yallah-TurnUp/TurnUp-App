@@ -47,7 +47,7 @@ class NumberAndTextCellView extends Component {
                   style={[cellHorizontalMargins, {justifyContent: 'center', alignItems: 'center'}]}
             >
                 <Text style={{flex: 0, fontSize: 20, fontFamily: "SourceSansPro-Semibold", color: 'white'}}>{this.props.number}</Text>
-                <Text style={{flex: 0, fontSize: 11, fontFamily: "SourceSansPro-Regular", color: 'white'}}>{this.props.text}</Text>
+                <Text style={{flex: 0, fontSize: 12, fontFamily: "SourceSansPro-Regular", color: 'white'}}>{this.props.text}</Text>
             </View>
         )
     }

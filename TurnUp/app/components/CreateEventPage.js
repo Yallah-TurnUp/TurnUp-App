@@ -14,20 +14,21 @@ import {
 import styles from '../config/styles.js';
 import images from '../config/images.js';
 
+import { TopBar } from './TabsPage.js';
+
 const ImageListViewProps = {
     renderRow: (rowData) => <ImageListView name_1={rowData.imgBeer1} name_2={rowData.imgBeer2}/>,
-    showsVerticalScrollIndicator: false
+    showsVerticalScrollIndicator: false,
 };
 
 class ImageListView extends Component {
     render() {
-        var screenWidth = Dimensions.get('window').width;
-        const cellWidth = (screenWidth * 0.85 ); // margin is on both sides
         return (
-            <View backgroundColor="white" width={cellWidth} height={160}
-                style={{flex:2, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                <Image source={images[this.props.name_1]} style={{width: 140, height: 140}} />
-                <Image source={images[this.props.name_2]} style={{width: 140, height: 140}} />
+            <View backgroundColor="transparent"
+                style={{flex: 1, flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center',
+                    marginTop: 10, marginBottom: 10}}>
+                <Image source={images[this.props.name_1]} style={{width: 140, height: 140, marginRight: -15}} />
+                <Image source={images[this.props.name_2]} style={{width: 140, height: 140, marginLeft: -15}} />
             </View>
         )
     }
@@ -59,21 +60,29 @@ export default class CreateEventPage extends Component {
                 return photoNames;
             }
 
+    _popSelf() {
+        this.props.navigator.pop();
+    }
+
+    _navigateToEnrichment() {
+        this.props.navigator.push({id: 11});
+    }
+
     render() {
         return (
-            <View style={{flex: 1, flexDirection: 'column', justifyContent: 'space-between', backgroundColor: '#e6e6e6'}}>
-                <View style={styles.header}>
-                    <Image source={images.back} style={{width: 50, height: 50, marginLeft: 10}} />
-                    <Image source={images.turnup_title} style={{height: 60, width:110}}/>
-                    <Image source={images.forward} style={{width: 50, height: 50, marginRight: 10}} />
-                </View>
+            <View style={{flex: 1, flexDirection: 'column', justifyContent: 'space-around', alignItems: 'stretch',
+                backgroundColor: '#e6e6e6'}}>
+                <TopBar leftButton={images.back} leftButtonHandler={() => this._popSelf()}
+                        centerImage={images.turnup_title}
+                        rightButton={images.forward} rightButtonHandler={() => this._navigateToEnrichment()}
+                />
                 <View style={styles.eventTypeSelector}>
                     <Image source={images.beer_logo} style={{width: 80, height: 80}}/>
                     <Image source={images.guitar_logo} style={{width: 80, height: 80}}/>
                     <Image source={images.book_logo} style={{width: 80, height: 80}}/>
                     <Image source={images.basketball_logo} style={{width: 80, height: 80}}/>
                 </View>
-                <View style={{backgroundColor:'white', flex: 2, alignItems: 'center'}}>
+                <View style={{backgroundColor:'white', flex: 1, alignItems: 'stretch'}}>
                     <ListView {...ImageListViewProps} dataSource={this.state.dataSource} />
                 </View>
                 <TouchableOpacity onPress={() => this._handlePress()}>

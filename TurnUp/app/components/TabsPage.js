@@ -25,13 +25,33 @@ const tabPageIds = {
 
 // Top
 
-class TopBar extends Component {
+export class TopBar extends Component {
     render() {
         return (
             <View style={styles.header}>
-                <Image source={images.profile} style={{width: 50, height: 50, marginLeft: 10}}/>
-                <Image source={images.turnup_title} style={{height: 60, width: 140}}/>
-                <Image source={images.host_logo} style={{width: 50, height: 50, marginLeft: 10}}/>
+                <View style={{flex: 1, alignItems: 'flex-start', marginLeft: 10}}>
+                    <TouchableNativeFeedback background={TouchableNativeFeedback.Ripple('#F28500', true)}
+                                             onPressOut={() => {
+                                                 if ('leftButtonHandler' in this.props) this.props.leftButtonHandler();
+                                             }}>
+                        <View style={{flex: 1, justifyContent: 'center'}}>
+                            <Image source={this.props.leftButton} style={{width: 50, height: 50}}/>
+                        </View>
+                    </TouchableNativeFeedback>
+                </View>
+                <View style={{flex: 1}}>
+                    <Image source={this.props.centerImage} style={{height: 60, width: 140, flex: 0}}/>
+                </View>
+                <View style={{flex: 1, alignItems: 'flex-end', marginRight: 10}}>
+                    <TouchableNativeFeedback background={TouchableNativeFeedback.Ripple('#F28500', true)}
+                                             onPressOut={() => {
+                                                 if ('rightButtonHandler' in this.props) this.props.rightButtonHandler();
+                                             }}>
+                        <View style={{flex: 1, justifyContent: 'center'}}>
+                            <Image source={this.props.rightButton} style={{width: 50, height: 50}}/>
+                        </View>
+                    </TouchableNativeFeedback>
+                </View>
             </View>
         )
     }
@@ -73,7 +93,7 @@ class TabBar extends Component {
     }
 }
 
-//CC7A00
+
 // Current
 
 class CurrentTab extends Component {
@@ -100,10 +120,15 @@ export default class TabsPage extends Component {
         }
     }
 
+    _pushEventCreationPage() {
+        this.props.navigator.push({id: 10})
+    }
+
     render() {
         return (
             <View style={styles.tabsContainer}>
-                <TopBar/>
+                <TopBar leftButton={images.profile} centerImage={images.turnup_title} rightButton={images.host_logo}
+                    rightButtonHandler={() => {this._pushEventCreationPage()}}/>
                 <CurrentTab currentTab={this.state.currentTab}/>
                 <TabBar pressHandler={(tabId) => this.setState({currentTab: tabId})}
                         currentTab={this.state.currentTab}/>
