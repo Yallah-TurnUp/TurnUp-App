@@ -19,7 +19,12 @@ const images = {
     google_login: require('../images/google_login.png'),
     location_pin: require('../images/location.png'),
     clock: require('../images/clock.png'),
-    calendar: require('../images/calendar.png')
-}
+    calendar: require('../images/calendar.png'),
+    location_pin_selected: require('../images/location_selected.png'),
+    clock_selected: require('../images/clock_selected.png'),
+    calendar_selected: require('../images/calendar_selected.png'),
+    enrichment_back: require('../images/enrichment_back.png'),
+    enrichment_rocket: require('../images/enrichment_rocket.png'),
+};
 
 export default images;

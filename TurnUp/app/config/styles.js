@@ -136,11 +136,13 @@ export default styles = StyleSheet.create({
 
     enrichmentNavigationButton: {
         flex: 0,
+        flexDirection: 'row',
         height: 44,
         width: 152,
         marginLeft: 15,
         marginRight: 15,
         justifyContent: 'center',
+        alignItems: 'center',
         backgroundColor: '#FF9800',
         borderRadius: 8,
     },
@@ -150,7 +152,15 @@ export default styles = StyleSheet.create({
         fontSize: 18,
         fontFamily: 'SourceSansPro-Light',
         color: 'white',
-        textAlign: 'center'
+        textAlign: 'center',
+        marginLeft: 10,
+        marginRight: 10,
+    },
+
+    enrichmentButtonImage: {
+        flex: 0,
+        width: 29,
+        height: 29,
     },
 
     // CreateEvent

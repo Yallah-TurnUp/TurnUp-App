@@ -28,6 +28,12 @@ const numberAndTextScrollViewProps = {
     showsHorizontalScrollIndicator: false
 };
 
+const tabIds = {
+    selectDate: 'selectDate',
+    selectTime: 'selectTime',
+    selectLocation: 'selectLocation'
+};
+
 class NumberAndTextCellView extends Component {
     render() {
         var screenWidth = Dimensions.get('window').width;
@@ -50,7 +56,8 @@ export default class CreateInvitationPage extends Component {
         const ds = new ListView.DataSource({rowHasChanged: (row1, row2) => row1 !== row2});
         this.state = {
             dataSource: ds.cloneWithRows(this._daysAhead()),
-            searchTerm: "Enter names"
+            searchTerm: "Enter names",
+            currentTabId: tabIds.selectDate
         };
     }
 
@@ -79,15 +86,21 @@ export default class CreateInvitationPage extends Component {
     }
 
     _handleCalendar() {
+        if (this.state.currentTabId !== tabIds.selectDate) {
 
+        }
     }
 
     _handleClock() {
+        if (this.state.currentTabId !== tabIds.selectTime) {
 
+        }
     }
 
     _handleLocation() {
+        if (this.state.currentTabId !== tabIds.selectLocation) {
 
+        }
     }
 
     render() {
@@ -98,24 +111,21 @@ export default class CreateInvitationPage extends Component {
                     <View style={styles.topTabButtonsContainer}>
                         <TouchableNativeFeedback onPressOut={() => this._handleCalendar()}
                                                  background={TouchableNativeFeedback.Ripple('red')}
-                                                 style={{flex: 1}}
-                        >
+                                                 style={{flex: 1}}>
                             <View style={styles.tabBarButton}>
                                 <Image source={images.calendar} style={{width: 25, height: 25}}/>
                             </View>
                         </TouchableNativeFeedback>
                         <TouchableNativeFeedback onPressOut={() => this._handleClock()}
                                                  background={TouchableNativeFeedback.Ripple('red')}
-                                                 style={{flex: 1}}
-                        >
+                                                 style={{flex: 1}}>
                             <View style={styles.tabBarButton}>
                                 <Image source={images.clock} style={{width: 25, height: 25}}/>
                             </View>
                         </TouchableNativeFeedback>
                         <TouchableNativeFeedback onPressOut={() => this._handleLocation()}
                                                  background={TouchableNativeFeedback.Ripple('red')}
-                                                 style={{flex: 1}}
-                        >
+                                                 style={{flex: 1}}>
                             <View style={styles.tabBarButton}>
                                 <Image source={images.location_pin} style={{width: 25, height: 25}}/>
                             </View>
@@ -138,6 +148,7 @@ export default class CreateInvitationPage extends Component {
                             <TouchableNativeFeedback onPressOut={() => this._handleBack()}
                                                      background={TouchableNativeFeedback.Ripple('red')}>
                                 <View style={styles.enrichmentNavigationButton}>
+                                    <Image source={images.enrichment_back} style={styles.enrichmentButtonImage}/>
                                     <Text style={styles.enrichmentButtonText}>Back</Text>
                                 </View>
                             </TouchableNativeFeedback>
@@ -145,6 +156,7 @@ export default class CreateInvitationPage extends Component {
                                                      background={TouchableNativeFeedback.Ripple('red')}>
                                 <View style={styles.enrichmentNavigationButton}>
                                     <Text style={styles.enrichmentButtonText}>Let's Go</Text>
+                                    <Image source={images.enrichment_rocket} style={styles.enrichmentButtonImage}/>
                                 </View>
                             </TouchableNativeFeedback>
                         </View>
