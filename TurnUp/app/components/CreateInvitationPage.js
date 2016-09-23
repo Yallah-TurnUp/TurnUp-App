@@ -172,6 +172,8 @@ export default class CreateInvitationPage extends Component {
                                                    onFocus={() => this.setState({searchTerm: ""})}
                                                    style={{flex: 1, height:48}}/>
                                     </View> : null;
+        var map = isOnMap ? <Image source={images.google_map}
+                                   style={{alignSelf: 'center', marginTop: 10, width: 380, height: 400}}/> : null;
         return (
             <View style={styles.fullscreenContainer}>
                 <View style={styles.topContainer}>
@@ -214,6 +216,7 @@ export default class CreateInvitationPage extends Component {
                     <View style={{flex: 1, alignItems: 'stretch', justifyContent: 'space-between'}}>
                         {invitemsg}
                         {invitees}
+                        {map}
                         <View style={{flex: 0, marginBottom: 46, flexDirection: 'row', justifyContent: 'center'}}>
                             <TouchableNativeFeedback onPressOut={() => this._handleBack()}
                                                      background={TouchableNativeFeedback.Ripple('red')}>

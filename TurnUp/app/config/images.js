@@ -61,6 +61,7 @@ const images = {
     event_3: require('../images/Concert_Explore.png'),
     event_4: require('../images/Sports_Explore.png'),
     forward: require('../images/FORWARD.png'),
+    google_map: require('../images/Google-Map.png'),
 
     summary_input: require('../images/summary_input.png'),
     summary_location: require('../images/summary_location.png'),
