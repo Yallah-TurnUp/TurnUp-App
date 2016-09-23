@@ -50,11 +50,24 @@ export default class CreateEventPage extends Component {
                 // Thousands of apologies to the gods of computing
                 var imgBeer_1= ['beer_1', 'beer_5','beer_3','beer_4','beer_2'];
                 var imgBeer_2= ['beer_7', 'beer_8','beer_9','beer_10','beer_6'];
+                var imgBook_1= ['book_1']
+                var imgBook_2= ['book_2']
+                var imgMusic_1= ['music_1']
+                var imgMusic_2= ['music_2']
+                var imgSport_1= ['sports_1_logo', 'sport_2_logo']
+                var imgSport_2= ['sports_3_logo']
+
                 var photoNames = [];
                 for (let i = 0; i < imgBeer_1.length; i++) {
                             photoNames[i] = {
                                 imgBeer1: imgBeer_1[i],
-                                imgBeer2: imgBeer_2[i]
+                                imgBeer2: imgBeer_2[i],
+                                imgBook1: imgBook_1[i],
+                                imgBook2: imgBook_2[i],
+                                imgMusic1: imgMusic_1[i],
+                                imgMusic2: imgMusic_2[i],
+                                imgSport1: imgSport_1[i],
+                                imgSport2: imgSport_2[i]
                             };
                 }
                 return photoNames;
@@ -74,8 +87,7 @@ export default class CreateEventPage extends Component {
                 backgroundColor: '#e6e6e6'}}>
                 <TopBar leftButton={images.back} leftButtonHandler={() => this._popSelf()}
                         centerImage={images.turnup_title}
-                        rightButton={images.forward} rightButtonHandler={() => this._navigateToEnrichment()}
-                />
+                        rightButton={images.forward} rightButtonHandler={() => this._navigateToEnrichment()}/>
                 <View style={styles.eventTypeSelector}>
                     <Image source={images.beer_logo} style={{width: 80, height: 80}}/>
                     <Image source={images.guitar_logo} style={{width: 80, height: 80}}/>

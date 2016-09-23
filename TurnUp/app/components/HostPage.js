@@ -7,30 +7,62 @@ import {
     View,
     TouchableOpacity,
     Text,
-    Image
+    Image,
+    ListView,
+    Dimensions
 } from 'react-native';
 import styles from '../config/styles.js';
 import images from '../config/images.js';
+const ImageListViewProps = {
+    renderRow: (rowData) => <ImageListView name={rowData.eventLists}/>,
+    showsVerticalScrollIndicator: false
+};
+
+class ImageListView extends Component {
+    render() {
+        var screenWidth = Dimensions.get('window').width;
+        const cellWidth = (screenWidth * 0.9 ); // margin is on both sides
+        return (
+            <View backgroundColor="transparent" width={cellWidth} height={150}
+                style={{justifyContent: 'space-between', alignItems: 'center'}}>
+                <Image source={images[this.props.name]} style={{alignItems: 'stretch', width: cellWidth, height: 135}} />
+            </View>
+        )
+    }
+}
 
 export default class HostPage extends Component {
     _handlePress() {
         this.props.navigator.push({id: 2,});
     }
 
+    constructor(props) {
+            super(props);
+            const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+            this.state = {
+              dataSource: ds.cloneWithRows(this._imageList()),
+              text: 'your favourite'
+            };
+        }
+
+        _imageList() {
+                // Thousands of apologies to the gods of computing
+                var eventList= ['event_1', 'event_3'];
+                var photoNames = [];
+                for (let i = 0; i < eventList.length; i++) {
+                            photoNames[i] = {
+                                eventLists: eventList[i],
+                            };
+                }
+                return photoNames;
+            }
+
     render() {
         return (
-            <View style={[styles.container, {backgroundColor: 'green'}]}>
-                <Text style={styles.welcome}>Greetings!</Text>
-                <TouchableOpacity onPress={() => this._handlePress()}>
-                    <View style={{paddingVertical: 10, paddingHorizontal: 20, backgroundColor: 'black'}}>
-                        <Text style={styles.welcome}>Go to page two</Text>
-                    </View>
-            <View style={styles.footer}>
-                <Image source={images.hosted_logo} style={{width: 80, height: 80, marginLeft: 20}}/>
-                <Image source={images.explore_logo} style={{width: 80, height: 80}}/>
-                <Image source={images.surprise_logo} style={{width: 80, height: 80, marginRight: 20}}/>
-            </View>
-                </TouchableOpacity>
+            <View style={[styles.container, {backgroundColor: 'transparent'}]}>
+                <View style={{flex: 1, backgroundColor:'transparent', alignItems: 'stretch', marginTop: 10}}>
+                    <ListView {...ImageListViewProps} dataSource={this.state.dataSource} />
+                </View>
             </View>
         )
     }

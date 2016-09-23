@@ -66,7 +66,11 @@ class TurnUp extends Component {
       return <SummaryPreviewPage navigator={navigator} />
     } else if (route.id === 5) {
       return <SummaryPage navigator={navigator} />
-    } else if (route.id < 7) {
+    } else if (route.id === 6) {
+      return <CreateEventPage navigator={navigator} />
+    } else if (route.id === 7) {
+      return <HostPage navigator={navigator} />
+    } else if (route.id < 9) {
       return <HostPage navigator={navigator} pageNumber={route.id}/>
     } else if (route.id === 10) {
       return <CreateEventPage navigator={navigator} />
