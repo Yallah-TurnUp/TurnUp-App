@@ -109,13 +109,13 @@ export default styles = StyleSheet.create({
     },
 
     loginCredentialPhoto1: {
-        width: 30,
-        height: 20
+        width: 15,
+        height: 10
     },
 
     loginCredentialPhoto2:  {
-        width: 20,
-        height: 20
+        width: 15,
+        height: 15
     },
 
     loginSignInButton: {
