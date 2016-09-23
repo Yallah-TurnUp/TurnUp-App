@@ -27,6 +27,16 @@ const images = {
     beer_5: require('../images/Beer5.png'),
     facebook_login: require('../images/facebook_login.png'),
     google_login: require('../images/google_login.png'),
+
+    location_pin: require('../images/location.png'),
+    clock: require('../images/clock.png'),
+    calendar: require('../images/calendar.png'),
+    location_pin_selected: require('../images/location_selected.png'),
+    clock_selected: require('../images/clock_selected.png'),
+    calendar_selected: require('../images/calendar_selected.png'),
+    enrichment_back: require('../images/enrichment_back.png'),
+    enrichment_rocket: require('../images/enrichment_rocket.png'),
+
     explore_logo: require('../images/explore_logo.png'),
     hosted_logo: require('../images/hosted_logo.png'),
     surprise_logo: require('../images/surprise_logo.png'),
@@ -45,9 +55,12 @@ const images = {
     event_1: require('../images/event_1.png'),
     event_2: require('../images/event_2.png'),
     forward: require('../images/FORWARD.png'),
+
     summary_input: require('../images/summary_input.png'),
     summary_location: require('../images/summary_location.png'),
     summary_top: require('../images/summary_top.png')
-}
+
+};
+
 
 export default images;

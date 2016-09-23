@@ -16,64 +16,7 @@ import ExplorePage from './app/components/ExplorePage.js';
 import SummaryPreviewPage from './app/components/SummaryPreview.js';
 import SummaryPage from './app/components/Summary.js';
 import HostPage from './app/components/HostPage.js';
-import CreateInvitationPage from './app/components/CreateInvitationPage.js';
-
-class PageTwo extends Component {
-  _handlePress() {
-    this.props.navigator.push({id: 3});
-  }
-
-  render() {
-    return (
-      <View style={[styles.container, {backgroundColor: 'green'}]}>
-        <Text style={styles.welcome}>This is page two!</Text>
-        <TouchableOpacity onPress={() => this._handlePress()}>
-          <View style={{paddingVertical: 10, paddingHorizontal: 20, backgroundColor: 'black'}}>
-            <Text style={styles.welcome}>Go forward</Text>
-          </View>
-        </TouchableOpacity>
-       </View>
-    )
-  }
-}
-
-class PageThree extends Component {
-  _handlePress() {
-    this.props.navigator.push({id: 4});
-  }
-
-  render() {
-    return (
-        <View style={[styles.container, {backgroundColor: 'red'}]}>
-          <Text style={styles.welcome}>This is page three!</Text>
-          <TouchableOpacity onPress={() => this._handlePress()}>
-            <View style={{paddingVertical: 10, paddingHorizontal: 20, backgroundColor: 'black'}}>
-              <Text style={styles.welcome}>Go forward</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-    )
-  }
-}
-
-class GeneralPage extends Component {
-  _handlePress() {
-    this.props.navigator.push({id: this.props.pageNumber + 1});
-  }
-
-  render() {
-    return (
-        <View style={[styles.container, {backgroundColor: 'grey'}]}>
-          <Text style={styles.welcome}>This is page {this.props.pageNumber}!</Text>
-          <TouchableOpacity onPress={() => this._handlePress()}>
-            <View style={{paddingVertical: 10, paddingHorizontal: 20, backgroundColor: 'black'}}>
-              <Text style={styles.welcome}>Go forward</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-    )
-  }
-}
+import TabsPage from './app/components/TabsPage.js';
 
 class LastPage extends Component {
   _handleBack() {
@@ -115,7 +58,7 @@ class TurnUp extends Component {
     if (route.id === 1) {
       return <LoginPage navigator={navigator} />
     } else if (route.id === 2) {
-      return <CreateEventPage navigator={navigator} />
+      return <TabsPage navigator={navigator} />
     } else if (route.id === 3) {
       return <ExplorePage navigator={navigator} />
     } else if (route.id === 4) {
@@ -123,20 +66,20 @@ class TurnUp extends Component {
     } else if (route.id === 5) {
       return <SummaryPage navigator={navigator} />
     } else if (route.id < 7) {
-      return <GeneralPage navigator={navigator} pageNumber={route.id}/>
+      return <HostPage navigator={navigator} pageNumber={route.id}/>
     } else {
       return <LastPage navigator={navigator} />
     }
   }
 
   _configureScene() {
-    return Navigator.SceneConfigs.FloatFromRight;
+    return Navigator.SceneConfigs.FadeAndroid;
   }
 
   render() {
     return (
       <Navigator
-        initialRoute={{id: 3, }}
+        initialRoute={{id: 2, }}
         renderScene={this._renderScene}
         configureScene={this._configureScene} />
     );

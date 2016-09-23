@@ -38,13 +38,8 @@ export default styles = StyleSheet.create({
         backgroundColor: 'white'
     },
 
-    topBar: {
-        height: 60,
-        backgroundColor: '#F28500'
-    },
-
     header: {
-        flex: -1,
+        flex: 0,
         height: 60,
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -60,6 +55,22 @@ export default styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#FF9800'
     },
+
+    tabsContainer: {
+        flex: 1,
+        justifyContent: 'space-between',
+        alignItems: 'stretch',
+        backgroundColor: 'white'
+    },
+
+    tabsBar: {
+        flex: 0,
+        height: 60,
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        backgroundColor: '#FF9800'
+    },
+
     // Login
 
     loginScreen: {
@@ -132,11 +143,55 @@ export default styles = StyleSheet.create({
     },
 
     topTabButtonsContainer: {
-        height: 50
+        height: 50,
+        flexDirection: 'row'
+    },
+
+    tabBarButton: {
+        flex: 1,
+        backgroundColor: 'white',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+
+    selectedTabBarButton: {
+        flex: 1,
+        backgroundColor: '#FF9800',
+        alignItems: 'center',
+        justifyContent: 'center'
     },
 
     dateTimeScroller: {
         height: 60
+    },
+
+    enrichmentNavigationButton: {
+        flex: 0,
+        flexDirection: 'row',
+        height: 44,
+        width: 152,
+        marginLeft: 15,
+        marginRight: 15,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#FF9800',
+        borderRadius: 8,
+    },
+
+    enrichmentButtonText: {
+        flex: 0,
+        fontSize: 18,
+        fontFamily: 'SourceSansPro-Light',
+        color: 'white',
+        textAlign: 'center',
+        marginLeft: 10,
+        marginRight: 10,
+    },
+
+    enrichmentButtonImage: {
+        flex: 0,
+        width: 29,
+        height: 29,
     },
 
     // CreateEvent
