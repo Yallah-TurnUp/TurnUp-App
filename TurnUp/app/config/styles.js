@@ -126,6 +126,25 @@ export default styles = StyleSheet.create({
         height: 60
     },
 
+    enrichmentNavigationButton: {
+        flex: 0,
+        height: 44,
+        width: 152,
+        marginLeft: 15,
+        marginRight: 15,
+        justifyContent: 'center',
+        backgroundColor: '#FF9800',
+        borderRadius: 8,
+    },
+
+    enrichmentButtonText: {
+        flex: 0,
+        fontSize: 18,
+        fontFamily: 'SourceSansPro-Light',
+        color: 'white',
+        textAlign: 'center'
+    },
+
     // CreateEvent
 
     eventTypeSelector: {

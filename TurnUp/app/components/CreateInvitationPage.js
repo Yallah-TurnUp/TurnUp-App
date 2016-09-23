@@ -9,7 +9,8 @@ import {
     Text,
     Dimensions,
     ListView,
-    TextInput
+    TextInput,
+    TouchableNativeFeedback
 } from 'react-native';
 import styles from '../config/styles.js';
 
@@ -67,6 +68,10 @@ export default class CreateInvitationPage extends Component {
         return days;
     }
 
+    _handleBack() {
+
+    }
+
     render() {
         return (
             <View style={styles.fullscreenContainer}>
@@ -86,7 +91,20 @@ export default class CreateInvitationPage extends Component {
                                        onFocus={() => this.setState({searchTerm: ""})}
                                        style={{flex: 1, height:48}}/>
                         </View>
-                        <View style={{flex: 0}}><Text>Buttons</Text></View>
+                        <View style={{flex: 0, marginBottom: 46, flexDirection: 'row', justifyContent: 'center'}}>
+                            <TouchableNativeFeedback onPressOut={() => this._handleBack()}
+                                                     background={TouchableNativeFeedback.Ripple('red')}>
+                                <View style={styles.enrichmentNavigationButton}>
+                                    <Text style={styles.enrichmentButtonText}>Back</Text>
+                                </View>
+                            </TouchableNativeFeedback>
+                            <TouchableNativeFeedback onPressOut={() => this._handleBack()}
+                                                     background={TouchableNativeFeedback.Ripple('red')}>
+                                <View style={styles.enrichmentNavigationButton}>
+                                    <Text style={styles.enrichmentButtonText}>Let's Go</Text>
+                                </View>
+                            </TouchableNativeFeedback>
+                        </View>
                     </View>
                 </View>
             </View>
