@@ -23,6 +23,11 @@ export default class HostPage extends Component {
                     <View style={{paddingVertical: 10, paddingHorizontal: 20, backgroundColor: 'black'}}>
                         <Text style={styles.welcome}>Go to page two</Text>
                     </View>
+            <View style={styles.footer}>
+                <Image source={images.hosted_logo} style={{width: 80, height: 80, marginLeft: 20}}/>
+                <Image source={images.explore_logo} style={{width: 80, height: 80}}/>
+                <Image source={images.surprise_logo} style={{width: 80, height: 80, marginRight: 20}}/>
+            </View>
                 </TouchableOpacity>
             </View>
         )

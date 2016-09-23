@@ -27,7 +27,7 @@ export default class InvitedPage extends Component {
         return (
             <View style={{flex: 1, flexDirection: 'column', justifyContent: 'space-between', backgroundColor: '#e6e6e6'}}>
                 <View style={styles.header}>
-                    <Image source={images.summary_back} style={{width: 50, height: 50, marginLeft: 10}} />
+                    <Image source={images.back} style={{width: 50, height: 50, marginLeft: 10}} />
                     <Image source={images.summary_title} style={{height: 60, width:140}}/>
                     <Image source={images.host_logo} style={{width: 50, height: 50, marginLeft: 10}} />
                 </View>

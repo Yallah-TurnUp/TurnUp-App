@@ -65,11 +65,17 @@ export default class ExplorePage extends Component {
                 <View style={styles.eventCells}>
                     <ListView {...EventsCellViewProps} dataSource={this.state.dataSource} />
                 </View>
+
                 <TouchableOpacity onPress={() => this._handlePress()}>
                     <View style={{paddingVertical: 10, paddingHorizontal: 20, backgroundColor: 'black'}}>
                         <Text style={styles.welcome}>Go to page two</Text>
                     </View>
                 </TouchableOpacity>
+                <View style={styles.footer}>
+                    <Image source={images.hosted_logo} style={{width: 80, height: 80, marginLeft: 20}}/>
+                    <Image source={images.explore_logo} style={{width: 80, height: 80}}/>
+                    <Image source={images.surprise_logo} style={{width: 80, height: 80, marginRight: 20}}/>
+                </View>
             </View>
         )
     }

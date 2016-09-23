@@ -63,9 +63,9 @@ export default class CreateEventPage extends Component {
         return (
             <View style={{flex: 1, flexDirection: 'column', justifyContent: 'space-between', backgroundColor: '#e6e6e6'}}>
                 <View style={styles.header}>
-                    <Image source={images.trollface} style={{width: 50, height: 50, marginLeft: 10}} />
+                    <Image source={images.back} style={{width: 50, height: 50, marginLeft: 10}} />
                     <Image source={images.turnup_title} style={{height: 60, width:110}}/>
-                    <Image source={images.host_logo} style={{width: 50, height: 50, marginRight: 10}} />
+                    <Image source={images.forward} style={{width: 50, height: 50, marginRight: 10}} />
                 </View>
                 <View style={styles.eventTypeSelector}>
                     <Image source={images.beer_logo} style={{width: 80, height: 80}}/>
@@ -75,11 +75,6 @@ export default class CreateEventPage extends Component {
                 </View>
                 <View style={{backgroundColor:'white', flex: 2, alignItems: 'center'}}>
                     <ListView {...ImageListViewProps} dataSource={this.state.dataSource} />
-                </View>
-                <View style={styles.footer}>
-                    <Image source={images.hosted_logo} style={{width: 80, height: 80, marginLeft: 20}}/>
-                    <Image source={images.explore_logo} style={{width: 80, height: 80}}/>
-                    <Image source={images.surprise_logo} style={{width: 80, height: 80, marginRight: 20}}/>
                 </View>
                 <TouchableOpacity onPress={() => this._handlePress()}>
                 </TouchableOpacity>
