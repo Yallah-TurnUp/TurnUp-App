@@ -47,11 +47,14 @@ const images = {
     turnup_title: require('../images/TurnUp_White.png'),
     summary_plus: require('../images/plus.png'),
     summary_eye: require('../images/eye.png'),
-    summary_back: require('../images/BACK.png'),
+    back: require('../images/BACK.png'),
     summary_edit: require('../images/Edit Button.png'),
     turnup_bird_button: require('../images/turnup_bird_button.png'),
     summary_preview: require('../images/Preview.png'),
-    summary_turnup_button: require('../images/TurnUpBUtton.png')
+    summary_turnup_button: require('../images/TurnUpBUtton.png'),
+    event_1: require('../images/event_1.png'),
+    event_2: require('../images/event_2.png'),
+    forward: require('../images/FORWARD.png'),
 };
 
 export default images;
