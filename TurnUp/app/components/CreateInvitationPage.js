@@ -126,6 +126,21 @@ export default class CreateInvitationPage extends Component {
     }
 
     render() {
+        var isOnMap = this.state.currentTabId === tabIds.selectLocation;
+        var scroller =(!isOnMap) ? <View style={styles.dateTimeScroller}>
+                                    <ListView {...numberAndTextScrollViewProps} dataSource={this.state.dataSource} />
+                                </View> : null;
+        var invitees = (!isOnMap) ? <View style={{flex:1, justifyContent: 'center', alignItems: 'center', height: 100}}>
+                                    <ListView {...EventsCellViewProps} dataSource={this.state.inviteesDataSource}/>
+                                </View> : null;
+        var invitemsg = (!isOnMap) ? <View style={{flex: 0, margin: 10, flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+                                        <Text>Invite: </Text>
+                                        <TextInput value={this.state.searchTerm}
+                                                   onChangeText={(searchTerm) => this.setState({searchTerm: searchTerm})}
+                                                   onFocus={() => this.setState({searchTerm: ""})}
+                                                   style={{flex: 1, height:48}}/>
+                                    </View> : null;
+        var map = isOnMap ? <Image source={images.google_map}/> : null;
         return (
             <View style={styles.fullscreenContainer}>
                 <View style={styles.topContainer}>
