@@ -30,7 +30,7 @@ class EventsCellView extends Component {
             <View backgroundColor="white" width={cellWidth} height={60}
                 style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center'}}>
                 <Image source={images.turnup_bird_button} style={{width: 50, height: 50, marginLeft: 8}} />
-                <Text style={{marginLeft:30, flex: 0, fontSize: 20, fontFamily: "SourceSansPro", color: 'black'}}>{this.props.name}</Text>
+                <Text style={{marginLeft:30, flex: 0, fontSize: 20, fontFamily: "SourceSansPro-Regular", color: 'black'}}>{this.props.name}</Text>
             </View>
         )
     }

@@ -2,48 +2,55 @@
 
 import React, { Component } from 'react';
 import {
-  AppRegistry,
-  StyleSheet,
-  Text,
-  View,
-  Navigator,
-  TouchableOpacity
+    AppRegistry,
+    StyleSheet,
+    Text,
+    View,
+    Navigator,
+    TouchableOpacity
 } from 'react-native';
 
-var BaseConfig = Navigator.SceneConfigs.FloatFromRight;
+import LoginPage from './app/components/LoginPage.js';
+import CreateEventPage from './app/components/CreateEventPage.js';
+import CreateInvitationPage from './app/components/CreateInvitationPage.js';
+import ExplorePage from './app/components/ExplorePage.js';
+import SummaryPreviewPage from './app/components/SummaryPreview.js';
+import SummaryPage from './app/components/Summary.js';
+import HostPage from './app/components/HostPage.js';
+import TabsPage from './app/components/TabsPage.js';
+import Summary from './app/components/Summary.js';
 
-class PageOne extends Component {
-  _handlePress() {
-    this.props.navigator.push({id: 2,});
-  }
-
-  render() {
-    <View style={[styles.container, {backgroundColor: 'green'}]}>
-      <Text style={styles.welcome}>Greetings!</Text>
-      <TouchableOpacity onPress={this._handlePress}>
-        <View style={{paddingVertical: 10, paddingHorizontal: 20, backgroundColor: 'black'}}>
-          <Text style={styles.welcome}>Go to page two</Text>
-        </View>
-      </TouchableOpacity>
-     </View>
-  }
-}
-
-class PageTwo extends Component {
-  _handlePress() {
+class LastPage extends Component {
+  _handleBack() {
     this.props.navigator.pop();
+  }
+
+  _handleToFirst() {
+    this.props.navigator.popToRoute(this.props.navigator.getCurrentRoutes()[0])
   }
 
   render() {
     return (
-      <View style={[styles.container, {backgroundColor: 'purple'}]}>
-        <Text style={styles.welcome}>This is page two!</Text>
-        <TouchableOpacity onPress={this._handlePress}>
-          <View style={{paddingVertical: 10, paddingHorizontal: 20, backgroundColor: 'black'}}>
-            <Text style={styles.welcome}>Go back</Text>
+        <View style={[styles.container,
+          {
+            backgroundColor: 'green',
+            justifyContent: 'center'
+          },
+        ]}>
+          <Text style={[styles.welcome]}>Last page bro!</Text>
+          <View style={[styles.container, {flex: 0, flexDirection: 'row', backgroundColor: 'transparent'}]}>
+            <TouchableOpacity onPress={() => this._handleBack()} style={{margin: 5}}>
+              <View style={{paddingVertical: 10, paddingHorizontal: 20, backgroundColor: 'black'}}>
+                <Text style={styles.welcome}>Go back</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => this._handleToFirst()} style={{margin: 5}}>
+              <View style={{paddingVertical: 10, paddingHorizontal: 20, backgroundColor: 'black'}}>
+                <Text style={styles.welcome}>Go to first</Text>
+              </View>
+            </TouchableOpacity>
           </View>
-        </TouchableOpacity>
-       </View>
+        </View>
     )
   }
 }
@@ -51,22 +58,47 @@ class PageTwo extends Component {
 class TurnUp extends Component {
   _renderScene(route, navigator) {
     if (route.id === 1) {
-      return <PageOne navigator={navigator} />
+      return <LoginPage navigator={navigator} />
     } else if (route.id === 2) {
-      return <PageTwo navigator={navigator} />
+      return <TabsPage navigator={navigator} />
+    } else if (route.id === 3) {
+      return <ExplorePage navigator={navigator} />
+    } else if (route.id === 4) {
+      return <SummaryPreviewPage navigator={navigator} />
+    } else if (route.id === 5) {
+      return <SummaryPage navigator={navigator} />
+    } else if (route.id === 6) {
+      return <CreateEventPage navigator={navigator} />
+    } else if (route.id === 7) {
+      return <HostPage navigator={navigator} />
+    } else if (route.id < 9) {
+      return <HostPage navigator={navigator} pageNumber={route.id}/>
+    } else if (route.id === 10) {
+      return <CreateEventPage navigator={navigator} />
+    } else if (route.id === 11) {
+      return <CreateInvitationPage navigator={navigator} />
+    } else if (route.id === 12) {
+      return <SummaryPreviewPage navigator={navigator} />
+    } else if (route.id === 13) {
+      return <Summary navigator={navigator} />
+    } else {
+      return <LastPage navigator={navigator} />
     }
   }
 
-  _configureScene() {
-    return BaseConfig;
+  _configureScene(route) {
+    if (route.id === 10) {
+      return Navigator.SceneConfigs.HorizontalSwipeJump;
+    }
+    return Navigator.SceneConfigs.PushFromRight;
   }
 
   render() {
     return (
-      <Navigator
-        initialRoute={{id: 1, }}
-        renderScene={this._renderScene}
-        configureScene={this._configureScene} />
+        <Navigator
+            initialRoute={{id: 1, }}
+            renderScene={this._renderScene}
+            configureScene={this._configureScene} />
     );
   }
 }
