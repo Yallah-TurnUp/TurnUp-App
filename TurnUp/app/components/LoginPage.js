@@ -87,7 +87,8 @@ export default class LoginPage extends Component {
                                           blurListener={() => this._passwordBlurListener()}
                                           isPassword={this.state.hidePassword}/>
                 </View>
-                <TouchableNativeFeedback onPressOut={() => this._handlePress()}
+                <TouchableNativeFeedback delayPressIn={0} delayPressOut={0}
+                                         onPressIn={() => this._handlePress()}
                                          background={TouchableNativeFeedback.Ripple('red')}>
                     <View style={styles.loginSignInButton}>
                         <Text style={styles.loginSignInButtonText}>Sign in</Text>

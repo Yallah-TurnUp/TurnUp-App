@@ -179,7 +179,8 @@ export default class CreateInvitationPage extends Component {
                 <View style={styles.topContainer}>
                     <TopBar centerImage={images.turnup_title}/>
                     <View style={styles.topTabButtonsContainer}>
-                        <TouchableNativeFeedback onPressOut={() => this._handleCalendar()}
+                        <TouchableNativeFeedback delayPressIn={0} delayPressOut={0}
+                                                 onPress={() => this._handleCalendar()}
                                                  background={TouchableNativeFeedback.Ripple('red')}
                                                  style={{flex: 1}}>
                             <View style={this.state.currentTabId === tabIds.selectDate ?
@@ -189,7 +190,8 @@ export default class CreateInvitationPage extends Component {
                                        style={{width: 25, height: 25}}/>
                             </View>
                         </TouchableNativeFeedback>
-                        <TouchableNativeFeedback onPressOut={() => this._handleClock()}
+                        <TouchableNativeFeedback delayPressIn={0} delayPressOut={0}
+                                                 onPress={() => this._handleClock()}
                                                  background={TouchableNativeFeedback.Ripple('red')}
                                                  style={{flex: 1}}>
                             <View style={this.state.currentTabId === tabIds.selectTime ?
@@ -199,7 +201,8 @@ export default class CreateInvitationPage extends Component {
                                        style={{width: 25, height: 25}}/>
                             </View>
                         </TouchableNativeFeedback>
-                        <TouchableNativeFeedback onPressOut={() => this._handleLocation()}
+                        <TouchableNativeFeedback delayPressIn={0} delayPressOut={0}
+                                                 onPress={() => this._handleLocation()}
                                                  background={TouchableNativeFeedback.Ripple('red')}
                                                  style={{flex: 1}}>
                             <View style={this.state.currentTabId === tabIds.selectLocation ?
@@ -218,14 +221,16 @@ export default class CreateInvitationPage extends Component {
                         {invitees}
                         {map}
                         <View style={{flex: 0, marginBottom: 46, flexDirection: 'row', justifyContent: 'center'}}>
-                            <TouchableNativeFeedback onPressOut={() => this._handleBack()}
+                            <TouchableNativeFeedback delayPressIn={0} delayPressOut={0}
+                                                     onPress={() => this._handleBack()}
                                                      background={TouchableNativeFeedback.Ripple('red')}>
                                 <View style={styles.enrichmentNavigationButton}>
                                     <Image source={images.enrichment_back} style={styles.enrichmentButtonImage}/>
                                     <Text style={styles.enrichmentButtonText}>Back</Text>
                                 </View>
                             </TouchableNativeFeedback>
-                            <TouchableNativeFeedback onPressOut={() => this._handleLetsGo()}
+                            <TouchableNativeFeedback delayPressIn={0} delayPressOut={0}
+                                                     onPress={() => this._handleLetsGo()}
                                                      background={TouchableNativeFeedback.Ripple('red')}>
                                 <View style={styles.enrichmentNavigationButton}>
                                     <Text style={styles.enrichmentButtonText}>Let's Go</Text>
