@@ -10,7 +10,6 @@ import {
     Dimensions,
     ListView,
     TextInput,
-    TouchableNativeFeedback,
     Image
 } from 'react-native';
 import styles from '../config/styles.js';
@@ -179,39 +178,33 @@ export default class CreateInvitationPage extends Component {
                 <View style={styles.topContainer}>
                     <TopBar centerImage={images.turnup_title}/>
                     <View style={styles.topTabButtonsContainer}>
-                        <TouchableNativeFeedback delayPressIn={0} delayPressOut={0}
-                                                 onPress={() => this._handleCalendar()}
-                                                 background={TouchableNativeFeedback.Ripple('red')}
-                                                 style={{flex: 1}}>
+                        <TouchableOpacity onPress={() => this._handleCalendar()}
+                                          style={{flex: 1}}>
                             <View style={this.state.currentTabId === tabIds.selectDate ?
                                 styles.selectedTabBarButton : styles.tabBarButton}>
                                 <Image source={this.state.currentTabId === tabIds.selectDate ?
                                     images.calendar_selected : images.calendar}
                                        style={{width: 25, height: 25}}/>
                             </View>
-                        </TouchableNativeFeedback>
-                        <TouchableNativeFeedback delayPressIn={0} delayPressOut={0}
-                                                 onPress={() => this._handleClock()}
-                                                 background={TouchableNativeFeedback.Ripple('red')}
-                                                 style={{flex: 1}}>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => this._handleClock()}
+                                          style={{flex: 1}}>
                             <View style={this.state.currentTabId === tabIds.selectTime ?
                                 styles.selectedTabBarButton : styles.tabBarButton}>
                                 <Image source={this.state.currentTabId === tabIds.selectTime ?
                                     images.clock_selected : images.clock}
                                        style={{width: 25, height: 25}}/>
                             </View>
-                        </TouchableNativeFeedback>
-                        <TouchableNativeFeedback delayPressIn={0} delayPressOut={0}
-                                                 onPress={() => this._handleLocation()}
-                                                 background={TouchableNativeFeedback.Ripple('red')}
-                                                 style={{flex: 1}}>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => this._handleLocation()}
+                                          style={{flex: 1}}>
                             <View style={this.state.currentTabId === tabIds.selectLocation ?
                                 styles.selectedTabBarButton : styles.tabBarButton}>
                                 <Image source={this.state.currentTabId === tabIds.selectLocation ?
                                     images.location_pin_selected : images.location_pin}
                                        style={{width: 25, height: 25}}/>
                             </View>
-                        </TouchableNativeFeedback>
+                        </TouchableOpacity>
                     </View>
                 </View>
                 <View style={{flex: 1, justifyContent: 'space-between'}}>
@@ -221,22 +214,18 @@ export default class CreateInvitationPage extends Component {
                         {invitees}
                         {map}
                         <View style={{flex: 0, marginBottom: 46, flexDirection: 'row', justifyContent: 'center'}}>
-                            <TouchableNativeFeedback delayPressIn={0} delayPressOut={0}
-                                                     onPress={() => this._handleBack()}
-                                                     background={TouchableNativeFeedback.Ripple('red')}>
+                            <TouchableOpacity onPress={() => this._handleBack()}>
                                 <View style={styles.enrichmentNavigationButton}>
                                     <Image source={images.enrichment_back} style={styles.enrichmentButtonImage}/>
                                     <Text style={styles.enrichmentButtonText}>Back</Text>
                                 </View>
-                            </TouchableNativeFeedback>
-                            <TouchableNativeFeedback delayPressIn={0} delayPressOut={0}
-                                                     onPress={() => this._handleLetsGo()}
-                                                     background={TouchableNativeFeedback.Ripple('red')}>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => this._handleLetsGo()}>
                                 <View style={styles.enrichmentNavigationButton}>
                                     <Text style={styles.enrichmentButtonText}>Let's Go</Text>
                                     <Image source={images.enrichment_rocket} style={styles.enrichmentButtonImage}/>
                                 </View>
-                            </TouchableNativeFeedback>
+                            </TouchableOpacity>
                         </View>
                     </View>
                 </View>

@@ -10,7 +10,6 @@ import {
     ListView,
     Dimensions,
     Image,
-    TouchableNativeFeedback
 } from 'react-native';
 import styles from '../config/styles.js';
 import images from '../config/images.js';
@@ -43,14 +42,12 @@ export default class SummaryPreview extends Component {
                     <Image source={images.summary_preview} style={{height: cellHeight, width: cellWidth}}/>
                 </View>
                 <View style={{alignItems: 'center', marginBottom: 30}}>
-                    <TouchableNativeFeedback delayPressIn={0} delayPressOut={0}
-                                             onPress={() => this._showSummary()}
-                                             background={TouchableNativeFeedback.Ripple('red')}>
+                    <TouchableOpacity onPress={() => this._showSummary()}>
                         <View style={{width: 128, height: 40, backgroundColor: '#F28500', elevation: 3,
                             alignItems: 'center', justifyContent: 'center', borderRadius: 8}}>
                             <Image source={images.turnup_title} style={{width: 96, height: 30}}/>
                         </View>
-                    </TouchableNativeFeedback>
+                    </TouchableOpacity>
                 </View>
             </View>
         )

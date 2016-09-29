@@ -8,8 +8,7 @@ import {
     TouchableOpacity,
     Text,
     Image,
-    TextInput,
-    TouchableNativeFeedback
+    TextInput
 } from 'react-native';
 import styles from '../config/styles.js';
 import images from '../config/images.js';
@@ -30,29 +29,25 @@ export class TopBar extends Component {
         return (
             <View style={styles.header}>
                 <View style={{flex: 1, alignItems: 'flex-start', marginLeft: 10}}>
-                    <TouchableNativeFeedback delayPressIn={0} delayPressOut={0}
-                                             background={TouchableNativeFeedback.Ripple('#F28500', true)}
-                                             onPress={() => {
-                                                 if ('leftButtonHandler' in this.props) this.props.leftButtonHandler();
-                                             }}>
+                    <TouchableOpacity onPress={() => {
+                        if ('leftButtonHandler' in this.props) this.props.leftButtonHandler();
+                    }}>
                         <View style={{flex: 1, justifyContent: 'center'}}>
                             <Image source={this.props.leftButton} style={{width: 50, height: 50}}/>
                         </View>
-                    </TouchableNativeFeedback>
+                    </TouchableOpacity>
                 </View>
                 <View style={{flex: 1}}>
                     <Image source={this.props.centerImage} style={{height: 60, width: 140, flex: 0}}/>
                 </View>
                 <View style={{flex: 1, alignItems: 'flex-end', marginRight: 10}}>
-                    <TouchableNativeFeedback delayPressIn={0} delayPressOut={0}
-                                             background={TouchableNativeFeedback.Ripple('#F28500', true)}
-                                             onPress={() => {
-                                                 if ('rightButtonHandler' in this.props) this.props.rightButtonHandler();
-                                             }}>
+                    <TouchableOpacity onPress={() => {
+                        if ('rightButtonHandler' in this.props) this.props.rightButtonHandler();
+                    }}>
                         <View style={{flex: 1, justifyContent: 'center'}}>
                             <Image source={this.props.rightButton} style={{width: 50, height: 50}}/>
                         </View>
-                    </TouchableNativeFeedback>
+                    </TouchableOpacity>
                 </View>
             </View>
         )
@@ -66,14 +61,12 @@ class TabBarButton extends Component {
     render() {
         var backgroundColor = this.props.selected ? '#F28500' : 'transparent';
         return (
-            <TouchableNativeFeedback delayPressIn={0} delayPressOut={0}
-                                     style={{flex: 1}}
-                                     background={TouchableNativeFeedback.Ripple('red')}
-                                     onPress={() => this.props.pressHandler(this.props.tabId)}>
+            <TouchableOpacity style={{flex: 1}}
+                              onPress={() => this.props.pressHandler(this.props.tabId)}>
                 <View style={{flex: 1, alignItems: 'center', backgroundColor: backgroundColor}}>
                     <Image source={this.props.image} style={{flex: 1, width: 60, height: 60}}/>
                 </View>
-            </TouchableNativeFeedback>
+            </TouchableOpacity>
         )
     }
 }
