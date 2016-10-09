@@ -68,7 +68,7 @@ class TabBarButton extends Component {
         return (
             <TouchableNativeFeedback style={{flex: 1}} delayPressIn={0}
                                      background={TouchableNativeFeedback.Ripple('red')}
-                                     onPressOut={() => this.props.pressHandler(this.props.tabId)}>
+                                     onPress={() => this.props.pressHandler(this.props.tabId)}>
                 <View style={{flex: 1, alignItems: 'center', backgroundColor: backgroundColor}}>
                     <Image source={this.props.image} style={{flex: 1, width: 60, height: 60}}/>
                 </View>
