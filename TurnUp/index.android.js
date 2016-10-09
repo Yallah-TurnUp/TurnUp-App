@@ -1,4 +1,9 @@
 'use strict';
+import * as firebase from 'firebase';
+import firebaseConfig from './auth.js';
+
+// Initialize Firebase
+const firebaseApp = firebase.initializeApp(firebaseConfig);
 
 import React, { Component } from 'react';
 import {
@@ -10,6 +15,7 @@ import {
   TouchableOpacity
 } from 'react-native';
 
+
 import LoginPage from './app/components/LoginPage.js';
 import CreateEventPage from './app/components/CreateEventPage.js';
 import CreateInvitationPage from './app/components/CreateInvitationPage.js';
@@ -19,6 +25,8 @@ import SummaryPage from './app/components/Summary.js';
 import HostPage from './app/components/HostPage.js';
 import TabsPage from './app/components/TabsPage.js';
 import Summary from './app/components/Summary.js';
+import SignUpPage from './app/components/SignUp.js';
+
 
 class LastPage extends Component {
   _handleBack() {
@@ -57,7 +65,9 @@ class LastPage extends Component {
 
 class TurnUp extends Component {
   _renderScene(route, navigator) {
-    if (route.id === 1) {
+    if (route.id === 0) {
+      return <SignUpPage navigator={navigator} firebase={firebaseApp} />
+    } else if (route.id === 1) {   
       return <LoginPage navigator={navigator} />
     } else if (route.id === 2) {
       return <TabsPage navigator={navigator} />
@@ -96,7 +106,7 @@ class TurnUp extends Component {
   render() {
     return (
       <Navigator
-        initialRoute={{id: 1, }}
+        initialRoute={{id: 0, }}
         renderScene={this._renderScene}
         configureScene={this._configureScene} />
     );

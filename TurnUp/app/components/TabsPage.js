@@ -31,6 +31,7 @@ export class TopBar extends Component {
             <View style={styles.header}>
                 <View style={{flex: 1, alignItems: 'flex-start', marginLeft: 10}}>
                     <TouchableNativeFeedback background={TouchableNativeFeedback.Ripple('#F28500', true)}
+                                             delayPressIn={0}
                                              onPressOut={() => {
                                                  if ('leftButtonHandler' in this.props) this.props.leftButtonHandler();
                                              }}>
@@ -44,6 +45,7 @@ export class TopBar extends Component {
                 </View>
                 <View style={{flex: 1, alignItems: 'flex-end', marginRight: 10}}>
                     <TouchableNativeFeedback background={TouchableNativeFeedback.Ripple('#F28500', true)}
+                                             delayPressIn={0} delayPressOut={0}
                                              onPressOut={() => {
                                                  if ('rightButtonHandler' in this.props) this.props.rightButtonHandler();
                                              }}>
@@ -64,7 +66,7 @@ class TabBarButton extends Component {
     render() {
         var backgroundColor = this.props.selected ? '#F28500' : 'transparent';
         return (
-            <TouchableNativeFeedback style={{flex: 1}}
+            <TouchableNativeFeedback style={{flex: 1}} delayPressIn={0}
                                      background={TouchableNativeFeedback.Ripple('red')}
                                      onPressOut={() => this.props.pressHandler(this.props.tabId)}>
                 <View style={{flex: 1, alignItems: 'center', backgroundColor: backgroundColor}}>

@@ -1,6 +1,3 @@
-/**
- * Created by dat on 22/09/2016.
- */
 
 import React, { Component } from 'react';
 import {
@@ -9,13 +6,12 @@ import {
     Text,
     Image,
     TextInput,
-    TouchableNativeFeedback
+    TouchableNativeFeedback,
+    ActivityIndicator,
 } from 'react-native';
 
 import styles from '../config/styles.js';
 import images from '../config/images.js';
-import SignUpPage from './LoginPage.js';
-
 
 
 const loginCredentialsDefaultProps = {
@@ -45,36 +41,14 @@ class LoginCredentialsLine extends Component {
             </View>
         )
     }
-
-    login(){
-        this.setState({
-            loaded:false
-        });
-
-        app.auth({
-            "email":this.state.email,
-            "password":this.state.password
-        }, (error, user_data) => {
-            this.setState({
-                loaded:true
-            });
-
-            if(error){
-                alert('Login Failed');
-            }
-            else{
-                AsyncStorage.setItem('user_data', JSON.stringify(user_data));
-                this.props.navigator.push({ id: 3 });
-            }
-        });
-    }
 }
 
 
-export default class LoginPage extends Component {
+export default class SignUpPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            loaded: true,
             email: "your email address",
             password: "",
             hidePassword: false,
@@ -82,9 +56,59 @@ export default class LoginPage extends Component {
         }
     }
 
-    /*_handlePress() {
+    componentWillMount() {
+        this.props.firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                this.props.navigator.replace({ id: 2 });
+            }
+        });
+    }
+
+    signup() {
+        console.log("HI");
+        this.setState({
+            loaded:false
+        });
+
+        this.props.firebase.auth().createUserWithEmailAndPassword(
+            this.state.email,
+            this.state.password,
+        ).then(() => {
+            alert('Your account was created!');
+            this.setState({
+                email:"",
+                password:"",
+                loaded:true
+            });
+            this.props.navigator.push({ id: 2 });
+        }).catch((error) => {
+            console.log(error.code);
+            switch(error.code){
+                case "auth/email-already-in-use":
+                    alert(`The new user account cannot be created because ${this.state.email} is already in use.`);
+                    break;
+                case "auth/invalid-email":
+                    alert(`${this.state.email} is not an email.`);
+                    break;
+                case "auth/weak-password":
+                    alert("Choose a stronger password.");
+                    break;
+                default:
+                    alert(`Error in creating ${this.state.email}`);
+            }
+        });
+    }
+/*
+    goToLogin(){
+        this.props.navigator.push({id:2});
+    }
+
+    
+
+    _handlePress() {
         this.props.navigator.push({id: 2,});
-    }*/
+    }
+*/    
 
     _passwordFocusListener() {
         this.setState({
@@ -115,13 +139,16 @@ export default class LoginPage extends Component {
                                           blurListener={() => this._passwordBlurListener()}
                                           isPassword={this.state.hidePassword}/>
                 </View>
-                <TouchableNativeFeedback delayPressIn={0}
-                                         onPressOut={this.login.bind(this)}
-                                         background={TouchableNativeFeedback.Ripple('red')}>
-                    <View style={styles.loginSignInButton}>
-                        <Text style={styles.loginSignInButtonText}>Sign in</Text>
-                    </View>
-                </TouchableNativeFeedback>
+                <View style={{flexDirection: 'row'}}>
+                    <TouchableNativeFeedback delayPressIn={0}
+                                             onPressOut={this.signup.bind(this)}
+                                             background={TouchableNativeFeedback.Ripple('red')}>
+                        <View style={styles.loginSignInButton}>
+                            <Text style={styles.loginSignInButtonText}>Sign Up</Text>
+                        </View>
+                    </TouchableNativeFeedback>
+                    <ActivityIndicator animating={!this.state.loaded} style={{marginLeft: 20}} size="large"/>
+                </View>
             </View>
         )
     }
