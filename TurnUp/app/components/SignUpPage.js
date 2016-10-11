@@ -59,13 +59,12 @@ export default class SignUpPage extends Component {
     /*componentWillMount() {
         this.props.firebase.auth().onAuthStateChanged((user) => {
             if (user) {
-                this.props.navigator.replace({ id: 2 });
+                this.props.navigator.push({ id: 2 });
             }
         });
     }*/
 
     signup() {
-        console.log("HI");
         this.setState({
             loaded:false
         });
@@ -80,7 +79,11 @@ export default class SignUpPage extends Component {
                 password:"",
                 loaded:true
             });
+<<<<<<< HEAD:TurnUp/app/components/SignUpPage.js
             this.props.navigator.push({ id: 3 });
+=======
+            // No need to navigate, onAuthStateChanged callback does the job for us.
+>>>>>>> 4096bea203b7fc7c395c8ab81a966fd2c8b23638:TurnUp/app/components/SignUp.js
         }).catch((error) => {
             console.log(error.code);
             switch(error.code){
