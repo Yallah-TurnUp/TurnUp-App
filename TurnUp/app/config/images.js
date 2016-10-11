@@ -26,7 +26,7 @@ const images = {
     beer_4: require('../images/Beer4.png'),
     beer_5: require('../images/Beer5.png'),
     facebook_login: require('../images/facebook_login.png'),
-    google_login: require('../images/google_login.png'),
+    google_login: require('../images/google-login-logo.png'),
 
     location_pin: require('../images/location.png'),
     clock: require('../images/clock.png'),

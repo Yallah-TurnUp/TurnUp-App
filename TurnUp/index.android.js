@@ -1,6 +1,7 @@
 'use strict';
 import * as firebase from 'firebase';
 import firebaseConfig from './auth.js';
+import FBSDK from 'react-native-fbsdk';
 
 // Initialize Firebase
 const firebaseApp = firebase.initializeApp(firebaseConfig);
@@ -25,7 +26,7 @@ import SummaryPage from './app/components/Summary.js';
 import HostPage from './app/components/HostPage.js';
 import TabsPage from './app/components/TabsPage.js';
 import Summary from './app/components/Summary.js';
-import SignUpPage from './app/components/SignUp.js';
+import SignUpPage from './app/components/SignUpPage.js';
 
 
 class LastPage extends Component {
@@ -68,7 +69,7 @@ class TurnUp extends Component {
     if (route.id === 0) {
       return <SignUpPage navigator={navigator} firebase={firebaseApp} />
     } else if (route.id === 1) {   
-      return <LoginPage navigator={navigator} />
+      return <LoginPage navigator={navigator} firebase={firebaseApp} />
     } else if (route.id === 2) {
       return <TabsPage navigator={navigator} />
     } else if (route.id === 3) {
@@ -106,7 +107,7 @@ class TurnUp extends Component {
   render() {
     return (
       <Navigator
-        initialRoute={{id: 0, }}
+        initialRoute={{id: 1, }}
         renderScene={this._renderScene}
         configureScene={this._configureScene} />
     );

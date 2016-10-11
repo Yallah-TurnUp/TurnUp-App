@@ -14,24 +14,24 @@ import styles from '../config/styles.js';
 import images from '../config/images.js';
 
 
-const loginCredentialsDefaultProps = {
+const SignUpCredentialsDefaultProps = {
     style: {flex: 1, fontSize: 16},
     underlineColorAndroid: "transparent"
 };
 
-class LoginCredentialsLine extends Component {
+class SignUpCredentialsLine extends Component {
     constructor(props) {
         super(props);
     }
 
     render() {
         return (
-            <View style={styles.loginCredentialLine}>
-                <View style={styles.loginCredentialLeftPortion}>
-                    <Image source={this.props.image1} style={styles.loginCredentialPhoto1}/>
-                    <Image source={this.props.image2} style={styles.loginCredentialPhoto2}/>
+            <View style={styles.SignUpCredentialLine}>
+                <View style={styles.SignUpCredentialLeftPortion}>
+                    <Image source={this.props.image1} style={styles.SignUpCredentialPhoto1}/>
+                    <Image source={this.props.image2} style={styles.SignUpCredentialPhoto2}/>
                 </View>
-                <TextInput {...loginCredentialsDefaultProps}
+                <TextInput {...SignUpCredentialsDefaultProps}
                            value={this.props.field}
                            onChangeText={this.props.changeListener}
                            onFocus={this.props.focusListener}
@@ -56,13 +56,13 @@ export default class SignUpPage extends Component {
         }
     }
 
-    componentWillMount() {
+    /*componentWillMount() {
         this.props.firebase.auth().onAuthStateChanged((user) => {
             if (user) {
                 this.props.navigator.replace({ id: 2 });
             }
         });
-    }
+    }*/
 
     signup() {
         console.log("HI");
@@ -80,7 +80,7 @@ export default class SignUpPage extends Component {
                 password:"",
                 loaded:true
             });
-            this.props.navigator.push({ id: 2 });
+            this.props.navigator.push({ id: 3 });
         }).catch((error) => {
             console.log(error.code);
             switch(error.code){
@@ -98,17 +98,17 @@ export default class SignUpPage extends Component {
             }
         });
     }
-/*
+
     goToLogin(){
-        this.props.navigator.push({id:2});
+        this.props.navigator.push({id:1});
     }
 
     
-
+/*
     _handlePress() {
         this.props.navigator.push({id: 2,});
     }
-*/    
+*/
 
     _passwordFocusListener() {
         this.setState({
@@ -127,27 +127,29 @@ export default class SignUpPage extends Component {
 
     render() {
         return (
-            <View style={styles.loginScreen}>
-                <Image source={images.bird} style={styles.loginTurnup}/>
-                <View style={styles.loginCredentials}>
-                    <LoginCredentialsLine image1={images.email} field={this.state.email}
+            <View style={styles.SignUpScreen}>
+                <Image source={images.bird} style={styles.SignUpTurnup}/>
+                <View style={styles.SignUpCredentials}>
+                    <SignUpCredentialsLine image1={images.email} field={this.state.email}
                                           changeListener={(email) => this.setState({email: email})}
                                           focusListener={() => this.setState({email: ""})}/>
-                    <LoginCredentialsLine image2={images.password}  field={this.state.displayedPassword}
+                    <View style={styles.SignUpCredentialsDivider}></View>
+                    <SignUpCredentialsLine image2={images.password}  field={this.state.displayedPassword}
                                           changeListener={(password) => this.setState({displayedPassword: password, password: password})}
                                           focusListener={() => this._passwordFocusListener()}
                                           blurListener={() => this._passwordBlurListener()}
                                           isPassword={this.state.hidePassword}/>
                 </View>
-                <View style={{flexDirection: 'row'}}>
+                <View>
                     <TouchableNativeFeedback delayPressIn={0}
                                              onPressOut={this.signup.bind(this)}
                                              background={TouchableNativeFeedback.Ripple('red')}>
-                        <View style={styles.loginSignInButton}>
-                            <Text style={styles.loginSignInButtonText}>Sign Up</Text>
+                        <View style={styles.SignUpButton}>
+                            <Text style={styles.SignUpButtonText}>Sign Up</Text>
                         </View>
                     </TouchableNativeFeedback>
-                    <ActivityIndicator animating={!this.state.loaded} style={{marginLeft: 20}} size="large"/>
+
+                    <ActivityIndicator animating={!this.state.loaded} size="large"/>
                 </View>
             </View>
         )
