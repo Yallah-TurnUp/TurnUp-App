@@ -89,6 +89,14 @@ export default class LoginPage extends Component {
         this.props.navigator.push({id: 2,});
     }*/
 
+    componentWillMount() {
+        this.props.firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                this.props.navigator.push({ id: 2 });
+            }
+        });
+    }
+
     _passwordFocusListener() {
         this.setState({
             displayedPassword: "",
@@ -121,8 +129,8 @@ export default class LoginPage extends Component {
                     email:"",
                     password:"",
                     loaded:true
-                })
-                this.props.navigator.push({id:2});
+                });
+                // No need to navigate, onAuthStateChanged callback does the job for us.
             }).catch((error) => {
                 switch(error.code){
                     case "auth/invalid-email":

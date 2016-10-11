@@ -34,7 +34,8 @@ public class MainApplication extends Application implements ReactApplication {
       protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-          new FBSDKPackage(mCallbackManager)
+          new FBSDKPackage(mCallbackManager),
+          new RNGoogleSigninPackage()
       );
     }
   };
@@ -51,13 +52,4 @@ public class MainApplication extends Application implements ReactApplication {
       FacebookSdk.sdkInitialize(getApplicationContext());
       AppEventsLogger.activateApp(this);
   }
-
-  @Override
-  protected List<ReactPackage> getPackages() {
-    return Arrays.<ReactPackage>asList(
-            new MainReactPackage(),
-            new RNGoogleSigninPackage()
-    );}
-
-
 }
