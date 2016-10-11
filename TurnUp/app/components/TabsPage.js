@@ -11,11 +11,14 @@ import {
     TextInput,
     TouchableNativeFeedback
 } from 'react-native';
+import * as firebase from 'firebase';
+
 import styles from '../config/styles.js';
 import images from '../config/images.js';
 
 import HostPage from './HostPage.js';
 import ExplorePage from './ExplorePage.js';
+import SurprisePage from './SurprisePage.js';
 
 const tabPageIds = {
     hostPage: "hostPage",
@@ -102,7 +105,7 @@ class CurrentTab extends Component {
     render() {
         var hostPage = this.props.currentTab === tabPageIds.hostPage ? <HostPage/> : null;
         var explorePage = this.props.currentTab === tabPageIds.explorePage ? <ExplorePage/> : null;
-        var surprisePage = this.props.currentTab === tabPageIds.surprisePage ? <HostPage/> : null;
+        var surprisePage = this.props.currentTab === tabPageIds.surprisePage ? <SurprisePage/> : null;
 
         return (
             <View style={{flex: 1}}>
@@ -126,10 +129,19 @@ export default class TabsPage extends Component {
         this.props.navigator.push({id: 10})
     }
 
+    logout() {
+        firebase.auth().signOut()
+            .then(() => {
+                this.props.navigator.popToTop();
+            })
+            .catch(error => {});
+    }
+
     render() {
         return (
             <View style={styles.tabsContainer}>
                 <TopBar leftButton={images.profile} centerImage={images.turnup_title} rightButton={images.host_logo}
+                    leftButtonHandler={() => this.logout()}
                     rightButtonHandler={() => {this._pushEventCreationPage()}}/>
                 <CurrentTab currentTab={this.state.currentTab}/>
                 <TabBar pressHandler={(tabId) => this.setState({currentTab: tabId})}
