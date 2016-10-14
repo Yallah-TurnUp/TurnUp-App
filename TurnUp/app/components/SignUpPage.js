@@ -99,7 +99,7 @@ export default class SignUpPage extends Component {
     }
 
     goToLogin(){
-        this.props.navigator.push({id:1});
+        this.props.navigator.pop();
     }
 
     
@@ -147,7 +147,6 @@ export default class SignUpPage extends Component {
                             <Text style={styles.SignUpButtonText}>Sign Up</Text>
                         </View>
                     </TouchableNativeFeedback>
-
                     <ActivityIndicator animating={!this.state.loaded} size="large"/>
                 </View>
             </View>
