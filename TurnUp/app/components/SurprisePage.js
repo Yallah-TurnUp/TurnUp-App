@@ -8,8 +8,10 @@ import {
     Text,
     TextInput,
     TouchableOpacity,
+    NativeModules,
 } from 'react-native';
 import * as firebase from 'firebase';
+import IntentSender from '../native/IntentSender';
 
 export default class SurprisePage extends Component {
     constructor(props) {
@@ -45,6 +47,21 @@ export default class SurprisePage extends Component {
             });
     }
 
+    sendTextToWhatsapp() {
+        const textContent = 'Lin Chun chim be';
+        IntentSender.sendTextToApplication(textContent, IntentSender.targets.WHATSAPP);
+    }
+
+    sendTextToMessenger() {
+        const textContent = 'Lin Chun chim be';
+        IntentSender.sendTextToApplication(textContent, IntentSender.targets.FB_MESSENGER);
+    }
+
+    sendTextToAnything() {
+        const textContent = 'Lin Chun chim be';
+        IntentSender.chooseAndSendText(textContent, "Send to Lin Chun");
+    }
+
     render() {
         return (
             <View style={{flex: 1, backgroundColor: 'green', justifyContent: 'center', alignItems: 'center'}}>
@@ -53,6 +70,21 @@ export default class SurprisePage extends Component {
                 <TouchableOpacity onPress={() => this.sendDataToServer()}>
                     <View style={{width: 200, height: 30, backgroundColor: 'red', borderRadius: 4, justifyContent: 'center'}}>
                         <Text style={{textAlign: 'center'}}>Send some data to server</Text>
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity style={{marginTop: 10}} onPress={() => this.sendTextToWhatsapp()}>
+                    <View style={{width: 200, height: 30, backgroundColor: 'blue', borderRadius: 4, justifyContent: 'center'}}>
+                        <Text style={{textAlign: 'center', color: 'white'}}>Send some text to Whatsapp</Text>
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity style={{marginTop: 10}} onPress={() => this.sendTextToMessenger()}>
+                    <View style={{width: 200, height: 30, backgroundColor: 'blue', borderRadius: 4, justifyContent: 'center'}}>
+                        <Text style={{textAlign: 'center', color: 'white'}}>Send some text to Messenger</Text>
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity style={{marginTop: 10}} onPress={() => this.sendTextToAnything()}>
+                    <View style={{width: 200, height: 30, backgroundColor: 'blue', borderRadius: 4, justifyContent: 'center'}}>
+                        <Text style={{textAlign: 'center', color: 'white'}}>Send some text somewhere</Text>
                     </View>
                 </TouchableOpacity>
             </View>
