@@ -77,10 +77,10 @@ export default styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'space-around',
         alignItems: 'center',
-        backgroundColor: '#F28500',
+        backgroundColor: '#F9BA32',
     },
 
-    loginTurnup: {
+    loginTurnupIcon: {
         width: 150,
         height: 150,
         marginTop: 30,
@@ -90,7 +90,7 @@ export default styles = StyleSheet.create({
     loginBox:{
         width: 280,
         height: 130,
-        backgroundColor: '#F28500',
+        backgroundColor: '#F9BA32',
         alignItems: 'center',
         justifyContent:'space-around',
         marginBottom:10
@@ -98,14 +98,14 @@ export default styles = StyleSheet.create({
     loginBoxDivider:{
         width:180,
         height:1,
-        backgroundColor: '#000000',
+        backgroundColor: '#F8F1E5',
         marginTop:-20
     },
 
     loginCredentials: {
         width: 280,
         height: 80,
-        backgroundColor: 'rgba(255,255,255,0.63)',
+        backgroundColor: '#F8F1E5',
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 4
@@ -114,7 +114,7 @@ export default styles = StyleSheet.create({
     loginCredentialsDivider: {
         width:280,
         height:1,
-        backgroundColor: '#F28500'
+        backgroundColor: '#F9BA32'
     },
 
     loginWithOthers: {
@@ -241,7 +241,7 @@ export default styles = StyleSheet.create({
         flexDirection:'row',
         width: 280,
         height: 20,
-        backgroundColor: '#F28500',
+        backgroundColor: '#F9BA32',
         alignItems: 'center',
         justifyContent:'space-between',
         marginTop:-50,

@@ -17,7 +17,9 @@ import images from '../config/images.js';
 import SignUpPage from './SignUpPage.js';
 import * as firebase from 'firebase';
 import FBSDK from 'react-native-fbsdk';
+import {GoogleSignin} from 'react-native-google-signin';
 
+const user = GoogleSignin.currentUser();
 var provider = new firebase.auth.GoogleAuthProvider();
 
 const loginCredentialsDefaultProps = {
@@ -89,6 +91,7 @@ export default class LoginPage extends Component {
         this.props.navigator.push({id: 2,});
     }*/
 
+
     componentWillMount() {
         this.props.firebase.auth().onAuthStateChanged((user) => {
             if (user) {
@@ -96,6 +99,7 @@ export default class LoginPage extends Component {
             }
         });
     }
+
 
     _passwordFocusListener() {
         this.setState({
@@ -146,7 +150,6 @@ export default class LoginPage extends Component {
     }
 
 
-
     loginFacebook() {
         this.setState({
         loaded:false
@@ -167,40 +170,28 @@ export default class LoginPage extends Component {
       }
 
     loginGoogle() {
-        this.setState({
-            loaded:false
+
+        GoogleSignin.configure({
+          offlineAccess: false
         });
-        provider.addScope('email');
-        provider.addScope('user_friends');
-        firebase.auth().signInWithRedirect(provider);
 
-        firebase.auth().getRedirectResult().then(function(result) {
-                     if (result.credential) {
-                       // This gives you a Google Access Token. You can use it to access the Google API.
-                       var token = result.credential.accessToken;
-                       // ...
-                     }
-                     // The signed-in user info.
-                     var user = result.user;
-                   }).catch(function(error) {
-                     // Handle Errors here.
-                     var errorCode = error.code;
-                     var errorMessage = error.message;
-                     // The email of the user's account used.
-                     var email = error.email;
-                     // The firebase.auth.AuthCredential type that was used.
-                     var credential = error.credential;
-                     // ...
-                   });
-
-
-
-    }
+        GoogleSignin.signIn()
+          .then((user) => {
+            console.log(user)
+            this.setState({user: user});
+          })
+          .catch((err) => {
+            console.log('WRONG SIGNIN', err);
+          })
+          .then(() => {
+            this.props.navigator.push({id:2});
+          });
+      }
 
     render() {
         return (
             <View style={styles.loginScreen}>
-                <Image source={images.bird} style={styles.loginTurnup}/>
+                <Image source={images.bird} style={styles.loginTurnupIcon}/>
                 <View style={styles.loginBox}>
                     <View style={styles.loginCredentials}>
                         <LoginCredentialsLine image1={images.email} field={this.state.email}
