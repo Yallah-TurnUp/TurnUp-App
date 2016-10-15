@@ -19,6 +19,7 @@ export default class SurprisePage extends Component {
         this.state = {
             message: 'Enter a Firebase token, or use the current logged in user\'s:',
             userToken: firebase.auth().currentUser.uid,
+            currentLocation: 'Click the button below!',
         }
     }
 
@@ -62,6 +63,14 @@ export default class SurprisePage extends Component {
         IntentSender.chooseAndSendText(textContent, "Send to Lin Chun");
     }
 
+    getCurrentLocation() {
+        navigator.geolocation.getCurrentPosition(position => {
+            this.setState({ currentLocation: `N: ${position.coords.latitude}, E: ${position.coords.longitude}` });
+        }, error => {
+            this.setState({ currentLocation: error });
+        });
+    }
+
     render() {
         return (
             <View style={{flex: 1, backgroundColor: 'green', justifyContent: 'center', alignItems: 'center'}}>
@@ -85,6 +94,12 @@ export default class SurprisePage extends Component {
                 <TouchableOpacity style={{marginTop: 10}} onPress={() => this.sendTextToAnything()}>
                     <View style={{width: 200, height: 30, backgroundColor: 'blue', borderRadius: 4, justifyContent: 'center'}}>
                         <Text style={{textAlign: 'center', color: 'white'}}>Send some text somewhere</Text>
+                    </View>
+                </TouchableOpacity>
+                <Text style={{textAlign: 'center', color:'white', marginTop: 10}}>{this.state.currentLocation}</Text>
+                <TouchableOpacity style={{marginTop: 10}} onPress={() => this.getCurrentLocation()}>
+                    <View style={{width: 200, height: 30, backgroundColor: 'purple', borderRadius: 4, justifyContent: 'center'}}>
+                        <Text style={{textAlign: 'center', color: 'white'}}>Get current location!</Text>
                     </View>
                 </TouchableOpacity>
             </View>
