@@ -19,6 +19,7 @@ import images from '../config/images.js';
 import HostPage from './HostPage.js';
 import ExplorePage from './ExplorePage.js';
 import SurprisePage from './SurprisePage.js';
+import MapPage from './MapPage.js';
 
 const tabPageIds = {
     hostPage: "hostPage",
@@ -105,7 +106,7 @@ class CurrentTab extends Component {
     render() {
         var hostPage = this.props.currentTab === tabPageIds.hostPage ? <HostPage/> : null;
         var explorePage = this.props.currentTab === tabPageIds.explorePage ? <ExplorePage/> : null;
-        var surprisePage = this.props.currentTab === tabPageIds.surprisePage ? <SurprisePage/> : null;
+        var surprisePage = this.props.currentTab === tabPageIds.surprisePage ? <MapPage/> : null;
 
         return (
             <View style={{flex: 1}}>
