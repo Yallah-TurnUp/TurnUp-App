@@ -43,7 +43,8 @@ export default class SummaryPreview extends Component {
                     <Image source={images.summary_preview} style={{height: cellHeight, width: cellWidth}}/>
                 </View>
                 <View style={{alignItems: 'center', marginBottom: 30}}>
-                    <TouchableNativeFeedback onPressOut={() => this._showSummary()}
+                    <TouchableNativeFeedback delayPressIn={0} delayPressOut={0}
+                                             onPress={() => this._showSummary()}
                                              background={TouchableNativeFeedback.Ripple('red')}>
                         <View style={{width: 128, height: 40, backgroundColor: '#F28500', elevation: 3,
                             alignItems: 'center', justifyContent: 'center', borderRadius: 8}}>

@@ -11,11 +11,15 @@ import {
     TextInput,
     TouchableNativeFeedback
 } from 'react-native';
+import * as firebase from 'firebase';
+
 import styles from '../config/styles.js';
 import images from '../config/images.js';
 
 import HostPage from './HostPage.js';
 import ExplorePage from './ExplorePage.js';
+import SurprisePage from './SurprisePage.js';
+import MapPage from './MapPage.js';
 
 const tabPageIds = {
     hostPage: "hostPage",
@@ -31,6 +35,7 @@ export class TopBar extends Component {
             <View style={styles.header}>
                 <View style={{flex: 1, alignItems: 'flex-start', marginLeft: 10}}>
                     <TouchableNativeFeedback background={TouchableNativeFeedback.Ripple('#F28500', true)}
+                                             delayPressIn={0}
                                              onPressOut={() => {
                                                  if ('leftButtonHandler' in this.props) this.props.leftButtonHandler();
                                              }}>
@@ -44,6 +49,7 @@ export class TopBar extends Component {
                 </View>
                 <View style={{flex: 1, alignItems: 'flex-end', marginRight: 10}}>
                     <TouchableNativeFeedback background={TouchableNativeFeedback.Ripple('#F28500', true)}
+                                             delayPressIn={0} delayPressOut={0}
                                              onPressOut={() => {
                                                  if ('rightButtonHandler' in this.props) this.props.rightButtonHandler();
                                              }}>
@@ -64,9 +70,9 @@ class TabBarButton extends Component {
     render() {
         var backgroundColor = this.props.selected ? '#F28500' : 'transparent';
         return (
-            <TouchableNativeFeedback style={{flex: 1}}
+            <TouchableNativeFeedback style={{flex: 1}} delayPressIn={0}
                                      background={TouchableNativeFeedback.Ripple('red')}
-                                     onPressOut={() => this.props.pressHandler(this.props.tabId)}>
+                                     onPress={() => this.props.pressHandler(this.props.tabId)}>
                 <View style={{flex: 1, alignItems: 'center', backgroundColor: backgroundColor}}>
                     <Image source={this.props.image} style={{flex: 1, width: 60, height: 60}}/>
                 </View>
@@ -100,7 +106,7 @@ class CurrentTab extends Component {
     render() {
         var hostPage = this.props.currentTab === tabPageIds.hostPage ? <HostPage/> : null;
         var explorePage = this.props.currentTab === tabPageIds.explorePage ? <ExplorePage/> : null;
-        var surprisePage = this.props.currentTab === tabPageIds.surprisePage ? <HostPage/> : null;
+        var surprisePage = this.props.currentTab === tabPageIds.surprisePage ? <MapPage/> : null;
 
         return (
             <View style={{flex: 1}}>
@@ -124,10 +130,19 @@ export default class TabsPage extends Component {
         this.props.navigator.push({id: 10})
     }
 
+    logout() {
+        firebase.auth().signOut()
+            .then(() => {
+                this.props.navigator.popToTop();
+            })
+            .catch(error => {});
+    }
+
     render() {
         return (
             <View style={styles.tabsContainer}>
                 <TopBar leftButton={images.profile} centerImage={images.turnup_title} rightButton={images.host_logo}
+                    leftButtonHandler={() => this.logout()}
                     rightButtonHandler={() => {this._pushEventCreationPage()}}/>
                 <CurrentTab currentTab={this.state.currentTab}/>
                 <TabBar pressHandler={(tabId) => this.setState({currentTab: tabId})}

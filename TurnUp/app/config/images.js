@@ -26,7 +26,7 @@ const images = {
     beer_4: require('../images/Beer4.png'),
     beer_5: require('../images/Beer5.png'),
     facebook_login: require('../images/facebook_login.png'),
-    google_login: require('../images/google_login.png'),
+    google_login: require('../images/google-login-logo.png'),
 
     location_pin: require('../images/location.png'),
     clock: require('../images/clock.png'),
@@ -61,6 +61,7 @@ const images = {
     event_3: require('../images/Concert_Explore.png'),
     event_4: require('../images/Sports_Explore.png'),
     forward: require('../images/FORWARD.png'),
+    google_map: require('../images/Google-Map.png'),
 
     summary_input: require('../images/summary_input.png'),
     summary_location: require('../images/summary_location.png'),

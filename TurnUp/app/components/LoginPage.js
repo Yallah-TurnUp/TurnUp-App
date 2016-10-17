@@ -11,8 +11,16 @@ import {
     TextInput,
     TouchableNativeFeedback
 } from 'react-native';
+
 import styles from '../config/styles.js';
 import images from '../config/images.js';
+import SignUpPage from './SignUpPage.js';
+import * as firebase from 'firebase';
+import FBSDK from 'react-native-fbsdk';
+import {GoogleSignin} from 'react-native-google-signin';
+
+const user = GoogleSignin.currentUser();
+var provider = new firebase.auth.GoogleAuthProvider();
 
 const loginCredentialsDefaultProps = {
     style: {flex: 1, fontSize: 16},
@@ -41,22 +49,57 @@ class LoginCredentialsLine extends Component {
             </View>
         )
     }
+
+/*
+    login(){
+        this.setState({
+            loaded:false
+        });
+
+        this.props.firebase.auth({
+            "email":this.state.email,
+            "password":this.state.password
+        }, (error, user_data) => {
+            this.setState({
+                loaded:true
+            });
+
+            if(error){
+                alert('Login Failed');
+            }
+            else{
+                AsyncStorage.setItem('user_data', JSON.stringify(user_data));
+                this.props.navigator.push({ id: 3 });
+            }
+        });
+    }   */
 }
+
 
 export default class LoginPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            email: "your email address",
+            email: "Email address",
             password: "",
             hidePassword: false,
-            displayedPassword: "password"
+            displayedPassword: "*******"
         }
     }
 
-    _handlePress() {
+    /*_handlePress() {
         this.props.navigator.push({id: 2,});
+    }*/
+
+
+    componentWillMount() {
+        this.props.firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                this.props.navigator.push({ id: 2 });
+            }
+        });
     }
+
 
     _passwordFocusListener() {
         this.setState({
@@ -68,31 +111,143 @@ export default class LoginPage extends Component {
 
     _passwordBlurListener() {
         this.setState({
-            displayedPassword: this.state.displayedPassword.length > 0 ? this.state.displayedPassword : "password",
+            displayedPassword: this.state.displayedPassword.length > 0 ? this.state.displayedPassword : "*******",
             hidePassword: this.state.displayedPassword.length > 0
         })
     }
 
+    signUp(){
+        this.props.navigator.push({id:0});
+        }
+
+    login() {
+        this.setState({
+            loaded:false
+        });
+
+        this.props.firebase.auth().signInWithEmailAndPassword(
+            this.state.email,
+            this.state.password,
+            ).then(() => {
+                this.setState({
+                    email:"",
+                    password:"",
+                    loaded:true
+                });
+                // No need to navigate, onAuthStateChanged callback does the job for us.
+            }).catch((error) => {
+                switch(error.code){
+                    case "auth/invalid-email":
+                        alert(`${this.state.email} is not a valid email.`);
+                        break;
+                    case "auth/wrong-password":
+                        alert("You've entered the wrong password.");
+                        break;
+                    default:
+                        alert("Error");
+            }
+        });
+    }
+
+
+    loginFacebook() {
+        this.setState({
+        loaded:false
+        });
+    // Attempt a login using the Facebook login dialog asking for default permissions.
+    FBSDK.LoginManager.logInWithReadPermissions(['public_profile']
+    ).then((result)=> {
+        if (result.isCancelled) {
+          alert('Login cancelled');
+        } else {
+          alert('Login success with permissions: '
+            +result.grantedPermissions.toString());
+        }
+      this.props.navigator.push({id:2});
+      }).catch((error) => {
+        alert('Login fail with error:' + error);
+      });
+      }
+
+    loginGoogle() {
+
+        GoogleSignin.configure({
+          offlineAccess: false
+        });
+
+        GoogleSignin.signIn()
+          .then((user) => {
+            console.log(user)
+            this.setState({user: user});
+          })
+          .catch((err) => {
+            console.log('WRONG SIGNIN', err);
+          })
+          .then(() => {
+            this.props.navigator.push({id:2});
+          });
+      }
+
     render() {
         return (
             <View style={styles.loginScreen}>
-                <Image source={images.bird} style={styles.loginTurnup}/>
-                <View style={styles.loginCredentials}>
-                    <LoginCredentialsLine image1={images.email} field={this.state.email}
-                                          changeListener={(email) => this.setState({email: email})}
-                                          focusListener={() => this.setState({email: ""})}/>
-                    <LoginCredentialsLine image2={images.password}  field={this.state.displayedPassword}
-                                          changeListener={(password) => this.setState({displayedPassword: password, password: password})}
-                                          focusListener={() => this._passwordFocusListener()}
-                                          blurListener={() => this._passwordBlurListener()}
-                                          isPassword={this.state.hidePassword}/>
-                </View>
-                <TouchableNativeFeedback onPressOut={() => this._handlePress()}
-                                         background={TouchableNativeFeedback.Ripple('red')}>
-                    <View style={styles.loginSignInButton}>
-                        <Text style={styles.loginSignInButtonText}>Sign in</Text>
+                <Image source={images.bird} style={styles.loginTurnupIcon}/>
+                <View style={styles.loginBox}>
+                    <View style={styles.loginCredentials}>
+                        <LoginCredentialsLine image1={images.email} field={this.state.email}
+                                              changeListener={(email) => this.setState({email: email})}
+                                              focusListener={() => this.setState({email: ""})}/>
+                        <View style={styles.loginCredentialsDivider}></View>
+                        <LoginCredentialsLine image2={images.password}  field={this.state.displayedPassword}
+                                              changeListener={(password) => this.setState({displayedPassword: password, password: password})}
+                                              focusListener={() => this._passwordFocusListener()}
+                                              blurListener={() => this._passwordBlurListener()}
+                                              isPassword={this.state.hidePassword}/>
                     </View>
+                <TouchableNativeFeedback delayPressIn={0}
+                    onPressOut={this.login.bind(this)}
+                    background={TouchableNativeFeedback.Ripple('red')}>
+                        <View style={styles.loginSignInButton}>
+                            <Text style={styles.loginSignInButtonText}>Sign in</Text>
+                        </View>
                 </TouchableNativeFeedback>
+
+
+                </View>
+                <View style={styles.loginBoxDivider}></View>
+
+                <View style={styles.loginWithOthers}>
+                    <TouchableNativeFeedback delayPressIn={0}
+                        onPressOut={this.loginFacebook.bind(this)}
+                        background={TouchableNativeFeedback.Ripple('blue')}>
+                            <View style={styles.loginWithFacebook}>
+                                <Image source={images.facebook_login} style={styles.loginWithFacebookPhoto}/>
+                                <Text style={styles.loginWithFacebookText}> Login with Facebook </Text>
+                            </View>
+
+                    </TouchableNativeFeedback>
+                    <TouchableNativeFeedback delayPressIn={0}
+                        onPressOut={this.loginGoogle.bind(this)}
+                        background={TouchableNativeFeedback.Ripple('red')}>
+                            <View style={styles.loginWithGoogle}>
+                                <Image source={images.google_login} style={styles.loginWithGooglePhoto}/>
+                                <Text style={styles.loginWithGoogleText}> Login with Google </Text>
+                            </View>
+                    </TouchableNativeFeedback>
+
+                </View>
+
+                <View style={styles.LoginMiscellaneous}>
+                    <Text style={styles.SignUpText}> Forgot Password ? </Text>
+                     <TouchableNativeFeedback delayPressIn={0}
+                                            onPressOut={this.signUp.bind(this)}>
+                        <View><Text style={styles.SignUpTextItalics}>New here? Sign Up.</Text></View>
+                    </TouchableNativeFeedback>
+
+                </View>
+
+
+
             </View>
         )
     }
