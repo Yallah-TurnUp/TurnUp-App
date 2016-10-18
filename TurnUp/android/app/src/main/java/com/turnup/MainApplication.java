@@ -38,7 +38,8 @@ public class MainApplication extends Application implements ReactApplication {
               new MapsPackage(),
               new FBSDKPackage(mCallbackManager),
               new RNGoogleSigninPackage(),
-              new IntentSenderPackage()
+              new IntentSenderPackage(),
+              new SmsSenderPackage()
           );
       }
   };

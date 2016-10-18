@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import * as firebase from 'firebase';
 import IntentSender from '../native/IntentSender';
+import SmsSender from '../native/SmsSender';
 
 export default class SurprisePage extends Component {
     constructor(props) {
@@ -20,6 +21,9 @@ export default class SurprisePage extends Component {
             message: 'Enter a Firebase token, or use the current logged in user\'s:',
             userToken: firebase.auth().currentUser.uid,
             currentLocation: 'Click the button below!',
+            number_1: 'Enter number #1',
+            number_2: 'Enter number #2',
+            number_3: 'Enter number #3',
         }
     }
 
@@ -71,6 +75,25 @@ export default class SurprisePage extends Component {
         });
     }
 
+    sendSomeSmses() {
+        SmsSender.sendTexts([
+            {
+                number: this.state.number_1,
+                message: "You're guy number 1",
+            },
+            {
+                number: this.state.number_2,
+                message: "You're guy number 2",
+            },
+            {
+                number: this.state.number_3,
+                message: "You're guy number 3",
+            },
+        ], () => {
+            console.log("Everything done!");
+        });
+    }
+
     render() {
         return (
             <View style={{flex: 1, backgroundColor: 'green', justifyContent: 'center', alignItems: 'center'}}>
@@ -100,6 +123,14 @@ export default class SurprisePage extends Component {
                 <TouchableOpacity style={{marginTop: 10}} onPress={() => this.getCurrentLocation()}>
                     <View style={{width: 200, height: 30, backgroundColor: 'purple', borderRadius: 4, justifyContent: 'center'}}>
                         <Text style={{textAlign: 'center', color: 'white'}}>Get current location!</Text>
+                    </View>
+                </TouchableOpacity>
+                <TextInput value={this.state.number_1} onChangeText={number_1 => this.setState({number_1})} style={{width: 400, height: 40, backgroundColor: 'rgba(255, 255, 255, 0.5)'}}/>
+                <TextInput value={this.state.number_2} onChangeText={number_2 => this.setState({number_2})} style={{width: 400, height: 40, backgroundColor: 'rgba(255, 255, 255, 0.5)'}}/>
+                <TextInput value={this.state.number_3} onChangeText={number_3 => this.setState({number_3})} style={{width: 400, height: 40, backgroundColor: 'rgba(255, 255, 255, 0.5)'}}/>
+                <TouchableOpacity style={{marginTop: 10}} onPress={() => this.sendSomeSmses()}>
+                    <View style={{width: 200, height: 30, backgroundColor: 'purple', borderRadius: 4, justifyContent: 'center'}}>
+                        <Text style={{textAlign: 'center', color: 'white'}}>Send some SMSes</Text>
                     </View>
                 </TouchableOpacity>
             </View>
