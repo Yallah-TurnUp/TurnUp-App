@@ -138,6 +138,16 @@ export default class TabsPage extends Component {
             .catch(error => {});
     }
 
+    logoutGoogle(){
+        GoogleSignin.signOut()
+        .then(() => {
+          this.props.navigator.popToTop();
+        })
+        .catch((err) => {
+
+        });
+    }
+
     render() {
         return (
             <View style={styles.tabsContainer}>

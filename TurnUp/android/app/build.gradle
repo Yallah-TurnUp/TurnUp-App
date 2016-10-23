@@ -19,7 +19,7 @@ import com.android.build.OutputFile
  *   entryFile: "index.android.js",
  *
  *   // whether to bundle JS and assets in debug mode
- *   bundleInDebug: false,
+ *   bundleInDe bug: false,
  *
  *   // whether to bundle JS and assets in release mode
  *   bundleInRelease: true,
@@ -141,6 +141,7 @@ android {
 
 dependencies {
     compile project(':react-native-contacts')
+    compile project(':react-native-fbsdk')
     compile project(':react-native-maps')
     compile fileTree(dir: "libs", include: ["*.jar"])
     compile "com.android.support:appcompat-v7:23.0.1"

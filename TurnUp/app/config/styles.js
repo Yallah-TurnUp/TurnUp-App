@@ -358,7 +358,8 @@ export default styles = StyleSheet.create({
     topContainer: {
         flex: -1,
         alignItems: 'stretch',
-        backgroundColor: "#F28500"
+        backgroundColor: "black"
+        //#F28500
     },
 
     topTabButtonsContainer: {
@@ -425,7 +426,109 @@ export default styles = StyleSheet.create({
 
     eventCells: {
        height: 180
+    },
+
+
+
+    // ContactList
+
+   ContactListTopContainer: {
+        flex: 1,
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        backgroundColor: 'green',
+        flexDirection: 'row',
+    },
+
+    MessageIcon: {
+        width: 50,
+        height: 50,
+        backgroundColor: 'blue'
+    },
+
+    MessageContainer:{
+        width: 280,
+        height: 120,
+        justifyContent: 'center',
+        alignItems:'stretch',
+        backgroundColor: 'blue',
+        flexDirection: 'row'
+    },
+
+
+
+    ContactListContainer:{
+        flex: 1.3,
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        backgroundColor: 'black',
+        flexDirection: 'row'
+    },
+
+    MessageMultiline: {
+        flex: 1,
+        fontSize: 13,
+        height: 100,
+        padding: 4,
+        marginBottom: 4,
+        width:260
+    },
+
+    SignUpTurnup: {
+        width: 170,
+        height: 170
+    },
+
+    SignUpCredentials: {
+        width: 280,
+        height: 80,
+        backgroundColor: 'rgba(255,255,255,0.63)',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 4,
+        marginTop: 30,
+        marginBottom: 20
+    },
+
+    SignUpCredentialLine: {
+        flex: 1,
+        flexDirection: 'row'
+    },
+
+    SignUpCredentialLeftPortion: {
+        flex: -1,
+        width: 40,
+        height: 40,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+
+    SignUpCredentialPhoto1: {
+        width: 15,
+        height: 10
+    },
+
+    SignUpCredentialPhoto2:  {
+        width: 15,
+        height: 15
+    },
+
+    SignUpButton: {
+        width: 280,
+        height: 40,
+        elevation: 2,
+        backgroundColor: '#FF9800',
+        justifyContent: 'center',
+        borderRadius: 4
+    },
+
+    SignUpButtonText: {
+        flex: 0,
+        fontSize: 14,
+        fontFamily: 'Roboto-Light',
+        color: 'white',
+        textAlign: 'center'
     }
+
+
 });
-
-
