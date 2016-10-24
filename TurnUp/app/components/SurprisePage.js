@@ -27,6 +27,7 @@ export default class SurprisePage extends Component {
             number_2: 'Enter number #2',
             number_3: 'Enter number #3',
         }
+        this.sendSomeSmses = this.sendSomeSmses.bind(this);
     }
 
     sendDataToServer() {
@@ -77,23 +78,30 @@ export default class SurprisePage extends Component {
         });
     }
 
+    processSmsDeliveredResult(messageToLog) {
+        return () => {
+            console.log('Delivered', messageToLog);
+        };
+    }
+
     sendSomeSmses() {
         SmsSender.sendTexts([
             {
                 number: this.state.number_1,
                 message: "You're guy number 1",
+                delivered: this.processSmsDeliveredResult(this.state.number_1),
             },
             {
                 number: this.state.number_2,
                 message: "You're guy number 2",
+                delivered: this.processSmsDeliveredResult(this.state.number_2),
             },
             {
                 number: this.state.number_3,
                 message: "You're guy number 3",
+                delivered: this.processSmsDeliveredResult(this.state.number_3),
             },
-        ], () => {
-            console.log("Everything done!");
-        });
+        ]);
     }
 
     getUserContacts() {
