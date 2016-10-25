@@ -17,7 +17,7 @@ import java.util.Date;
 public class SmsSender extends ReactContextBaseJavaModule {
 
     private static final String SENT_ACTION = "turnup.SMS_SENT";
-    private static final String DELIVERED_ACTION = "turnup.SMS_SENT";
+    private static final String DELIVERED_ACTION = "turnup.SMS_DELIVERED";
 
     public SmsSender(ReactApplicationContext context) {
         super(context);

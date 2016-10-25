@@ -20,6 +20,7 @@ import HostPage from './HostPage.js';
 import ExplorePage from './ExplorePage.js';
 import SurprisePage from './SurprisePage.js';
 import MapPage from './MapPage.js';
+import DateTimePickerPage from './DateTimePickerPage.js';
 
 const tabPageIds = {
     hostPage: "hostPage",
@@ -106,7 +107,7 @@ class CurrentTab extends Component {
     render() {
         var hostPage = this.props.currentTab === tabPageIds.hostPage ? <HostPage/> : null;
         var explorePage = this.props.currentTab === tabPageIds.explorePage ? <ExplorePage/> : null;
-        var surprisePage = this.props.currentTab === tabPageIds.surprisePage ? <SurprisePage/> : null;
+        var surprisePage = this.props.currentTab === tabPageIds.surprisePage ? <DateTimePickerPage/> : null;
 
         return (
             <View style={{flex: 1}}>

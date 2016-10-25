@@ -65,8 +65,13 @@ const images = {
 
     summary_input: require('../images/summary_input.png'),
     summary_location: require('../images/summary_location.png'),
-    summary_top: require('../images/summary_top.png')
+    summary_top: require('../images/summary_top.png'),
 
+    datetimeplus: require('../images/datetimeplus.png'),
+    creation_back: require('../images/creation_back.png'),
+    creation_next: require('../images/creation_next.png'),
+    chosen_timings_label: require('../images/chosen_timings_label.png'),
+    clear_date_time: require('../images/clear_date_time.png'),
 };
 
 
