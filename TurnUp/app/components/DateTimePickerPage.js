@@ -113,11 +113,11 @@ class SnappingListView extends Component {
     }
 }
 
-const DeletableListCell = ({ text }) => (
+const DeletableListCell = ({ text, onPress, rowID }) => (
     <View style={{flexDirection: 'row', justifyContent: 'space-between', paddingTop: 8, paddingBottom: 8}}>
         <View style={{width: 20}}/>
         <Text textAlign='center' style={{fontSize: 18}}>{text}</Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => this.props.onPress(rowID)}>
             <Image style={{width: 20, height: 20}} source={images.clear_date_time} />
         </TouchableOpacity>
     </View>
@@ -132,7 +132,7 @@ class DeletableListView extends Component {
         return (
             <ListView
                 contentContainerStyle={{width: 300}}
-                renderRow={rowData => <DeletableListCell text={rowData}/>}
+                renderRow={(rowData, _, rowID) => <DeletableListCell text={rowData} onPress={this.props.onPress} rowID={rowID}/>}
                 renderSeparator={(_, rowID) => (rowID !== (this.props.data.length - 1).toString()) && <View key={rowID} style={{width: 300, alignItems: 'center'}}><View style={{height: 0.75, width: 150, backgroundColor: 'rgb(253,191,45)'}} /></View>}
                 showsVerticalScrollIndicator={false}
                 dataSource={new ListView.DataSource({rowHasChanged: (row1, row2) => row1 !== row2}).cloneWithRows(this.props.data)}
@@ -144,6 +144,11 @@ class DeletableListView extends Component {
 export default class DateTimePickerPage extends Component {
     constructor(props) {
         super(props);
+
+        this.onDelete = this.onDelete.bind(this);
+        this.state = {
+            dates: [],
+        };
     }
 
     getMonths() {
@@ -181,6 +186,10 @@ export default class DateTimePickerPage extends Component {
         return SnappingListView.preFillWithPadding(mins.map(min => ({
             content: min,
         })), 2);
+    }
+
+    onDelete(rowID) {
+        this.setState()
     }
 
     render() {
@@ -244,7 +253,7 @@ export default class DateTimePickerPage extends Component {
                 </View>
                 <View style={{flex: 1, backgroundColor: 'rgb(241,241,241)', padding: 10, alignItems: 'center'}}>
                     <Image style={{height: 40, width: 213, marginBottom: 15}} source={images.chosen_timings_label} />
-                    <DeletableListView data={someDays}/>
+                    <DeletableListView data={someDays} onPress={this.onDelete} />
                 </View>
                 <View style={{flex: 0, backgroundColor: 'white', height: 70, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
                     <TouchableOpacity>
