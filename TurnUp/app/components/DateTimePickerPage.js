@@ -58,7 +58,7 @@ class SnappingListView extends Component {
         this.populateDataWithSelectedInformation = this.populateDataWithSelectedInformation.bind(this);
 
         const ds = new ListView.DataSource({rowHasChanged: (row1, row2) => row1 !== row2});
-        const initialSelectedPosition = this.itemPositionFromScrollViewOffset(0);
+        const initialSelectedPosition = this.props.initialPosition;
         this.state = {
             dataSource: ds.cloneWithRows(this.populateDataWithSelectedInformation(initialSelectedPosition)),
             selectedItem: initialSelectedPosition,
@@ -87,10 +87,20 @@ class SnappingListView extends Component {
             y: event.nativeEvent.contentOffset.y,
             animated: true,
         });
+        this.props.selectedItem(this.props.data[itemPosition]);
         this.setState({
             selectedItem: itemPosition,
             dataSource: this.state.dataSource.cloneWithRows(this.populateDataWithSelectedInformation(itemPosition)),
         });
+    }
+
+    componentDidMount() {
+        setTimeout(() => {
+            this.listView.scrollTo({
+                x: this.offsetToItemCenterFromItemPosition(this.props.initialPosition),
+                animated: false,
+            });
+        }, 500);
     }
 
     render() {
@@ -105,6 +115,7 @@ class SnappingListView extends Component {
                         selected={rowData.selected} />
                 )}
                 horizontal
+                initialListSize={this.props.data.length}
                 showsHorizontalScrollIndicator={false}
                 dataSource={this.state.dataSource}
                 onMomentumScrollEnd={this.onScrollFinish}
@@ -117,7 +128,7 @@ const DeletableListCell = ({ text, onPress, rowID }) => (
     <View style={{flexDirection: 'row', justifyContent: 'space-between', paddingTop: 8, paddingBottom: 8}}>
         <View style={{width: 20}}/>
         <Text textAlign='center' style={{fontSize: 18}}>{text}</Text>
-        <TouchableOpacity onPress={() => this.props.onPress(rowID)}>
+        <TouchableOpacity onPress={() => onPress(rowID)}>
             <Image style={{width: 20, height: 20}} source={images.clear_date_time} />
         </TouchableOpacity>
     </View>
@@ -146,8 +157,38 @@ export default class DateTimePickerPage extends Component {
         super(props);
 
         this.onDelete = this.onDelete.bind(this);
+        this.onAdd = this.onAdd.bind(this);
+        this.getSelectedDates = this.getSelectedDates.bind(this);
+        this.onMonthSelect = this.onMonthSelect.bind(this);
+        this.onDaySelect = this.onDaySelect.bind(this);
+        this.onHourSelect = this.onHourSelect.bind(this);
+        this.onMinuteSelect = this.onMinuteSelect.bind(this);
+        const now = new Date();
         this.state = {
-            dates: [],
+            dates: [
+                {
+                    rowID: '0',
+                    actualDate: null,
+                    dateString: 'ONE',
+                },
+                {
+                    rowID: '1',
+                    actualDate: null,
+                    dateString: 'TWO',
+                },
+                {
+                    rowID: '2',
+                    actualDate: null,
+                    dateString: 'THREE',
+                },
+            ],
+            selectedDate: {
+                month: now.getMonth(),
+                year: now.getFullYear(),
+                day: now.getDate(),
+                hour: now.getHours(),
+                minute: Math.floor(now.getMinutes() / 5) * 5,
+            }
         };
     }
 
@@ -160,7 +201,9 @@ export default class DateTimePickerPage extends Component {
             currMonth.setMonth(currMonth.getMonth() + 1);
         }
         return SnappingListView.preFillWithPadding(months.map(month => ({
-            content: monthNames[month.getMonth()] + month.getYear().toString().slice(-2),
+            content: monthNames[month.getMonth()] + month.getFullYear().toString().slice(-2),
+            month: month.getMonth(),
+            year: month.getFullYear(),
         })), 2);
     }
 
@@ -169,6 +212,7 @@ export default class DateTimePickerPage extends Component {
         for (let i = 1; i <= monthDays; i++) days.push(i);
         return SnappingListView.preFillWithPadding(days.map(day => ({
             content: day,
+            day: day,
         })), 2);
     }
 
@@ -177,6 +221,7 @@ export default class DateTimePickerPage extends Component {
         for (let i = 0; i < 24; i++) hours.push(i);
         return SnappingListView.preFillWithPadding(hours.map(hour => ({
             content: hour,
+            hour: hour,
         })), 2);
     }
 
@@ -185,17 +230,44 @@ export default class DateTimePickerPage extends Component {
         for (let i = 0; i <= 60; i = i + 5) mins.push(('0' + i).slice(-2));
         return SnappingListView.preFillWithPadding(mins.map(min => ({
             content: min,
+            minute: min,
         })), 2);
     }
 
+    getSelectedDates() {
+        return this.state.dates.map(date => date.dateString);
+    }
+
+    onMonthSelect({ month, year }) {
+        this.setState({selectedDate: { ...this.state.selectedDate, month, year }});
+    }
+
+    onDaySelect({ day }) {
+        this.setState({selectedDate: { ...this.state.selectedDate, day }});
+    }
+
+    onHourSelect({ hour }) {
+        this.setState({selectedDate: { ...this.state.selectedDate, hour }});
+    }
+
+    onMinuteSelect({ minute }) {
+        this.setState({selectedDate: {...this.state.selectedDate, minute }});
+    }
+
     onDelete(rowID) {
-        this.setState()
+        console.log(`Deleting ${rowID}`);
+    }
+
+    onAdd() {
+        const { year, month, day, hour, minute } = this.state.selectedDate;
+        console.log(`Year: ${year}, Month: ${month}, Day: ${day}, Hour: ${hour}, Minute: ${minute}`);
     }
 
     render() {
         const cellCount = 5;
         const pickerWidth = Dimensions.get('window').width;
         const cellWidth = pickerWidth / cellCount;
+        const offset = Math.floor(cellCount / 2);
 
         const currMonth = new Date();
         currMonth.setDate(1);
@@ -206,8 +278,6 @@ export default class DateTimePickerPage extends Component {
         const hoursRow = this.getHours();
         const minsRow = this.getMins();
 
-        const someDays = ['ONE', 'TWO', 'THREE'];
-
         return (
             <View style={{flex: 1, justifyContent: 'center', backgroundColor: 'rgb(241,241,241)'}}>
                 <View style={{flex: 0, alignItems: 'stretch', overflow: 'visible', backgroundColor: 'white'}}>
@@ -217,14 +287,18 @@ export default class DateTimePickerPage extends Component {
                             pickerWidth={pickerWidth}
                             cellWidth={cellWidth}
                             snapPosition={pickerWidth / 2}
-                            data={monthsRow} />
+                            data={monthsRow}
+                            selectedItem={this.onMonthSelect}
+                            initialPosition={offset} />
                     </View>
                     <View style={{height: 40, backgroundColor: 'rgb(241,241,241)', marginTop: 3}}>
                         <SnappingListView
                             pickerWidth={pickerWidth}
                             cellWidth={cellWidth}
                             snapPosition={pickerWidth / 2}
-                            data={daysRow} />
+                            data={daysRow}
+                            selectedItem={this.onDaySelect}
+                            initialPosition={this.state.selectedDate.day + offset - 1} />
                     </View>
                     <Text style={{marginLeft: 5, marginTop: 3, fontSize: 15}}>SELECT TIME</Text>
                     <View style={{height: 40, backgroundColor: 'rgb(241,241,241)', marginTop: 1}}>
@@ -232,20 +306,24 @@ export default class DateTimePickerPage extends Component {
                             pickerWidth={pickerWidth}
                             cellWidth={cellWidth}
                             snapPosition={pickerWidth / 2}
-                            data={hoursRow} />
+                            data={hoursRow}
+                            selectedItem={this.onHourSelect}
+                            initialPosition={this.state.selectedDate.hour + offset} />
                     </View>
                     <View style={{height: 40, backgroundColor: 'rgb(241,241,241)', marginTop: 3}}>
                         <SnappingListView
                             pickerWidth={pickerWidth}
                             cellWidth={cellWidth}
                             snapPosition={pickerWidth / 2}
-                            data={minsRow} />
+                            data={minsRow}
+                            selectedItem={this.onMinuteSelect}
+                            initialPosition={Math.floor(this.state.selectedDate.minute / 5) + offset} />
                     </View>
                     <View style={{flex: 1, alignItems: 'stretch', justifyContent: 'center', height: 80, marginTop: 5}}>
                         <View style={{flex: 1, height: 40}} />
                         <View style={{flex: 1, backgroundColor: 'rgb(241,241,241)', height: 41}} />
                         <View style={{flex: 1, position: 'absolute', top: 0, left: (pickerWidth - 80) / 2, backgroundColor: 'white', height: 80, width: 80, borderRadius: 40, alignItems: 'center', justifyContent: 'center'}}>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={this.onAdd}>
                                 <Image style={{height: 55, width: 55}} source={images.datetimeplus} />
                             </TouchableOpacity>
                         </View>
@@ -253,7 +331,7 @@ export default class DateTimePickerPage extends Component {
                 </View>
                 <View style={{flex: 1, backgroundColor: 'rgb(241,241,241)', padding: 10, alignItems: 'center'}}>
                     <Image style={{height: 40, width: 213, marginBottom: 15}} source={images.chosen_timings_label} />
-                    <DeletableListView data={someDays} onPress={this.onDelete} />
+                    <DeletableListView data={this.getSelectedDates()} onPress={this.onDelete} />
                 </View>
                 <View style={{flex: 0, backgroundColor: 'white', height: 70, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
                     <TouchableOpacity>
