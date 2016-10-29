@@ -84,7 +84,6 @@ class SnappingListView extends Component {
         const itemPosition = this.itemPositionFromScrollViewOffset(event.nativeEvent.contentOffset.x);
         this.listView.scrollTo({
             x: this.offsetToItemCenterFromItemPosition(itemPosition),
-            y: event.nativeEvent.contentOffset.y,
             animated: true,
         });
         this.props.selectedItem(this.props.data[itemPosition]);
@@ -100,7 +99,7 @@ class SnappingListView extends Component {
                 x: this.offsetToItemCenterFromItemPosition(this.props.initialPosition),
                 animated: false,
             });
-        }, 500);
+        }, 0);
     }
 
     render() {
@@ -115,7 +114,7 @@ class SnappingListView extends Component {
                         selected={rowData.selected} />
                 )}
                 horizontal
-                initialListSize={this.props.data.length}
+                initialListSize={this.props.data.length < 35 ? this.props.data.length : 35} // more than 31 because we need to load the padding too
                 showsHorizontalScrollIndicator={false}
                 dataSource={this.state.dataSource}
                 onMomentumScrollEnd={this.onScrollFinish}
