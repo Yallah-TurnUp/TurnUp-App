@@ -1,6 +1,5 @@
 package com.turnup;
 
-import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -12,17 +11,13 @@ import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
-import com.facebook.react.bridge.ReadableArray;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class SmsSender extends ReactContextBaseJavaModule {
 
     private static final String SENT_ACTION = "turnup.SMS_SENT";
+    private static final String DELIVERED_ACTION = "turnup.SMS_SENT";
 
     public SmsSender(ReactApplicationContext context) {
         super(context);
@@ -34,52 +29,44 @@ public class SmsSender extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void sendSmsesToNumbers(ReadableArray numbers, ReadableArray messages, Callback smsesSent) {
+    public void sendSmsToNumber(int uniqueMsgId, String number, String message, Callback delivered) {
         Context context = this.getReactApplicationContext();
-        String namespace = SENT_ACTION + "." + new Date().getTime();
+        String sentNamespace = SENT_ACTION + "." + new Date().getTime();
+        String deliveredNamespace = DELIVERED_ACTION + "." + new Date().getTime();
 
-        listenForSentNotices(context, namespace, numbers.size(), smsesSent);
-        sendSmses(context, namespace, numbers, messages);
+        listenForDeliveredNotice(context, deliveredNamespace, uniqueMsgId, delivered);
+        sendSms(context, sentNamespace, deliveredNamespace, uniqueMsgId, number, message);
     }
 
-    private static void listenForSentNotices(final Context receiverContext,
-                                             String namespace, final int targetSize,
-                                             final Callback smsesSent) {
-        final List<AtomicBoolean> finished = prepareFinishedStates(targetSize);
-        final AtomicInteger count = new AtomicInteger();
+    private void sendSms(Context context, String sentNamespace, String deliveredNamespace,
+                         int uniqueMsgId, String number, String message) {
+        SmsManager smsManager = SmsManager.getDefault();
+        Intent sentIntent = new Intent(sentNamespace);
+        sentIntent.putExtra("uniqueMsgId", uniqueMsgId);
+        Intent deliveredIntent = new Intent(deliveredNamespace);
+        deliveredIntent.putExtra("uniqueMsgId", uniqueMsgId);
 
+        // uniqueMsgId is also the PendingIntent's requestCode.
+        // We don't listen for the 'sent' broadcast, only for the 'delivered' broadcast.
+        PendingIntent sentPI = PendingIntent.getBroadcast(
+                context, uniqueMsgId, sentIntent, PendingIntent.FLAG_ONE_SHOT);
+        PendingIntent deliveredPI = PendingIntent.getBroadcast(
+                context, uniqueMsgId, deliveredIntent, PendingIntent.FLAG_ONE_SHOT);
+        smsManager.sendTextMessage(number, null, message, sentPI, deliveredPI);
+    }
+
+    private void listenForDeliveredNotice(final Context receiverContext,
+                                          String namespace,
+                                          final int uniqueMsgId,
+                                          final Callback delivered) {
         BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                int requestCode = intent.getIntExtra("requestCode", -1);
-                if (requestCode < 0) return;
+                int requestCode = intent.getIntExtra("uniqueMsgId", -1);
+                if (requestCode < 0 || requestCode != uniqueMsgId) return;
 
-                if (finished.get(requestCode).getAndSet(true)) return; // Broadcast replayed, shouldn't happen.
-                int currentCount = count.incrementAndGet();
-
-                processResult();
-
-                if (currentCount == targetSize) {
-                    receiverContext.unregisterReceiver(this);
-                    smsesSent.invoke();
-                }
-            }
-
-            private void processResult() {
-                switch (getResultCode()) {
-                    case Activity.RESULT_OK:
-                        System.out.println("SMS sent");
-                        break;
-                    case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
-                    case SmsManager.RESULT_ERROR_NO_SERVICE:
-                    case SmsManager.RESULT_ERROR_NULL_PDU:
-                    case SmsManager.RESULT_ERROR_RADIO_OFF:
-                        System.out.println("Error occurred: " + getResultCode());
-                        break;
-                    default:
-                        System.out.println("Unknown error occurred: " + getResultCode());
-                        break;
-                }
+                receiverContext.unregisterReceiver(this);
+                delivered.invoke();
             }
         };
 
@@ -87,27 +74,5 @@ public class SmsSender extends ReactContextBaseJavaModule {
                 broadcastReceiver,
                 new IntentFilter(namespace)
         );
-    }
-
-    private static List<AtomicBoolean> prepareFinishedStates(int size) {
-        List<AtomicBoolean> finished = new ArrayList<>();
-        for (int i = 0; i < size; i++) {
-            finished.add(new AtomicBoolean());
-        }
-        return finished;
-    }
-
-    private static void sendSmses(Context context, String namespace,
-                           ReadableArray numbers, ReadableArray messages) {
-        SmsManager smsManager = SmsManager.getDefault();
-        for (int i = 0; i < numbers.size(); i++) {
-            Intent sentIntent = new Intent(namespace);
-            sentIntent.putExtra("requestCode", i);
-
-            PendingIntent sentPI = PendingIntent.getBroadcast(
-                    context, i, sentIntent, PendingIntent.FLAG_ONE_SHOT);
-            smsManager.sendTextMessage(
-                    numbers.getString(i), null, messages.getString(i), sentPI, null);
-        }
     }
 }
