@@ -65,8 +65,12 @@ const images = {
 
     summary_input: require('../images/summary_input.png'),
     summary_location: require('../images/summary_location.png'),
-    summary_top: require('../images/summary_top.png')
+    summary_top: require('../images/summary_top.png'),
 
+
+    message_logo: require('../images/MessageIcon.png'),
+    unticked_box: require('../images/untickedBox.png'),
+    ticked_box: require('../images/tickedBox.png')
 };
 
 

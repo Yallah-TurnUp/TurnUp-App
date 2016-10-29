@@ -436,99 +436,81 @@ export default styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'space-around',
         alignItems: 'center',
-        backgroundColor: 'green',
+        backgroundColor: 'white',
         flexDirection: 'row',
     },
 
     MessageIcon: {
         width: 50,
         height: 50,
-        backgroundColor: 'blue'
+        backgroundColor: 'transparent',
+        alignItems:'center',
+        justifyContent: 'center'
+
+    },
+
+    TickBox:{
+        width: 30,
+        height: 30,
+        backgroundColor: 'transparent'
+    },
+
+    ContactlistSeparator: {
+        height: 1,
+        backgroundColor: '#8E8E8E',
     },
 
     MessageContainer:{
         width: 280,
-        height: 120,
-        justifyContent: 'center',
+        height: 180,
+        justifyContent: 'space-around',
         alignItems:'stretch',
-        backgroundColor: 'blue',
-        flexDirection: 'row'
+        backgroundColor: 'rgb(242,242,242)',
+        flexDirection: 'column',
+        borderRadius: 10
     },
 
 
-
-    ContactListContainer:{
-        flex: 1.3,
-        justifyContent: 'space-around',
-        alignItems: 'center',
-        backgroundColor: 'black',
+    ContactListBottomContainer:{
+        flex: 1.5,
+        justifyContent: 'space-between',
+        alignItems: 'flex-start',
+        backgroundColor: 'grey',
         flexDirection: 'row'
     },
 
     MessageMultiline: {
         flex: 1,
         fontSize: 13,
-        height: 100,
-        padding: 4,
-        marginBottom: 4,
-        width:260
-    },
-
-    SignUpTurnup: {
-        width: 170,
-        height: 170
-    },
-
-    SignUpCredentials: {
-        width: 280,
         height: 80,
-        backgroundColor: 'rgba(255,255,255,0.63)',
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 4,
-        marginTop: 30,
-        marginBottom: 20
+        padding: 4,
+        marginHorizontal:5,
+        marginVertical:5,
+        backgroundColor:'white'
     },
 
-    SignUpCredentialLine: {
-        flex: 1,
-        flexDirection: 'row'
+    UneditableText:{
+        fontSize: 12,
+        textAlign: 'left',
+        marginLeft: 8
     },
 
-    SignUpCredentialLeftPortion: {
-        flex: -1,
-        width: 40,
-        height: 40,
-        alignItems: 'center',
-        justifyContent: 'center'
+    ContactListViewContainer: {
+        flex:1,
+        marginTop: 20
     },
 
-    SignUpCredentialPhoto1: {
-        width: 15,
-        height: 10
+    ContactListViewRowContainer:{
+        flex:1,
+        padding:20,
+        flexDirection:'row',
+        alignItems: 'center'
     },
 
-    SignUpCredentialPhoto2:  {
-        width: 15,
-        height: 15
+    ContactListViewText:{
+        marginLeft:12,
+        fontSize: 16
     },
-
-    SignUpButton: {
-        width: 280,
-        height: 40,
-        elevation: 2,
-        backgroundColor: '#FF9800',
-        justifyContent: 'center',
-        borderRadius: 4
-    },
-
-    SignUpButtonText: {
-        flex: 0,
-        fontSize: 14,
-        fontFamily: 'Roboto-Light',
-        color: 'white',
-        textAlign: 'center'
-    }
 
 
 });
