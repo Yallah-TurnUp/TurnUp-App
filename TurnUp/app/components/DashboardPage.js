@@ -12,6 +12,7 @@ import {
     ListView,
     TouchableOpacity,
 } from 'react-native';
+import Collapsible from 'react-native-collapsible';
 import images from '../config/images.js';
 import { BottomButtons } from './DateTimePickerPage.js';
 
@@ -53,7 +54,7 @@ const statisticsNumberStyle = {
     color: 'white',
     textAlign: 'center',
     fontFamily: 'SourceSansPro-Regular',
-    fontSize: 30,
+    fontSize: 25,
     textShadowColor: 'black',
     textShadowOffset: { height: 1.5, width: 0 },
     textShadowRadius: 1,
@@ -66,22 +67,77 @@ const statisticsSubtitleStyle = {
     fontSize: 15
 };
 
-const SummaryStatisticsView = ({screenWidth, inCount, outCount, fenceCount}) => (
-    <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-        <View style={{width: screenWidth * 0.3, height: screenWidth * 0.167, backgroundColor: 'rgb(203,230,189)', justifyContent: 'center'}}>
-            <Text style={statisticsNumberStyle}>{inCount}</Text>
-            <Text style={statisticsSubtitleStyle}>Invited</Text>
-        </View>
-        <View style={{width: screenWidth * 0.3, height: screenWidth * 0.167, backgroundColor: 'rgb(246,148,166)', justifyContent: 'center'}}>
-            <Text style={statisticsNumberStyle}>{outCount}</Text>
-            <Text style={statisticsSubtitleStyle}>Count them OUT</Text>
-        </View>
-        <View style={{width: screenWidth * 0.3, height: screenWidth * 0.167, backgroundColor: 'rgb(206,206,206)', justifyContent: 'center'}}>
-            <Text style={statisticsNumberStyle}>{fenceCount}</Text>
-            <Text style={statisticsSubtitleStyle}>Have not RSVP</Text>
-        </View>
-    </View>
-);
+class SummaryStatisticsView extends Component {
+    constructor(props) {
+        super(props);
+
+        const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+
+        this.state = {
+            currentTab: -1,
+            dataSource: ds,
+        };
+
+        this.tappedTab = this.tappedTab.bind(this);
+        this.getNames = this.getNames.bind(this);
+    }
+
+    tappedTab(tabTarget) {
+        this.setState({
+            currentTab: tabTarget !== this.state.currentTab ? tabTarget : -1,
+        })
+    }
+
+    getNames() {
+        switch(this.state.currentTab) {
+            case 0:
+                console.log("0 - herp");
+                return this.props.inPeople;
+            case 1:
+                console.log("1");
+                return this.props.outPeople;
+            case 2:
+                console.log("2");
+                return this.props.fencePeople;
+            default:
+                return [];
+        }
+    }
+
+    render() {
+        const {screenWidth, inCount, outCount, fenceCount} = this.props;
+        const dataSource = this.state.dataSource.cloneWithRows(this.getNames());
+
+        return (
+            <View>
+                <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+                    <TouchableOpacity activeOpacity={1} style={{width: screenWidth * 0.3, height: screenWidth * 0.167, backgroundColor: (this.state.currentTab === 0 || this.state.currentTab === -1) ? 'rgb(183,210,169)' : 'rgb(206,206,206)', justifyContent: 'center'}} onPress={() => this.tappedTab(0)}>
+                        <Text style={statisticsNumberStyle}>{inCount}</Text>
+                        <Text style={statisticsSubtitleStyle}>Invited</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity activeOpacity={1} style={{width: screenWidth * 0.3, height: screenWidth * 0.167, backgroundColor: (this.state.currentTab === 1 || this.state.currentTab === -1)  ? 'rgb(226,128,146)' : 'rgb(206,206,206)', justifyContent: 'center'}} onPress={() => this.tappedTab(1)}>
+                        <Text style={statisticsNumberStyle}>{outCount}</Text>
+                        <Text style={statisticsSubtitleStyle}>Count them OUT</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity activeOpacity={1} style={{width: screenWidth * 0.3, height: screenWidth * 0.167, backgroundColor: (this.state.currentTab === 2 || this.state.currentTab === -1)  ? 'rgb(170,170,170)' : 'rgb(206,206,206)', justifyContent: 'center'}} onPress={() => this.tappedTab(2)}>
+                        <Text style={statisticsNumberStyle}>{fenceCount}</Text>
+                        <Text style={statisticsSubtitleStyle}>Have not RSVP</Text>
+                    </TouchableOpacity>
+                </View>
+                {this.state.currentTab !== -1 &&
+                    <ListView
+                        contentContainerStyle={{flexWrap: 'wrap', width: screenWidth * 0.9, paddingTop: 5, flexDirection: 'row', alignSelf: 'center', backgroundColor: 'white', alignItems: 'flex-start'}}
+                        dataSource={dataSource}
+                        renderRow={(rowData) => (
+                            <View style={{width: screenWidth * 0.9 / 4, height: 30, marginTop: 5, marginBottom: 5}}>
+                                <Text style={{textAlign: 'center', fontFamily: 'SourceSansPro-Regular', fontSize: 15, color: 'black'}}>{rowData}</Text>
+                            </View>
+                        )}
+                        enableEmptySections />}
+            </View>
+        );
+    }
+}
 
 const CommonAvailabilityDate = ({ datePicked, names, highestAttendance, width }) => {
     const date = datePicked.getDate();
@@ -106,8 +162,8 @@ const CommonAvailabilityDate = ({ datePicked, names, highestAttendance, width })
                     renderRow={(rowData) => <Text style={{textAlign: 'center', marginTop: 5, marginBottom: 5, fontFamily: 'SourceSansPro-Regular', fontSize: 14, color: 'black'}}>{rowData}</Text>} />
             </View>
             <View style={{ height: 20 }} />
-            <TouchableOpacity style={{ position: 'absolute', bottom: 10, left: (width - (20 * 3.02)) / 2 }}>
-                <Image style={{ height: 20, width: 20 * 3.02 }} source={highestAttendance ? images.pick_green : images.pick_grey} />
+            <TouchableOpacity style={{ position: 'absolute', bottom: 10, left: (width - (15 * 2.489)) / 2 }}>
+                <Image style={{ height: 15, width: 15 * 2.489 }} source={highestAttendance ? images.pick_green : images.pick_grey} />
             </TouchableOpacity>
         </View>
     );
@@ -142,6 +198,11 @@ export default class DashboardPage extends Component {
             names: ['Aaron Khoo'],
         }];
 
+        const inPeople = ['Aaron Khoo', 'Anna Cheng', 'Benny Chong', 'Bryan Lim', 'Carrie Ash', 'Darius Pan',
+            'Felicia Lim', 'Wei Li', 'Jack Ma', 'Zack Joe', 'Nice Guy'];
+        const outPeople = ['Aaron Khoo', 'Anna Cheng', 'Benny Chong', 'Bryan Lim', 'Carrie Ash', 'Darius Pan'];
+        const fencePeople = ['Felicia Lim', 'Wei Li', 'Jack Ma', 'Zack Joe', 'Nice Guy'];
+
         const enrichedEventInfo = this.enrichEventInfo(eventInfo);
 
         return (
@@ -164,7 +225,10 @@ export default class DashboardPage extends Component {
                                     width={(screenWidth * 0.9 / enrichedEventInfo.length) - 5}/>
                             ))}
                         </View>
-                        <SummaryStatisticsView screenWidth={screenWidth} inCount={50} outCount={20} fenceCount={25} />
+                        <SummaryStatisticsView
+                            screenWidth={screenWidth}
+                            inCount={50} outCount={20} fenceCount={25}
+                            inPeople={inPeople} outPeople={outPeople} fencePeople={fencePeople} />
                     </View>
                     <SummaryLocationView locationName={"NUS Enterprise - Hangar"} />
                 </ScrollView>
