@@ -16,6 +16,17 @@ import {
 } from 'react-native';
 import images from '../config/images.js';
 
+export const BottomButtons = ({leftImage, rightImage, leftHandler, rightHandler, leftAspect, rightAspect}) => (
+    <View style={{backgroundColor: 'white', height: 55, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+        <TouchableOpacity onPress={leftHandler}>
+            <Image style={{height: 30, width: 30 * (leftAspect || 3.68), marginLeft: 30}} source={leftImage} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={rightHandler}>
+            <Image style={{height: 30, width: 30 * (rightAspect || 3.68), marginRight: 30}} source={rightImage} />
+        </TouchableOpacity>
+    </View>
+);
+
 const monthNames = {
     0: 'JAN',
     1: 'FEB',
@@ -65,14 +76,30 @@ class SnappingListView extends Component {
         const ds = new ListView.DataSource({rowHasChanged: (row1, row2) => row1 !== row2});
         const initialSelectedPosition = this.props.initialPosition;
         this.state = {
-            dataSource: ds.cloneWithRows(this.populateDataWithSelectedInformation(initialSelectedPosition)),
+            dataSource: ds.cloneWithRows(this.populateDataWithSelectedInformation(initialSelectedPosition, this.props.data)),
             selectedItem: initialSelectedPosition,
         };
     }
 
-    populateDataWithSelectedInformation(selectedPosition) {
-        return this.props.data.map((data, index) => ({
-            ...data,
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.data.length === this.props.data.length) return;
+        const selectedPosition = (nextProps.data.map(data => data.content).indexOf(this.props.data[this.state.selectedItem].content) === -1)
+            ? nextProps.data.length - 3
+            : this.state.selectedItem;
+        this.setState({
+           dataSource: this.state.dataSource.cloneWithRows(this.populateDataWithSelectedInformation(selectedPosition, nextProps.data)),
+           selectedItem: selectedPosition,
+        }, () => {
+            this.listView.scrollTo({
+                x: this.offsetToItemCenterFromItemPosition(selectedPosition),
+                animated: false,
+            });
+        });
+    }
+
+    populateDataWithSelectedInformation(selectedPosition, data) {
+        return data.map((dataPiece, index) => ({
+            ...dataPiece,
             selected: index === selectedPosition,
         }));
     }
@@ -94,7 +121,7 @@ class SnappingListView extends Component {
         this.props.selectedItem(this.props.data[itemPosition]);
         this.setState({
             selectedItem: itemPosition,
-            dataSource: this.state.dataSource.cloneWithRows(this.populateDataWithSelectedInformation(itemPosition)),
+            dataSource: this.state.dataSource.cloneWithRows(this.populateDataWithSelectedInformation(itemPosition, this.props.data)),
         });
     }
 
@@ -161,7 +188,7 @@ class DeletableListView extends Component {
 // What to show
 
 const EventDates = ({selectedDates, onDelete}) => (
-    <View style={{alignItems: 'center'}}>
+    <View style={{alignItems: 'center', flex: 1}}>
         <Image style={{height: 40, width: 213, marginBottom: 15}} source={images.chosen_timings_label} />
         <DeletableListView data={selectedDates} onPress={onDelete} />
     </View>
@@ -176,7 +203,9 @@ const CurrentProgress = () => (
 
 // Picker
 
-const DateTimePicker = ({pickerWidth, cellWidth, offset, selectedDate, monthsRow, daysRow, hoursRow, minsRow}) => (
+const DateTimePicker = ({pickerWidth, cellWidth, offset, selectedDate, onAdd,
+    monthsRow, daysRow, hoursRow, minsRow,
+    onMonthSelect, onDaySelect, onHourSelect, onMinuteSelect}) => (
     <View style={{flex: 0, alignItems: 'stretch', overflow: 'visible', backgroundColor: 'white'}}>
         <Text style={{marginLeft: 5, marginTop: 3, fontSize: 15}}>PICK A DATE</Text>
         <View style={{height: 40, backgroundColor: 'rgb(241,241,241)', marginTop: 1}}>
@@ -185,7 +214,7 @@ const DateTimePicker = ({pickerWidth, cellWidth, offset, selectedDate, monthsRow
                 cellWidth={cellWidth}
                 snapPosition={pickerWidth / 2}
                 data={monthsRow}
-                selectedItem={this.onMonthSelect}
+                selectedItem={onMonthSelect}
                 initialPosition={offset} />
         </View>
         <View style={{height: 40, backgroundColor: 'rgb(241,241,241)', marginTop: 3}}>
@@ -194,7 +223,7 @@ const DateTimePicker = ({pickerWidth, cellWidth, offset, selectedDate, monthsRow
                 cellWidth={cellWidth}
                 snapPosition={pickerWidth / 2}
                 data={daysRow}
-                selectedItem={this.onDaySelect}
+                selectedItem={onDaySelect}
                 initialPosition={selectedDate.day + offset - 1} />
         </View>
         <Text style={{marginLeft: 5, marginTop: 3, fontSize: 15}}>SELECT TIME</Text>
@@ -204,7 +233,7 @@ const DateTimePicker = ({pickerWidth, cellWidth, offset, selectedDate, monthsRow
                 cellWidth={cellWidth}
                 snapPosition={pickerWidth / 2}
                 data={hoursRow}
-                selectedItem={this.onHourSelect}
+                selectedItem={onHourSelect}
                 initialPosition={selectedDate.hour + offset} />
         </View>
         <View style={{height: 40, backgroundColor: 'rgb(241,241,241)', marginTop: 3}}>
@@ -213,14 +242,14 @@ const DateTimePicker = ({pickerWidth, cellWidth, offset, selectedDate, monthsRow
                 cellWidth={cellWidth}
                 snapPosition={pickerWidth / 2}
                 data={minsRow}
-                selectedItem={this.onMinuteSelect}
+                selectedItem={onMinuteSelect}
                 initialPosition={Math.floor(selectedDate.minute / 5) + offset} />
         </View>
         <View style={{flex: 1, alignItems: 'stretch', justifyContent: 'center', height: 80, marginTop: 5}}>
             <View style={{flex: 1, height: 40}} />
             <View style={{flex: 1, backgroundColor: 'rgb(241,241,241)', height: 41}} />
             <View style={{flex: 1, position: 'absolute', top: 0, left: (pickerWidth - 80) / 2, backgroundColor: 'white', height: 80, width: 80, borderRadius: 40, alignItems: 'center', justifyContent: 'center'}}>
-                <TouchableOpacity onPress={this.onAdd}>
+                <TouchableOpacity onPress={onAdd}>
                     <Image style={{height: 55, width: 55}} source={images.datetimeplus} />
                 </TouchableOpacity>
             </View>
@@ -344,8 +373,8 @@ export default class DateTimePickerPage extends Component {
         const cellWidth = pickerWidth / cellCount;
         const offset = Math.floor(cellCount / 2);
 
-        const currMonth = new Date();
-        currMonth.setDate(1);
+        const { year, month } = this.state.selectedDate;
+        const currMonth = new Date(year, month, 1);
         const monthDays = new Date(currMonth.getYear(), currMonth.getMonth() + 1, 0).getDate();
 
         const monthsRow = this.getMonths();
@@ -356,27 +385,16 @@ export default class DateTimePickerPage extends Component {
         return (
             <View style={{flex: 1, justifyContent: 'center', backgroundColor: 'rgb(241,241,241)'}}>
                 <DateTimePicker
-                    pickerWidth={pickerWidth}
-                    cellWidth={cellWidth}
-                    offset={offset}
-                    selectedDate={this.state.selectedDate}
-                    monthsRow={monthsRow}
-                    daysRow={daysRow}
-                    hoursRow={hoursRow}
-                    minsRow={minsRow} />
+                    pickerWidth={pickerWidth} cellWidth={cellWidth} offset={offset} selectedDate={this.state.selectedDate} onAdd={this.onAdd}
+                    monthsRow={monthsRow} daysRow={daysRow} hoursRow={hoursRow} minsRow={minsRow}
+                    onMonthSelect={this.onMonthSelect} onDaySelect={this.onDaySelect} onHourSelect={this.onHourSelect} onMinuteSelect={this.onMinuteSelect} />
                 <View style={{flex: 1, backgroundColor: 'rgb(241,241,241)', padding: 10, alignItems: 'center'}}>
                     {this.state.dates.length > 0
                         ? <EventDates selectedDates={this.getSelectedDates()} onDelete={this.onDelete} />
                         : <CurrentProgress/>}
                 </View>
-                <View style={{flex: 0, backgroundColor: 'white', height: 70, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                    <TouchableOpacity>
-                        <Image style={{height: 30, width: 110.4, marginLeft: 30}} source={images.creation_back} />
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <Image style={{height: 30, width: 110.4, marginRight: 30}} source={images.creation_next} />
-                    </TouchableOpacity>
-                </View>
+                <BottomButtons leftImage={images.creation_back} rightImage={images.creation_next} />
+
             </View>
         );
     }

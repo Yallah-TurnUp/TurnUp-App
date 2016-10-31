@@ -73,6 +73,14 @@ const images = {
     chosen_timings_label: require('../images/chosen_timings_label.png'),
     clear_date_time: require('../images/clear_date_time.png'),
     progress_common_availability: require('../images/progress_common_avail.png'),
+
+    banner_rocket: require('../images/banner_rocket.png'),
+    map_icon: require('../images/Map_Icon.png'),
+    common_availability_label: require('../images/common_availability_label.png'),
+    invite_more: require('../images/invite_more.png'),
+    highest_attendance_banner: require('../images/Highest_Attendance_Banner.png'),
+    pick_green: require('../images/Pick_Green.png'),
+    pick_grey: require('../images/Pick_Grey.png'),
 };
 
 
