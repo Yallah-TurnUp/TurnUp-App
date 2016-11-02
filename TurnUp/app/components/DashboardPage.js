@@ -91,13 +91,10 @@ class SummaryStatisticsView extends Component {
     getNames() {
         switch(this.state.currentTab) {
             case 0:
-                console.log("0 - herp");
-                return this.props.inPeople;
+                return this.props.invitedPeople;
             case 1:
-                console.log("1");
                 return this.props.outPeople;
             case 2:
-                console.log("2");
                 return this.props.fencePeople;
             default:
                 return [];
@@ -105,14 +102,14 @@ class SummaryStatisticsView extends Component {
     }
 
     render() {
-        const {screenWidth, inCount, outCount, fenceCount} = this.props;
+        const {screenWidth, invitedCount, outCount, fenceCount} = this.props;
         const dataSource = this.state.dataSource.cloneWithRows(this.getNames());
 
         return (
             <View>
                 <View style={{flexDirection: 'row', justifyContent: 'center'}}>
                     <TouchableOpacity activeOpacity={1} style={{width: screenWidth * 0.3, height: screenWidth * 0.167, backgroundColor: (this.state.currentTab === 0 || this.state.currentTab === -1) ? 'rgb(183,210,169)' : 'rgb(206,206,206)', justifyContent: 'center'}} onPress={() => this.tappedTab(0)}>
-                        <Text style={statisticsNumberStyle}>{inCount}</Text>
+                        <Text style={statisticsNumberStyle}>{invitedCount}</Text>
                         <Text style={statisticsSubtitleStyle}>Invited</Text>
                     </TouchableOpacity>
                     <TouchableOpacity activeOpacity={1} style={{width: screenWidth * 0.3, height: screenWidth * 0.167, backgroundColor: (this.state.currentTab === 1 || this.state.currentTab === -1)  ? 'rgb(226,128,146)' : 'rgb(206,206,206)', justifyContent: 'center'}} onPress={() => this.tappedTab(1)}>
@@ -145,7 +142,6 @@ const CommonAvailabilityDate = ({ datePicked, names, highestAttendance, width })
     const day = dayNames[datePicked.getDay()];
     const hour = ('0' + datePicked.getHours()).slice(-2);
     const minute = ('0' + datePicked.getMinutes()).slice(-2);
-    // const pickImageWidth = width / 1.5;
 
     return (
         <View style={{flex: 1, marginLeft: 2.5, marginRight: 2.5}}>
@@ -169,11 +165,33 @@ const CommonAvailabilityDate = ({ datePicked, names, highestAttendance, width })
     );
 };
 
+const CommonAvailabilityPicking = ({ screenWidth, enrichedEventInfo }) => (
+    <View style={{flexDirection: 'row', width: screenWidth * 0.9, alignSelf: 'center', justifyContent: 'space-between'}}>
+        {enrichedEventInfo.map(({ date, names, highestAttendance }, index) => (
+            <CommonAvailabilityDate
+                key={index}
+                highestAttendance={highestAttendance}
+                datePicked={date}
+                names={names}
+                width={(screenWidth * 0.9 / enrichedEventInfo.length) - 5}/>
+        ))}
+    </View>
+);
+
+const EventBanner = ({ screenWidth, eventName }) => (
+    <Image style={{width: screenWidth, height: screenWidth * 0.457 }} source={images.banner_rocket}>
+        <View style={{flex: 1, backgroundColor: 'rgba(0,0,0, 0.20)', alignItems: 'center', justifyContent: 'center'}}>
+            <Text style={{fontFamily: 'SourceSansPro-Regular', fontSize: 30, color: 'white', textAlign: 'center', width: screenWidth * 0.9}}>{'\uD83C\uDF89'} {eventName}</Text>
+        </View>
+    </Image>
+);
+
 export default class DashboardPage extends Component {
     constructor(props) {
         super(props);
     }
 
+    // Highlights the day with the highest attendance
     enrichEventInfo(eventInfo) {
         const bestLength = Math.max(...eventInfo.map(({ names }) => names.length));
         return eventInfo.map(possibleDate => ({
@@ -184,8 +202,6 @@ export default class DashboardPage extends Component {
 
     render() {
         const screenWidth = Dimensions.get('window').width;
-        const bannerHeight = 0.457 * screenWidth;
-        const partyPopperEmoji = '\uD83C\uDF89';
 
         const eventInfo = [{
             date: new Date(2016, 9, 10, 6, 15),
@@ -198,37 +214,26 @@ export default class DashboardPage extends Component {
             names: ['Aaron Khoo'],
         }];
 
-        const inPeople = ['Aaron Khoo', 'Anna Cheng', 'Benny Chong', 'Bryan Lim', 'Carrie Ash', 'Darius Pan',
+        const invitedPeople = ['Aaron Khoo', 'Anna Cheng', 'Benny Chong', 'Bryan Lim', 'Carrie Ash', 'Darius Pan',
             'Felicia Lim', 'Wei Li', 'Jack Ma', 'Zack Joe', 'Nice Guy'];
         const outPeople = ['Aaron Khoo', 'Anna Cheng', 'Benny Chong', 'Bryan Lim', 'Carrie Ash', 'Darius Pan'];
         const fencePeople = ['Felicia Lim', 'Wei Li', 'Jack Ma', 'Zack Joe', 'Nice Guy'];
+
+        const eventName = 'NCIS \'11 Reunion Dinner';
 
         const enrichedEventInfo = this.enrichEventInfo(eventInfo);
 
         return (
             <View style={{flex: 1, alignItems: 'stretch', justifyContent: 'space-between'}}>
                 <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
-                    <Image style={{width: Dimensions.get('window').width, height: bannerHeight}} source={images.banner_rocket}>
-                        <View style={{flex: 1, backgroundColor: 'rgba(0,0,0, 0.20)', alignItems: 'center', justifyContent: 'center'}}>
-                            <Text style={{fontFamily: 'SourceSansPro-Regular', fontSize: 30, color: 'white', textAlign: 'center', width: screenWidth * 0.9}}>{partyPopperEmoji} NCIS '11 Reunion Dinner</Text>
-                        </View>
-                    </Image>
+                    <EventBanner screenWidth={screenWidth} eventName={eventName} />
                     <Image style={{height: 25, width: 215.6, alignSelf: 'center', marginTop: 5, marginBottom: 5 }} source={images.common_availability_label} />
                     <View style={{backgroundColor: 'rgb(231,231,231)', paddingTop: 10, paddingBottom: 20}}>
-                        <View style={{flexDirection: 'row', width: screenWidth * 0.9, alignSelf: 'center', justifyContent: 'space-between'}}>
-                            {enrichedEventInfo.map(({ date, names, highestAttendance }, index) => (
-                                <CommonAvailabilityDate
-                                    key={index}
-                                    highestAttendance={highestAttendance}
-                                    datePicked={date}
-                                    names={names}
-                                    width={(screenWidth * 0.9 / enrichedEventInfo.length) - 5}/>
-                            ))}
-                        </View>
+                        <CommonAvailabilityPicking screenWidth={screenWidth} enrichedEventInfo={enrichedEventInfo} />
                         <SummaryStatisticsView
                             screenWidth={screenWidth}
-                            inCount={50} outCount={20} fenceCount={25}
-                            inPeople={inPeople} outPeople={outPeople} fencePeople={fencePeople} />
+                            invitedCount={invitedPeople.length} outCount={outPeople.length} fenceCount={fencePeople.length}
+                            invitedPeople={invitedPeople} outPeople={outPeople} fencePeople={fencePeople} />
                     </View>
                     <SummaryLocationView locationName={"NUS Enterprise - Hangar"} />
                 </ScrollView>
