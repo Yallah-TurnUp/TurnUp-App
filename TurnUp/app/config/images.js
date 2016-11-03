@@ -74,9 +74,12 @@ const images = {
     clear_date_time: require('../images/clear_date_time.png'),
     progress_common_availability: require('../images/progress_common_avail.png'),
 
+    progress_map: require('../images/OneMoreToGo.png'),
+
     banner_rocket: require('../images/banner_rocket.png'),
     map_icon: require('../images/Map_Icon.png'),
     common_availability_label: require('../images/common_availability_label.png'),
+    rsvp_summary_label: require('../images/rsvp_summary_label.png'),
     invite_more: require('../images/invite_more.png'),
     highest_attendance_banner: require('../images/Highest_Attendance_Banner.png'),
     pick_green: require('../images/Pick_Green.png'),

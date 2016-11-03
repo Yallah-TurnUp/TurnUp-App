@@ -103,7 +103,8 @@ class SummaryStatisticsView extends Component {
 
     render() {
         const {screenWidth, invitedCount, outCount, fenceCount} = this.props;
-        const dataSource = this.state.dataSource.cloneWithRows(this.getNames());
+        const names = this.getNames();
+        const dataSource = this.state.dataSource.cloneWithRows(names);
 
         return (
             <View>
@@ -121,20 +122,63 @@ class SummaryStatisticsView extends Component {
                         <Text style={statisticsSubtitleStyle}>Have not RSVP</Text>
                     </TouchableOpacity>
                 </View>
-                {this.state.currentTab !== -1 &&
+                <View>
+                    <Collapsible collapsed={this.state.currentTab === -1}>
+                        <ListView
+                            contentContainerStyle={{flexWrap: 'wrap', width: screenWidth * 0.9, paddingTop: 5, flexDirection: 'row', alignSelf: 'center', backgroundColor: 'white', alignItems: 'flex-start'}}
+                            dataSource={dataSource}
+                            renderRow={(rowData) => (
+                                <View style={{width: screenWidth * 0.9 / 4, height: 30, marginTop: 5, marginBottom: 5}}>
+                                    <Text style={{textAlign: 'center', fontFamily: 'SourceSansPro-Regular', fontSize: 15, color: 'black'}}>{rowData}</Text>
+                                </View>
+                            )}
+                            enableEmptySections />
+                    </Collapsible>
+                </View>
+            </View>
+        );
+    }
+}
+
+class InPeopleView extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = { isOpen: false };
+        this.toggleOpen = this.toggleOpen.bind(this);
+    }
+
+    toggleOpen() {
+        this.setState({ isOpen: !this.state.isOpen });
+    }
+
+    render() {
+        const {screenWidth, inCount, inPeople} = this.props;
+        const buttonHeight = screenWidth * 0.167;
+        const buttonWidth = screenWidth * 0.9;
+        const dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}).cloneWithRows(inPeople);
+
+        return (
+            <View style={{width: screenWidth * 0.9, alignSelf: 'center', marginTop: 5, marginBottom: 10}}>
+                <TouchableOpacity activeOpacity={1} style={{width: buttonWidth, height: buttonHeight, backgroundColor: 'rgb(163,212,105)', justifyContent: 'center', borderRadius: 10}} onPress={this.toggleOpen}>
+                    <Text style={statisticsNumberStyle}>{inCount}</Text>
+                    <Text style={statisticsSubtitleStyle}>Are IN!</Text>
+                </TouchableOpacity>
+                <Collapsible collapsed={!(this.state.isOpen && inPeople.length > 0)}>
                     <ListView
-                        contentContainerStyle={{flexWrap: 'wrap', width: screenWidth * 0.9, paddingTop: 5, flexDirection: 'row', alignSelf: 'center', backgroundColor: 'white', alignItems: 'flex-start'}}
+                        contentContainerStyle={{flexWrap: 'wrap', paddingTop: 5, flexDirection: 'row', backgroundColor: 'white', alignItems: 'flex-start'}}
                         dataSource={dataSource}
                         renderRow={(rowData) => (
                             <View style={{width: screenWidth * 0.9 / 4, height: 30, marginTop: 5, marginBottom: 5}}>
                                 <Text style={{textAlign: 'center', fontFamily: 'SourceSansPro-Regular', fontSize: 15, color: 'black'}}>{rowData}</Text>
                             </View>
                         )}
-                        enableEmptySections />}
+                        enableEmptySections />
+                </Collapsible>
             </View>
         );
     }
-}
+};
 
 const CommonAvailabilityDate = ({ datePicked, names, highestAttendance, width }) => {
     const date = datePicked.getDate();
@@ -178,6 +222,36 @@ const CommonAvailabilityPicking = ({ screenWidth, enrichedEventInfo }) => (
     </View>
 );
 
+// Initial stage
+
+const CommonAvailabilityView = ({ screenWidth, enrichedEventInfo, invitedPeople, outPeople, fencePeople }) => (
+    <View>
+        <Image style={{height: 25, width: null, alignSelf: 'center', marginTop: 5, marginBottom: 5 }} source={images.common_availability_label} />
+        <View style={{backgroundColor: 'rgb(231,231,231)', paddingTop: 10, paddingBottom: 20}}>
+            <CommonAvailabilityPicking screenWidth={screenWidth} enrichedEventInfo={enrichedEventInfo} />
+            <SummaryStatisticsView
+                screenWidth={screenWidth}
+                invitedCount={invitedPeople.length} outCount={outPeople.length} fenceCount={fencePeople.length}
+                invitedPeople={invitedPeople} outPeople={outPeople} fencePeople={fencePeople} />
+        </View>
+    </View>
+);
+
+// New stage
+
+const RSVPSummaryView = ({ screenWidth, inPeople, invitedPeople, outPeople, fencePeople }) => (
+    <View>
+        <Image style={{height: 25, width: 159.3, alignSelf: 'center', marginTop: 5, marginBottom: 5 }} source={images.rsvp_summary_label} />
+        <View style={{backgroundColor: 'rgb(231,231,231)', paddingTop: 10, paddingBottom: 20}}>
+            <InPeopleView screenWidth={screenWidth} inPeople={inPeople} inCount={inPeople.length} />
+            <SummaryStatisticsView
+                screenWidth={screenWidth}
+                invitedCount={invitedPeople.length} outCount={outPeople.length} fenceCount={fencePeople.length}
+                invitedPeople={invitedPeople} outPeople={outPeople} fencePeople={fencePeople} />
+        </View>
+    </View>
+);
+
 const EventBanner = ({ screenWidth, eventName }) => (
     <Image style={{width: screenWidth, height: screenWidth * 0.457 }} source={images.banner_rocket}>
         <View style={{flex: 1, backgroundColor: 'rgba(0,0,0, 0.20)', alignItems: 'center', justifyContent: 'center'}}>
@@ -203,6 +277,8 @@ export default class DashboardPage extends Component {
     render() {
         const screenWidth = Dimensions.get('window').width;
 
+        // Common Availability
+
         const eventInfo = [{
             date: new Date(2016, 9, 10, 6, 15),
             names: ['Aaron Khoo', 'Anna Cheng', 'Benny Chong', 'Bryan Lim'],
@@ -213,28 +289,34 @@ export default class DashboardPage extends Component {
             date: new Date(2016, 10, 16, 15, 0),
             names: ['Aaron Khoo'],
         }];
+        const enrichedEventInfo = this.enrichEventInfo(eventInfo);
+
+        // Attendance
 
         const invitedPeople = ['Aaron Khoo', 'Anna Cheng', 'Benny Chong', 'Bryan Lim', 'Carrie Ash', 'Darius Pan',
             'Felicia Lim', 'Wei Li', 'Jack Ma', 'Zack Joe', 'Nice Guy'];
         const outPeople = ['Aaron Khoo', 'Anna Cheng', 'Benny Chong', 'Bryan Lim', 'Carrie Ash', 'Darius Pan'];
         const fencePeople = ['Felicia Lim', 'Wei Li', 'Jack Ma', 'Zack Joe', 'Nice Guy'];
+        const inPeople = ['Aaron Khoo', 'Anna Cheng', 'Benny Chong', 'Bryan Lim', 'Carrie Ash', 'Darius Pan',
+            'Felicia Lim', 'Wei Li', 'Jack Ma', 'Zack Joe', 'Nice Guy'];
+
+        // Event Banner
 
         const eventName = 'NCIS \'11 Reunion Dinner';
 
-        const enrichedEventInfo = this.enrichEventInfo(eventInfo);
+        const finalizedDate = new Date(2016, 9, 10, 6, 15);
 
         return (
             <View style={{flex: 1, alignItems: 'stretch', justifyContent: 'space-between'}}>
                 <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
                     <EventBanner screenWidth={screenWidth} eventName={eventName} />
-                    <Image style={{height: 25, width: 215.6, alignSelf: 'center', marginTop: 5, marginBottom: 5 }} source={images.common_availability_label} />
-                    <View style={{backgroundColor: 'rgb(231,231,231)', paddingTop: 10, paddingBottom: 20}}>
-                        <CommonAvailabilityPicking screenWidth={screenWidth} enrichedEventInfo={enrichedEventInfo} />
-                        <SummaryStatisticsView
-                            screenWidth={screenWidth}
-                            invitedCount={invitedPeople.length} outCount={outPeople.length} fenceCount={fencePeople.length}
+                    {finalizedDate
+                        ? <RSVPSummaryView
+                            screenWidth={screenWidth} inPeople={inPeople}
                             invitedPeople={invitedPeople} outPeople={outPeople} fencePeople={fencePeople} />
-                    </View>
+                        : <CommonAvailabilityView
+                            screenWidth={screenWidth} enrichedEventInfo={enrichedEventInfo}
+                            invitedPeople={invitedPeople} outPeople={outPeople} fencePeople={fencePeople} />}
                     <SummaryLocationView locationName={"NUS Enterprise - Hangar"} />
                 </ScrollView>
                 <BottomButtons leftImage={images.creation_back} rightImage={images.invite_more} rightAspect={5.114}/>
