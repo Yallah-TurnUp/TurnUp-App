@@ -11,6 +11,7 @@ import {
     Dimensions,
     ListView,
     TouchableOpacity,
+    Alert,
 } from 'react-native';
 import Collapsible from 'react-native-collapsible';
 import images from '../config/images.js';
@@ -180,7 +181,7 @@ class InPeopleView extends Component {
     }
 };
 
-const CommonAvailabilityDate = ({ datePicked, names, highestAttendance, width }) => {
+const CommonAvailabilityDate = ({ datePicked, names, highestAttendance, width, pickDate }) => {
     const date = datePicked.getDate();
     const month = monthNames[datePicked.getMonth()];
     const day = dayNames[datePicked.getDay()];
@@ -202,20 +203,21 @@ const CommonAvailabilityDate = ({ datePicked, names, highestAttendance, width })
                     renderRow={(rowData) => <Text style={{textAlign: 'center', marginTop: 5, marginBottom: 5, fontFamily: 'SourceSansPro-Regular', fontSize: 14, color: 'black'}}>{rowData}</Text>} />
             </View>
             <View style={{ height: 20 }} />
-            <TouchableOpacity style={{ position: 'absolute', bottom: 10, left: (width - (15 * 2.489)) / 2 }}>
+            <TouchableOpacity style={{ position: 'absolute', bottom: 10, left: (width - (15 * 2.489)) / 2 }} onPress={() => pickDate(datePicked)}>
                 <Image style={{ height: 15, width: 15 * 2.489 }} source={highestAttendance ? images.pick_green : images.pick_grey} />
             </TouchableOpacity>
         </View>
     );
 };
 
-const CommonAvailabilityPicking = ({ screenWidth, enrichedEventInfo }) => (
+const CommonAvailabilityPicking = ({ screenWidth, enrichedEventInfo, pickDate }) => (
     <View style={{flexDirection: 'row', width: screenWidth * 0.9, alignSelf: 'center', justifyContent: 'space-between'}}>
         {enrichedEventInfo.map(({ date, names, highestAttendance }, index) => (
             <CommonAvailabilityDate
                 key={index}
                 highestAttendance={highestAttendance}
                 datePicked={date}
+                pickDate={pickDate}
                 names={names}
                 width={(screenWidth * 0.9 / enrichedEventInfo.length) - 5}/>
         ))}
@@ -224,11 +226,11 @@ const CommonAvailabilityPicking = ({ screenWidth, enrichedEventInfo }) => (
 
 // Initial stage
 
-const CommonAvailabilityView = ({ screenWidth, enrichedEventInfo, invitedPeople, outPeople, fencePeople }) => (
+const CommonAvailabilityView = ({ screenWidth, enrichedEventInfo, invitedPeople, outPeople, fencePeople, pickDate }) => (
     <View>
         <Image style={{height: 25, width: null, alignSelf: 'center', marginTop: 5, marginBottom: 5 }} source={images.common_availability_label} />
         <View style={{backgroundColor: 'rgb(231,231,231)', paddingTop: 10, paddingBottom: 20}}>
-            <CommonAvailabilityPicking screenWidth={screenWidth} enrichedEventInfo={enrichedEventInfo} />
+            <CommonAvailabilityPicking screenWidth={screenWidth} enrichedEventInfo={enrichedEventInfo} pickDate={pickDate} />
             <SummaryStatisticsView
                 screenWidth={screenWidth}
                 invitedCount={invitedPeople.length} outCount={outPeople.length} fenceCount={fencePeople.length}
@@ -263,6 +265,8 @@ const EventBanner = ({ screenWidth, eventName }) => (
 export default class DashboardPage extends Component {
     constructor(props) {
         super(props);
+
+        this.pickDate = this.pickDate.bind(this);
     }
 
     // Highlights the day with the highest attendance
@@ -272,6 +276,17 @@ export default class DashboardPage extends Component {
             ...possibleDate,
             highestAttendance: possibleDate.names.length === bestLength,
         }));
+    }
+
+    reallyPickDate(date) {
+        console.log('Chose this date!', date);
+    }
+
+    pickDate(date) {
+        Alert.alert('Finalize date', `Decide on this date?`, [
+            { text: 'Maybe not', null },
+            { text: 'Sure!', onPress: () => this.reallyPickDate(date)},
+        ]);
     }
 
     render() {
@@ -304,7 +319,8 @@ export default class DashboardPage extends Component {
 
         const eventName = 'NCIS \'11 Reunion Dinner';
 
-        const finalizedDate = new Date(2016, 9, 10, 6, 15);
+        // Flip here
+        const finalizedDate = null//new Date(2016, 9, 10, 6, 15);
 
         return (
             <View style={{flex: 1, alignItems: 'stretch', justifyContent: 'space-between'}}>
@@ -315,7 +331,7 @@ export default class DashboardPage extends Component {
                             screenWidth={screenWidth} inPeople={inPeople}
                             invitedPeople={invitedPeople} outPeople={outPeople} fencePeople={fencePeople} />
                         : <CommonAvailabilityView
-                            screenWidth={screenWidth} enrichedEventInfo={enrichedEventInfo}
+                            screenWidth={screenWidth} enrichedEventInfo={enrichedEventInfo} pickDate={this.pickDate}
                             invitedPeople={invitedPeople} outPeople={outPeople} fencePeople={fencePeople} />}
                     <SummaryLocationView locationName={"NUS Enterprise - Hangar"} />
                 </ScrollView>
