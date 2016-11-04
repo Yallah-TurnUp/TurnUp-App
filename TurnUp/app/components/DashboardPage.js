@@ -228,7 +228,7 @@ const CommonAvailabilityPicking = ({ screenWidth, enrichedEventInfo, pickDate })
 
 const CommonAvailabilityView = ({ screenWidth, enrichedEventInfo, invitedPeople, outPeople, fencePeople, pickDate }) => (
     <View>
-        <Image style={{height: 25, width: null, alignSelf: 'center', marginTop: 5, marginBottom: 5 }} source={images.common_availability_label} />
+        <Image style={{height: 25, width: 215.6, alignSelf: 'center', marginTop: 5, marginBottom: 5 }} source={images.common_availability_label} />
         <View style={{backgroundColor: 'rgb(231,231,231)', paddingTop: 10, paddingBottom: 20}}>
             <CommonAvailabilityPicking screenWidth={screenWidth} enrichedEventInfo={enrichedEventInfo} pickDate={pickDate} />
             <SummaryStatisticsView
@@ -267,6 +267,10 @@ export default class DashboardPage extends Component {
         super(props);
 
         this.pickDate = this.pickDate.bind(this);
+
+        this.state = {
+            pickedDate: this.props.pickedDate,
+        }
     }
 
     // Highlights the day with the highest attendance
@@ -280,6 +284,7 @@ export default class DashboardPage extends Component {
 
     reallyPickDate(date) {
         console.log('Chose this date!', date);
+        this.setState({ pickedDate: date });
     }
 
     pickDate(date) {
@@ -319,14 +324,11 @@ export default class DashboardPage extends Component {
 
         const eventName = 'NCIS \'11 Reunion Dinner';
 
-        // Flip here
-        const finalizedDate = null//new Date(2016, 9, 10, 6, 15);
-
         return (
             <View style={{flex: 1, alignItems: 'stretch', justifyContent: 'space-between'}}>
                 <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
                     <EventBanner screenWidth={screenWidth} eventName={eventName} />
-                    {finalizedDate
+                    {this.state.pickedDate
                         ? <RSVPSummaryView
                             screenWidth={screenWidth} inPeople={inPeople}
                             invitedPeople={invitedPeople} outPeople={outPeople} fencePeople={fencePeople} />
