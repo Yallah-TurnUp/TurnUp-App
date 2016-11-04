@@ -70,7 +70,11 @@ const images = {
 
     message_logo: require('../images/MessageIcon.png'),
     unticked_box: require('../images/untickedBox.png'),
-    ticked_box: require('../images/tickedBox.png')
+    ticked_box: require('../images/tickedBox.png'),
+
+    my_event: require('../images/MyEventImage.png'),
+    search_logo: require('../images/SearchIcon.png'),
+    droppin_logo: require('../images/dropPin.png')
 };
 
 

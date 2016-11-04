@@ -512,5 +512,55 @@ export default styles = StyleSheet.create({
         fontSize: 16
     },
 
+    //Map Page
+
+    MapSearchBarContainer:{
+        backgroundColor:'rgb(237,237,237)',
+        height:50,
+        flexDirection:'row',
+        justifyContent: 'center',
+        alignItems:'center'
+    },
+
+    MapPinLogoContainer: {
+        backgroundColor:'transparent',
+        flex:0.5,
+        justifyContent:'center',
+        alignItems:'center',
+        height:40
+    },
+
+    MapSearchButton: {
+        backgroundColor:'transparent',
+        flex:0.5,
+        justifyContent:'center',
+        alignItems:'center',
+        height:50
+    },
+
+    MapPageTopContainer: {
+        flex: 0.17,
+        alignItems: 'center',
+        backgroundColor: 'white',
+        flexDirection: 'column',
+    },
+
+    SearchTextContainer: {
+        flex: 2.7,
+        backgroundColor: 'white',
+        height:32,
+        justifyContent:'center',
+        alignItems:'center',
+        marginBottom:5,
+        marginTop:5,
+        fontSize:11
+    },
+
+    MapPageMiddleContainer: {
+        flex:0.85,
+        alignItems:'center',
+        backgroundColor:'red',
+        justifyContent:'center'
+    },
 
 });
