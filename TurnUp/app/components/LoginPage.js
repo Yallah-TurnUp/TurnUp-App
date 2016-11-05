@@ -16,11 +16,9 @@ import styles from '../config/styles.js';
 import images from '../config/images.js';
 import SignUpPage from './SignUpPage.js';
 import * as firebase from 'firebase';
-import FBSDK from 'react-native-fbsdk';
+import {LoginManager, AccessToken} from 'react-native-fbsdk';
 import {GoogleSignin} from 'react-native-google-signin';
 
-const user = GoogleSignin.currentUser();
-var provider = new firebase.auth.GoogleAuthProvider();
 
 const loginCredentialsDefaultProps = {
     style: {flex: 1, fontSize: 16},
@@ -91,7 +89,6 @@ export default class LoginPage extends Component {
         this.props.navigator.push({id: 2,});
     }*/
 
-
     componentWillMount() {
         this.props.firebase.auth().onAuthStateChanged((user) => {
             if (user) {
@@ -135,58 +132,117 @@ export default class LoginPage extends Component {
                     loaded:true
                 });
                 // No need to navigate, onAuthStateChanged callback does the job for us.
-            }).catch((error) => {
-                switch(error.code){
-                    case "auth/invalid-email":
-                        alert(`${this.state.email} is not a valid email.`);
-                        break;
-                    case "auth/wrong-password":
-                        alert("You've entered the wrong password.");
-                        break;
-                    default:
-                        alert("Error");
-            }
+                }).catch((error) => {
+                    switch(error.code){
+                        case "auth/invalid-email":
+                            alert(`${this.state.email} is not a valid email.`);
+                            break;
+                        case "auth/wrong-password":
+                            alert("You've entered the wrong password.");
+                            break;
+                        default:
+                            alert("Error");
+                }
         });
     }
 
 
     loginFacebook() {
-        this.setState({
-        loaded:false
-        });
-    // Attempt a login using the Facebook login dialog asking for default permissions.
-    FBSDK.LoginManager.logInWithReadPermissions(['public_profile']
-    ).then((result)=> {
-        if (result.isCancelled) {
-          alert('Login cancelled');
-        } else {
-          alert('Login success with permissions: '
-            +result.grantedPermissions.toString());
-        }
-      this.props.navigator.push({id:2});
-      }).catch((error) => {
-        alert('Login fail with error:' + error);
-      });
-      }
+
+        const auth = firebase.auth();
+        const provider = firebase.auth.FacebookAuthProvider;
+        // Attempt a login using the Facebook login dialog asking for default permissions.
+        LoginManager.logInWithReadPermissions(['public_profile'])
+            .then(loginResult => {
+                if (loginResult.isCancelled) alert('Login cancelled');
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }
+
+        /*AccessToken.getCurrentAccessToken()
+            .then((accessTokenData) => {
+                const credential = provider.getCredential(accessTokenData.accessToken);
+                return auth.signInWithCredential(credential);
+            })
+            .then(credData => {
+                console.log(credData);
+                this.navigator.push({id:2});
+                })
+            .catch((err) => {
+                console.log(error);
+            });
+        });}*/
+
 
     loginGoogle() {
-
         GoogleSignin.configure({
           offlineAccess: false
+          //webClientId: '46    190653377-gibl6q1g44qa7uktkv07odc0lg569oul.apps.googleusercontent.com'
+          })
+        .then(()=> {
+
+            });}
+        /*GoogleSignin.signOut()
+        .then(() => {
+          console.log('out');
+        })
+        .catch((err) => {
+
         });
 
-        GoogleSignin.signIn()
-          .then((user) => {
-            console.log(user)
-            this.setState({user: user});
+        GoogleSignin.signin()
+            .then((user) => {
+                console.log(user);
+                this.firebase.auth().signInWithCredential(user.idToken)
+                    .then(() => {
+                        this.props.navigator.push({id:2});
+                        })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+                    })
+                .catch((err) => {
+                    console.log(err);
+                    });
+                }
+
+        /*GoogleSignin.getAccessToken(user)
+        .then((token) => {
+          const credential = token;
+          return firebase.auth().signInWithCustomToken(credential);
+              })
+        .then(() => {
+          this.props.navigator.push({id:2});
           })
-          .catch((err) => {
-            console.log('WRONG SIGNIN', err);
-          })
-          .then(() => {
-            this.props.navigator.push({id:2});
-          });
-      }
+        .catch((err) => {
+            console.log(err);
+          });}*/
+
+            /*.catch((error) => {
+              switch(error.code){
+                case "auth/account-exists-with-different-credential":
+                  alert('alert1');
+                  break;
+                case "auth/invalid-credential":
+                  alert('alert2');
+                  break;
+                case "auth/operation-not-allowed":
+                  alert('alert3');
+                  break;
+                case "auth/user-disabled":
+                  alert('alert4');
+                  break;
+                case "auth/user-not-found":
+                  alert('alert5');
+                  break;
+                case "auth/wrong-password":
+                  alert('alert6');
+                  break;
+                default:
+                  alert('error');*/
+
 
     render() {
         return (

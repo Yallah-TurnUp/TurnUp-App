@@ -27,7 +27,9 @@ import HostPage from './app/components/HostPage.js';
 import TabsPage from './app/components/TabsPage.js';
 import Summary from './app/components/Summary.js';
 import SignUpPage from './app/components/SignUpPage.js';
-
+import ContactListPage from './app/components/ContactListPage.js';
+import LocationPage from './app/components/PickLocationPage.js';
+import MapPage from './app/components/MapPage.js';
 
 class LastPage extends Component {
   _handleBack() {
@@ -92,6 +94,10 @@ class TurnUp extends Component {
       return <SummaryPreviewPage navigator={navigator} />
     } else if (route.id === 13) {
       return <Summary navigator={navigator} />
+    } else if (route.id === 14) {
+      return <ContactListPage navigator={navigator}/>
+    } else if (route.id ===15) {
+      return <MapPage navigator ={navigator}/>
     } else {
       return <LastPage navigator={navigator} />
     }

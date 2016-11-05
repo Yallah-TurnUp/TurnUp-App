@@ -75,6 +75,9 @@ const images = {
     progress_common_availability: require('../images/progress_common_avail.png'),
 
     progress_map: require('../images/OneMoreToGo.png'),
+    my_event: require('../images/MyEventImage.png'),
+    search_logo: require('../images/SearchIcon.png'),
+    droppin_logo: require('../images/dropPin.png'),
 
     banner_rocket: require('../images/banner_rocket.png'),
     map_icon: require('../images/Map_Icon.png'),
@@ -84,6 +87,11 @@ const images = {
     highest_attendance_banner: require('../images/Highest_Attendance_Banner.png'),
     pick_green: require('../images/Pick_Green.png'),
     pick_grey: require('../images/Pick_Grey.png'),
+
+    message_logo: require('../images/MessageIcon.png'),
+    unticked_box: require('../images/untickedBox.png'),
+    ticked_box: require('../images/tickedBox.png'),
+
 };
 
 
