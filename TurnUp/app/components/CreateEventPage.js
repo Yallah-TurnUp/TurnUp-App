@@ -202,7 +202,7 @@ export default class CreateEventPage extends Component {
     }
 
     _navigateToEnrichment() {
-        this.props.navigator.push({id: 11});
+        this.props.navigator.push({id: 16});
     }
 
     _setSelectedType(selectedType) {
@@ -221,7 +221,7 @@ export default class CreateEventPage extends Component {
             <View style={{flex: 1, flexDirection: 'column', justifyContent: 'space-around', alignItems: 'stretch',
                 backgroundColor: '#e6e6e6'}}>
                 <TopBar leftButton={images.back} leftButtonHandler={() => this._popSelf()}
-                        centerImage={images.turnup_title}
+                        centerImage={images.my_event}
                         rightButton={images.forward} rightButtonHandler={() => this._navigateToEnrichment()}/>
                 <View style={styles.eventTypeSelector}>
                     <TouchableOpacity style={{width: 80, height: 80}}

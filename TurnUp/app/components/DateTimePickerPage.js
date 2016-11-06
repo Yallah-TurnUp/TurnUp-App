@@ -14,6 +14,7 @@ import {
     UIManager,
     Platform,
 } from 'react-native';
+import { TopBar } from './TabsPage.js';
 import images from '../config/images.js';
 
 export const BottomButtons = ({leftImage, rightImage, leftHandler, rightHandler, leftAspect, rightAspect}) => (
@@ -174,7 +175,7 @@ class DeletableListView extends Component {
 
     render() {
         return (
-            <ListView
+            <ListView enableEmptySections
                 contentContainerStyle={{width: 300}}
                 renderRow={(rowData, _, rowID) => <DeletableListCell text={rowData} onPress={this.props.onPress} rowID={rowID}/>}
                 renderSeparator={(_, rowID) => (rowID !== (this.props.data.length - 1).toString()) && <View key={rowID} style={{width: 300, alignItems: 'center'}}><View style={{height: 0.75, width: 150, backgroundColor: 'rgb(253,191,45)'}} /></View>}
@@ -270,6 +271,7 @@ export default class DateTimePickerPage extends Component {
         this.onDaySelect = this.onDaySelect.bind(this);
         this.onHourSelect = this.onHourSelect.bind(this);
         this.onMinuteSelect = this.onMinuteSelect.bind(this);
+        this.navigateToMapPage = this.navigateToMapPage.bind(this);
 
         const now = new Date();
         this.state = {
@@ -356,7 +358,7 @@ export default class DateTimePickerPage extends Component {
     }
 
     onAdd() {
-        const { year, month, day, hour, minute } = this.state.selectedDate;
+        const {year, month, day, hour, minute} = this.state.selectedDate;
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
         this.setState({
             dates: this.state.dates.concat([{
@@ -365,6 +367,10 @@ export default class DateTimePickerPage extends Component {
             }]).sort((a, b) => a.actualDate.getTime() - b.actualDate.getTime()),
         });
         console.log(new Date(year, month, day, hour, minute));
+    }
+
+    navigateToMapPage() {
+        this.props.navigator.push({id: 17});
     }
 
     render() {
@@ -384,17 +390,19 @@ export default class DateTimePickerPage extends Component {
 
         return (
             <View style={{flex: 1, justifyContent: 'center', backgroundColor: 'rgb(241,241,241)'}}>
+                {!this.props.hideNav && <TopBar centerImage={images.my_event} />}
                 <DateTimePicker
                     pickerWidth={pickerWidth} cellWidth={cellWidth} offset={offset} selectedDate={this.state.selectedDate} onAdd={this.onAdd}
                     monthsRow={monthsRow} daysRow={daysRow} hoursRow={hoursRow} minsRow={minsRow}
                     onMonthSelect={this.onMonthSelect} onDaySelect={this.onDaySelect} onHourSelect={this.onHourSelect} onMinuteSelect={this.onMinuteSelect} />
                 <View style={{flex: 1, backgroundColor: 'rgb(241,241,241)', padding: 10, alignItems: 'center'}}>
-                    {this.state.dates.length > 0
+                    {this.state.dates.length > 0 || this.props.hideNav
                         ? <EventDates selectedDates={this.getSelectedDates()} onDelete={this.onDelete} />
                         : <CurrentProgress/>}
                 </View>
-                <BottomButtons leftImage={images.creation_back} rightImage={images.creation_next} />
-
+                {!this.props.hideNav && <BottomButtons
+                    leftImage={images.creation_back} leftHandler={this.props.navigator.pop}
+                    rightImage={images.creation_next} rightHandler={this.navigateToMapPage} />}
             </View>
         );
     }

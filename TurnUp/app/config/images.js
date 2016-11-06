@@ -92,6 +92,11 @@ const images = {
     unticked_box: require('../images/untickedBox.png'),
     ticked_box: require('../images/tickedBox.png'),
 
+    calendar_icon: require('../images/Calendar_Icon.png'),
+    inactive_calendar_tab: require('../images/calendar_grey.png'),
+    inactive_location_tab: require('../images/dropPin_grey.png'),
+    inactive_summary_tab: require('../images/TurnUp_grey.png'),
+    summary_icon: require('../images/summary_tab_icon.png'),
 };
 
 

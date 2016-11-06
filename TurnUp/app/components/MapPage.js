@@ -46,6 +46,7 @@ export default class MapPage extends Component {
         this.setMarkerTarget = this.setMarkerTarget.bind(this);
         this.onLocationTextFocus = this.onLocationTextFocus.bind(this);
         this.changeLocationText = this.changeLocationText.bind(this);
+        this.navigateToSummaryTabs = this.navigateToSummaryTabs.bind(this);
     }
 
     componentWillMount() {
@@ -87,14 +88,18 @@ export default class MapPage extends Component {
         this.setState({locationText, locationTextDirty: true});
     }
 
+    navigateToSummaryTabs() {
+        this.props.navigator.push({id: 18});
+    }
+
     render() {
         return (
 
             <View style={styles.fullscreenContainer}>
-                <TopBar centerImage={images.my_event}/>
+                {!this.props.hideNav && <TopBar centerImage={images.my_event}/>}
                 <View style={styles.MapPageTopContainer}>
-                    <View style={{flexDirection:'row', alignItems: 'center', justifyContent: 'flex-start', flex: 1}}>
-                        <Text style={{fontSize:12, marginLeft: 5, textAlign:'left'}}>CHOOSE A LOCATION</Text>
+                    <View style={{flexDirection:'row', alignItems: 'center', justifyContent: 'flex-start', flex: 1, marginBottom: -10}}>
+                        <Text style={{fontSize:15, marginLeft: 5, textAlign:'left'}}>CHOOSE A LOCATION</Text>
                     </View>
                     <View style={{backgroundColor:'rgb(237,237,237)',height:50, flexDirection:'row', justifyContent: 'center', alignItems:'center'}}>
                         <View style={{backgroundColor:'rgb(237,237,237)',flex:0.5, justifyContent:'center', alignItems:'center', height:40}}>
@@ -108,7 +113,6 @@ export default class MapPage extends Component {
                                 <Image source={images.search_logo} style={{height:20,width:20}}/>
                         </TouchableOpacity>
                     </View>
-
                 </View>
 
                 <View style={{backgroundColor:'white',flex: 0.85, justifyContent: 'center', alignItems: 'center'}}>
@@ -119,10 +123,12 @@ export default class MapPage extends Component {
                         <MapView.Marker coordinate={this.state.markerTarget} />
                     </MapView>}
                 </View>
-                <View style={{height: 100, justifyContent: 'center'}}>
-                    <Image style={{height: 65, width: null}} source={images.progress_map} resizeMode={Image.resizeMode.contain} />
-                </View>
-                <BottomButtons leftImage={images.creation_back} rightImage={images.creation_next} />
+                {!this.props.hideNav && <View style={{height: 100, justifyContent: 'center', alignItems: 'center'}}>
+                    <Image style={{height: 85, width: 380}} source={images.progress_map} resizeMode={Image.resizeMode.contain} />
+                </View>}
+                {!this.props.hideNav && <BottomButtons
+                    leftImage={images.creation_back} leftHandler={this.props.navigator.pop}
+                    rightImage={images.creation_next} rightHandler={this.navigateToSummaryTabs}/>}
 
             </View>
 
