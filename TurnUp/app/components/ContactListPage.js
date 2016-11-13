@@ -10,72 +10,88 @@ import {
     Dimensions,
     ListView,
     TextInput,
+    TouchableWithoutFeedback,
     TouchableNativeFeedback,
     Image,
     TouchableHighlight,
-    TouchableWithoutFeedback
+    Alert,
 } from 'react-native';
+import Contacts from 'react-native-contacts';
 import styles from '../config/styles.js';
 import images from '../config/images.js';
+import SmsSender from '../native/SmsSender.js';
 import { TopBar } from './TabsPage.js';
+import { BottomButtons } from './DateTimePickerPage.js';
 
-var people= [{'name':'Alice'},{'name': 'Batman'}, {'name':'Dats'},{'name':'General'},{'name':'Superman'},{'name': 'Teddy'}, {'name':'Dats'} , {'name':'Stalin'}, {'name':'Ham Lon'},{'name': 'Batman'}, {'name':'Dats'} , {'name':'Shicen'},{'name':'Superman'},{'name': 'Batman'}, {'name':'Joseph'} , {'name':'General'},{'name':'Sexy'},{'name': 'Batman'}, {'name':'Darius'} , {'name':'General'}];
+var people= [
+    {'name':'Alice'},
+    {'name': 'Batman'},
+    {'name':'Dats'},
+    {'name':'General'},
+    {'name':'Superman'},
+    {'name': 'Teddy'},
+    {'name':'Dats'},
+    {'name':'Stalin'},
+    {'name':'Ham Lon'},
+    {'name': 'Batman'},
+    {'name':'Dats'},
+    {'name':'Shicen'},
+    {'name':'Superman'},
+    {'name': 'Batman'},
+    {'name':'Joseph'} ,
+    {'name':'General'},
+    {'name':'Sexy'},
+    {'name': 'Batman'},
+    {'name':'Darius'} ,
+    {'name':'General'}
+];
 
-const genSectionProps = {
-    renderSectionHeader: (sectionData) => <SectionHeaderView {...sectionData}/>,
-    showsVerticalScrollIndicator: false
-};
-
-const genRowProps = {
-    renderRow: (rowData) => <ContactListView name={rowData.name}/>,
-    showsVerticalScrollIndicator: false
-};
-/*
-const genRowProps = {
-    renderRow: (rowData) => <ContactListView {...rowData}/>,
-    showsVerticalScrollIndicator: false
-};*/
+Contacts.getAll((err, contacts) => {
+    if (err) {
+        console.log('error', err);
+        return;
+    }
+    people = contacts
+        .filter(contact => contact.phoneNumbers && contact.phoneNumbers.length > 0)
+        .map(contact => {
+            if (contact.givenName === 'Darius' || contact.givenName === 'Dat') {
+                console.log(contact);
+            }
+            const mobileNumbers = contact.phoneNumbers.filter(phone => phone.label && phone.label === 'mobile');
+            return ({
+                name: [contact.givenName, contact.middleName, contact.familyName]
+                    .filter(name => name)
+                    .join(' '),
+                firstName: contact.givenName,
+                number: (mobileNumbers.length > 0 ? mobileNumbers : contact.phoneNumbers)[0].number,
+            });
+        });
+});
 
 class ContactListView extends Component {
     constructor(props) {
         super(props);
-        this._changeBox = this._changeBox.bind(this)
-        this.state = { //initialstate
-            count: false,
-            theImage: 'untickedBox'
-        }
+        this.toggle = this.toggle.bind(this);
     }
 
-    _changeBox(){
-
-        if(this.state.count) {
-            this.setState({
-                count: false,
-                theImage: 'untickedBox'
-            });
-        }
-        else {
-                this.setState({
-                    count: true,
-                    theImage: 'tickedBox'
-                });
-        }
+    toggle() {
+        this.props.toggle(this.props.rowId);
     }
 
     render() {
         var boxes = {
             untickedBox: images.unticked_box,
-            tickedBox: images.ticked_box
-        }
+            tickedBox: images.ticked_box,
+        };
 
         return (
-            <TouchableWithoutFeedback onPress={this._changeBox} >
+            <TouchableWithoutFeedback onPress={this.toggle}>
                 <View style={{backgroundColor: 'rgb(242,242,242)' , flexDirection: 'row', height:40, justifyContent: 'center', alignItems: 'center'}}>
                     <View style={{backgroundColor:'transparent', flex:3}}>
-                        <Text style={{marginLeft:30, flex: 0, fontSize: 20, fontFamily: "SourceSansPro", color: 'black'}}>{this.props.name}</Text>
+                        <Text style={{marginLeft:20, flex: 0, fontSize: 15, fontFamily: "SourceSansPro", color: 'black'}}>{this.props.name}</Text>
                     </View>
                     <View style={{backgroundColor:'transparent', flex:1, justifyContent: 'center', alignItems:'center'}}>
-                        <Image style={styles.TickBox} key={boxes[this.state.theImage]} source={boxes[this.state.theImage]}/>
+                        <Image style={styles.TickBox} source={boxes[this.props.active ? 'tickedBox' : 'untickedBox']}/>
                     </View>
                 </View>
             </TouchableWithoutFeedback>
@@ -83,43 +99,37 @@ class ContactListView extends Component {
     }
 }
 
+
 class SectionHeaderView extends Component {
     render(){
         var screenWidth = Dimensions.get('window').width;
 
-
         return (
             <View backgroundColor="rgb(113,113,118)" width={screenWidth}
                   style={{flex:1, flexDirection: 'row', justifyContent:'flex-start', alignItems:'center'}}>
-                <Text style={{marginLeft:23, flex:0, fontSize: 18, fontFamily: "SourceSansPro", color: 'white'}}> {this.props.character} </Text>
+                <Text style={{marginLeft:20, flex:0, fontSize: 18, fontFamily: "SourceSansPro", color: 'white'}}> {this.props.character} </Text>
             </View>
         )
     }
 }
 
-class TypeMessage extends Component{
-  constructor(props) {
-    super(props);
-    this.state = {
-        text: '',
-        exampleMessage: 'Example: It’s been some time since we’ve last met. Let’s hang out!'};
-  }
 
+class TypeMessage extends Component{
   render() {
-    var limit = 300;
-    var remainder = limit - this.state.text.length;
-    var remainderColor = remainder > 10 ? 'blue' : 'red';
+    var limit = 200;
     return (
       <View style = {styles.MessageContainer}>
         <View style={{justifyContent:'center',marginTop:5}}>
           <Text style={styles.UneditableText}>
-            Hi [CONTACT NAME],
+            Hi [CONTACT'S FIRST NAME],
           </Text>
         </View>
         <TextInput
-            value={this.state.exampleMessage}
-            onChangeText={(exampleMessage) => this.setState({exampleMessage: exampleMessage})}
-            onFocus={() => this.setState({exampleMessage: ""})}
+            value={this.props.exampleMessage}
+            onChangeText={(exampleMessage) => {
+                this.props.setContent(exampleMessage)
+            }}
+            onFocus={() => this.props.setContent("")}
             multiline = {true}
             maxLength = {limit}
             style={styles.MessageMultiline}
@@ -138,6 +148,12 @@ class TypeMessage extends Component{
 export default class CreateInvitationPage extends Component {
     constructor(props) {
         super(props);
+        this.onBack = this.onBack.bind(this);
+        this.toggle = this.toggle.bind(this);
+        this.confirmThenSend = this.confirmThenSend.bind(this);
+        this.gatherInvitees = this.gatherInvitees.bind(this);
+        this.setContent = this.setContent.bind(this);
+
         const getSectionData = (dataBlob, sectionId) => dataBlob[sectionId];
         const getRowData = (dataBlob, sectionId, rowId) => dataBlob[`${rowId}`];
 
@@ -148,14 +164,16 @@ export default class CreateInvitationPage extends Component {
             getRowData,
         });
 
-        const {dataBlob, sectionIds, rowIds} = this._formatData(people);
+        const selectionState = {};
+        const {dataBlob, sectionIds, rowIds} = this._formatData(people, selectionState);
         this.state = {
+            selectionState,
+            exampleMessage: 'Example: It’s been some time since we’ve last met. Let’s hang out!',
             inviteesDataSource: ds.cloneWithRowsAndSections(dataBlob, sectionIds, rowIds)
-        }
+        };
     }
 
-    _formatData(people){
-
+    _formatData(people, selectionState){
         const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
         const dataBlob = {};
         const sectionIds = [];
@@ -166,56 +184,109 @@ export default class CreateInvitationPage extends Component {
             const users = people.filter((user) => user.name.toUpperCase().indexOf(currentChar) === 0);
 
             if(users.length > 0){
-                sectionIds.push(sectionId)
+                sectionIds.push(sectionId);
                 dataBlob[sectionId] = {character: currentChar};
                 rowIds.push([]);
 
-            for(let i=0; i< users.length; i++){
-
-                const rowId = `${sectionId}:${i}`;
-                rowIds[rowIds.length-1].push(rowId);
-                dataBlob[rowId] = users[i];
-                };
-
+                for(let i=0; i< users.length; i++){
+                    const rowId = `${sectionId}:${i}`;
+                    rowIds[rowIds.length-1].push(rowId);
+                    dataBlob[rowId] = {
+                        ...users[i],
+                        active: selectionState[rowId],
+                    };
+                }
             }
         }
 
         return { dataBlob, sectionIds, rowIds };
     }
 
+    onBack() {
+        this.props.navigator.pop();
+    }
 
+    toggle(rowId) {
+        const selectionState = { ...this.state.selectionState };
+        selectionState[rowId] = !selectionState[rowId];
+        const {dataBlob, sectionIds, rowIds} = this._formatData(people, selectionState);
+        this.setState({
+            selectionState,
+            inviteesDataSource: this.state.inviteesDataSource.cloneWithRowsAndSections(dataBlob, sectionIds, rowIds)
+        });
+    }
+
+    gatherInvitees() {
+        const {dataBlob} = this._formatData(people, this.state.selectionState);
+        return Object.keys(this.state.selectionState)
+            .map((rowId) => dataBlob[rowId])
+            .filter((rowData) => rowData.active);
+    }
+
+    setContent(exampleMessage) {
+        this.setState({exampleMessage});
+    }
+
+    sendToInvitees(invitees) {
+        console.log(invitees);
+        const completeArray = invitees.map(() => false);
+        SmsSender.sendTexts(invitees.map((invitee, index) => ({
+            ...invitee,
+            delivered: () => {
+                completeArray[index] = true;
+                if (completeArray.every((completeValue) => completeValue)) {
+                    Alert.alert('Sending invitations complete!', 'You can check back on the RSVP status of the event any time.', [
+                        { text: 'Alright!', onPress: () => this.props.navigator.popToRoute(this.props.navigator.getCurrentRoutes().filter(route => route.id === 2)[0])}
+                    ])
+                }
+            },
+        })));
+        Alert.alert('Sending your invitations...', 'It will be done in a couple of seconds!', [{ text: 'Cool'}]);
+    }
+
+    confirmThenSend() {
+        const invitees = this.gatherInvitees().map((invitee) => ({
+            ...invitee,
+            message: `Hi ${invitee.firstName},\n${this.state.exampleMessage}\nPLS RSVP BY CLICKING ON THE URL BELOW:\nhttp://54.169.132.104/`,
+        }));
+        Alert.alert('Sending your invitation',
+            `You will be sending your invitation to ${invitees.length} people.`,
+            [{ text: 'Not yet', }, { text: 'TurnUp!', onPress: () => this.sendToInvitees(invitees) }]);
+    }
 
     render() {
-
-    var invitees = <View style={{flex:1, justifyContent: 'center', alignItems: 'center'}}>
-                                        <ListView {...genRowProps} {...genSectionProps}
-                                                  renderSeparator={(sectionData,rowData)=> <View key={rowData} style={styles.ContactlistSeparator}></View>}
-                                            dataSource={this.state.inviteesDataSource}/>
-                                    </View>
         return (
             <View style={styles.fullscreenContainer}>
-
-                <TopBar centerImage={images.turnup_title}/>
-                <View style={{flex:0.1, flexDirection: 'row',  justifyContent: 'flex-start', alignItems: 'center'}}>
-                    <Text style={{marginLeft:15, flex: 0, fontSize: 15, fontFamily: "SourceSansPro", color: 'grey'}}>PERSONALIZE YOUR MESSAGE</Text>
-                </View>
-
-                <View style={styles.ContactListTopContainer}>
-                    <View style={styles.MessageIcon}>
-                        <Image style={{height:40, width:40}} source={images.message_logo}/>
+                <TopBar centerImage={images.send_to_label}/>
+                <View style={{ flex: 1 }}>
+                    <View style={{flexDirection: 'row',  justifyContent: 'flex-start', alignItems: 'center'}}>
+                        <Text style={{marginLeft:15, flex: 0, fontSize: 15, fontFamily: "SourceSansPro", color: 'grey'}}>PERSONALIZE YOUR MESSAGE</Text>
                     </View>
-                    <TypeMessage/>
 
+                    <View style={styles.ContactListTopContainer}>
+                        <View style={styles.MessageIcon}>
+                            <Image style={{height:40, width:40}} source={images.message_logo}/>
+                        </View>
+                        <TypeMessage exampleMessage={this.state.exampleMessage} setContent={this.setContent}/>
+                    </View>
+
+                    <View style={{flexDirection: 'row',  justifyContent: 'flex-start', alignItems: 'center'}}>
+                        <Text style={{marginLeft:15, flex: 0, fontSize: 15, fontFamily: "SourceSansPro", color: 'grey'}}>CONTACT LIST</Text>
+                    </View>
+
+
+                    <View style={styles.ContactListBottomContainer}>
+                        <View style={{flex:1, justifyContent: 'center', alignItems: 'center'}}>
+                            <ListView renderRow={(rowData, _, rowId) => <ContactListView name={rowData.name} active={rowData.active} toggle={this.toggle} rowId={rowId} />}
+                                      renderSectionHeader={(sectionData) => <SectionHeaderView {...sectionData} />}
+                                      renderSeparator={(sectionId, rowId) => <View key={`${sectionId}-${rowId}`} style={styles.ContactlistSeparator} />}
+                                      dataSource={this.state.inviteesDataSource}
+                                      showsVerticalScrollIndicator={false}/>
+                        </View>
+                    </View>
                 </View>
-
-                <View style={{flex:0.1, flexDirection: 'row',  justifyContent: 'flex-start', alignItems: 'center'}}>
-                    <Text style={{marginLeft:15, flex: 0, fontSize: 15, fontFamily: "SourceSansPro", color: 'grey'}}>CONTACT LIST</Text>
-                </View>
-
-
-                <View style={styles.ContactListBottomContainer}>
-                {invitees}
-                </View>
+                <BottomButtons leftImage={images.creation_back} rightImage={images.creation_done}
+                               leftHandler={this.onBack} rightHandler={this.confirmThenSend} />
 
             </View>
         );

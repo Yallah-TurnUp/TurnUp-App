@@ -190,8 +190,6 @@ export default class CreateEventPage extends Component {
                 selectedIndexAndSide.activity === selectedType
                 && selectedIndexAndSide.index === i
                 && selectedIndexAndSide.side === "right";
-            console.log(images[i].shouldHighlightLeftImage);
-            console.log(images[i].shouldHighlightRightImage);
         }
 
         return images;

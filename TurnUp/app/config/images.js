@@ -78,6 +78,7 @@ const images = {
     my_event: require('../images/MyEventImage.png'),
     search_logo: require('../images/SearchIcon.png'),
     droppin_logo: require('../images/dropPin.png'),
+    creation_later: require('../images/creation_later.png'),
 
     banner_rocket: require('../images/banner_rocket.png'),
     map_icon: require('../images/Map_Icon.png'),
@@ -97,6 +98,10 @@ const images = {
     inactive_location_tab: require('../images/dropPin_grey.png'),
     inactive_summary_tab: require('../images/TurnUp_grey.png'),
     summary_icon: require('../images/summary_tab_icon.png'),
+    creation_invite: require('../images/creation_invite.png'),
+
+    send_to_label: require('../images/send_to_label.png'),
+    creation_done: require('../images/creation_done.png'),
 };
 
 

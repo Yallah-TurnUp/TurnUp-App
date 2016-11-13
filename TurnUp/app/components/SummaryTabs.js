@@ -5,10 +5,11 @@ import {
     Text,
     ListView,
     Dimensions,
+    ScrollView,
     Image
 } from 'react-native';
 import MapPage from './MapPage.js';
-import DateTimePickerPage from './DateTimePickerPage.js';
+import DateTimePickerPage, { BottomButtons } from './DateTimePickerPage.js';
 import styles from '../config/styles.js';
 import images from '../config/images.js';
 
@@ -78,20 +79,36 @@ const LocationSummary = ({ locationName }) => (
     </View>
 );
 
-const SummaryView = ({ eventName, screenWidth, dates, locationName }) => (
-    <View style={{ marginTop: 10 }}>
-        <EventBanner eventName={eventName} screenWidth={screenWidth} />
-        <DateTimeSummary dates={dates} />
-        <LocationSummary locationName={locationName} />
+const SummaryView = ({ eventName, screenWidth, dates, locationName, onBack, onInvite }) => (
+    <View style={{ justifyContent: 'space-between', flex: 1 }}>
+        <ScrollView contentContainerStyle={{ marginTop: 10 }}>
+            <EventBanner eventName={eventName} screenWidth={screenWidth} />
+            <DateTimeSummary dates={dates} />
+            <LocationSummary locationName={locationName} />
+        </ScrollView>
+        <BottomButtons leftImage={images.creation_back} rightImage={images.creation_invite}
+                       leftHandler={onBack} rightHandler={onInvite} />
     </View>
 );
 
 export default class SummaryTabs extends Component {
     constructor(props) {
         super(props);
+
+        this.onPop = this.onPop.bind(this);
+        this.goToInvitePage = this.goToInvitePage.bind(this);
+
         this.state = {
             currentTab: SummaryTabIds.summaryPage
         }
+    }
+
+    onPop() {
+        this.props.navigator.pop();
+    }
+
+    goToInvitePage() {
+        this.props.navigator.push({ id: 14 });
     }
 
     render() {
@@ -107,6 +124,8 @@ export default class SummaryTabs extends Component {
             eventName,
             locationName,
             dates: eventDates,
+            onBack: this.onPop,
+            onInvite: this.goToInvitePage,
         };
 
         let currentTabView = null;

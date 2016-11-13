@@ -433,7 +433,8 @@ export default styles = StyleSheet.create({
     // ContactList
 
    ContactListTopContainer: {
-        flex: 1,
+        marginTop: 15,
+        marginBottom: 15,
         justifyContent: 'space-around',
         alignItems: 'center',
         backgroundColor: 'white',
@@ -472,10 +473,9 @@ export default styles = StyleSheet.create({
 
 
     ContactListBottomContainer:{
-        flex: 1.5,
+        flex: 1,
         justifyContent: 'space-between',
         alignItems: 'flex-start',
-        backgroundColor: 'grey',
         flexDirection: 'row'
     },
 
