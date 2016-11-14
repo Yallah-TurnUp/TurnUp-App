@@ -100,11 +100,11 @@ class TurnUp extends Component {
     } else if (route.id === 15) {
       return <MapPage navigator={navigator}/>
     } else if (route.id === 16) {
-      return <DateTimePickerPage navigator={navigator}/>
+      return <DateTimePickerPage navigator={navigator} eventKey={route.eventKey}/>
     } else if (route.id === 17) {
-      return <MapPage navigator={navigator}/>
+      return <MapPage navigator={navigator} eventBlob={route.eventBlob} eventKey={route.eventKey}/>
     } else if (route.id === 18) {
-      return <SummaryTabs navigator={navigator}/>
+      return <SummaryTabs navigator={navigator} eventBlob={route.eventBlob}/>
     } else {
       return <LastPage navigator={navigator} />
     }
@@ -120,7 +120,7 @@ class TurnUp extends Component {
   render() {
     return (
       <Navigator
-        initialRoute={{id: 18, }}
+        initialRoute={{id: 1, }}
         renderScene={this._renderScene}
         configureScene={this._configureScene} />
     );

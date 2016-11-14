@@ -13,7 +13,7 @@ import {
     Image,
     StyleSheet
 } from 'react-native';
-
+import * as firebase from 'firebase';
 import styles from '../config/styles.js';
 import images from '../config/images.js';
 import { TopBar } from './TabsPage.js';
@@ -89,7 +89,15 @@ export default class MapPage extends Component {
     }
 
     navigateToSummaryTabs() {
-        this.props.navigator.push({id: 18});
+        const { locationTextDirty, locationText } = this.state;
+        const eventBlob = {
+            ...this.props.eventBlob,
+            locationText: locationTextDirty ? locationText : null,
+        };
+        const payload = {};
+        payload[`/events/${this.props.eventKey}`] = eventBlob;
+        firebase.database().ref().update(payload);
+        this.props.navigator.push({id: 18, eventBlob});
     }
 
     render() {

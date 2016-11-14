@@ -122,8 +122,8 @@ export default class SummaryTabs extends Component {
         const summaryViewProps = {
             screenWidth,
             eventName,
-            locationName,
-            dates: eventDates,
+            locationName: this.props.eventBlob.locationText,
+            dates: this.props.eventBlob.dates.map(({actualDate}) => actualDate),
             onBack: this.onPop,
             onInvite: this.goToInvitePage,
         };

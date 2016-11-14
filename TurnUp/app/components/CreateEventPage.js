@@ -11,6 +11,7 @@ import {
     ListView,
     Dimensions
 } from 'react-native';
+import * as firebase from 'firebase';
 import styles from '../config/styles.js';
 import images from '../config/images.js';
 
@@ -200,7 +201,8 @@ export default class CreateEventPage extends Component {
     }
 
     _navigateToEnrichment() {
-        this.props.navigator.push({id: 16});
+        const eventKey = firebase.database().ref().child('events').push().key;
+        this.props.navigator.push({id: 16, eventKey});
     }
 
     _setSelectedType(selectedType) {

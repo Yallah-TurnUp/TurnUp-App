@@ -14,6 +14,7 @@ import {
     UIManager,
     Platform,
 } from 'react-native';
+import * as firebase from 'firebase';
 import { TopBar } from './TabsPage.js';
 import images from '../config/images.js';
 
@@ -360,17 +361,20 @@ export default class DateTimePickerPage extends Component {
     onAdd() {
         const {year, month, day, hour, minute} = this.state.selectedDate;
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-        this.setState({
-            dates: this.state.dates.concat([{
-                actualDate: new Date(year, month, day, hour, minute),
-                dateString: `${day} ${monthNames[month]} ${('0' + hour).slice(-2)}:${('0' + minute).slice(-2)}`,
-            }]).sort((a, b) => a.actualDate.getTime() - b.actualDate.getTime()),
-        });
+        const newDates = this.state.dates.concat([{
+            actualDate: new Date(year, month, day, hour, minute),
+            dateString: `${day} ${monthNames[month]} ${('0' + hour).slice(-2)}:${('0' + minute).slice(-2)}`,
+        }]).sort((a, b) => a.actualDate.getTime() - b.actualDate.getTime());
+        this.setState({ dates: newDates });
         console.log(new Date(year, month, day, hour, minute));
     }
 
     navigateToMapPage() {
-        this.props.navigator.push({id: 17});
+        const eventBlob = { dates: this.state.dates };
+        const payload = {};
+        payload[`/events/${this.props.eventKey}`] = eventBlob;
+        firebase.database().ref().update(payload);
+        this.props.navigator.push({id: 17, eventBlob, eventKey: this.props.eventKey});
     }
 
     render() {
