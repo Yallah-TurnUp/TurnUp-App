@@ -102,6 +102,10 @@ const images = {
 
     send_to_label: require('../images/send_to_label.png'),
     creation_done: require('../images/creation_done.png'),
+
+    dashboard_label: require('../images/Dashboard_Label.png'),
+    edit_label: require('../images/EditLabel.png'),
+    done_label: require('../images/Done_Label.png'),
 };
 
 

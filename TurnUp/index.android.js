@@ -24,6 +24,7 @@ import ContactListPage from './app/components/ContactListPage.js';
 import MapPage from './app/components/MapPage.js';
 import DateTimePickerPage from './app/components/DateTimePickerPage.js';
 import SummaryTabs from './app/components/SummaryTabs.js';
+import DashboardPage from './app/components/DashboardPage.js';
 
 import * as firebase from 'firebase';
 import firebaseConfig from './auth.js';
@@ -96,7 +97,7 @@ class TurnUp extends Component {
     } else if (route.id === 13) {
       return <Summary navigator={navigator}/>
     } else if (route.id === 14) {
-      return <ContactListPage navigator={navigator}/>
+      return <ContactListPage navigator={navigator} eventKey={route.eventKey} />
     } else if (route.id === 15) {
       return <MapPage navigator={navigator}/>
     } else if (route.id === 16) {
@@ -104,7 +105,9 @@ class TurnUp extends Component {
     } else if (route.id === 17) {
       return <MapPage navigator={navigator} eventBlob={route.eventBlob} eventKey={route.eventKey}/>
     } else if (route.id === 18) {
-      return <SummaryTabs navigator={navigator} eventBlob={route.eventBlob}/>
+      return <SummaryTabs navigator={navigator} eventBlob={route.eventBlob} eventKey={route.eventKey}/>
+    } else if (route.id === 19) {
+      return <DashboardPage navigator={navigator} eventKey={route.eventKey}/>
     } else {
       return <LastPage navigator={navigator} />
     }

@@ -104,7 +104,7 @@ const TabBar = ({ tabsBackgroundColor, imageSize,
 
 class CurrentTab extends Component {
     render() {
-        var hostPage = this.props.currentTab === tabPageIds.hostPage ? <HostPage/> : null;
+        var hostPage = this.props.currentTab === tabPageIds.hostPage ? <HostPage navigator={this.props.navigator} /> : null;
         var explorePage = this.props.currentTab === tabPageIds.explorePage ? <ExplorePage/> : null;
         var surprisePage = this.props.currentTab === tabPageIds.surprisePage ? <DashboardPage/> : null;
 
@@ -156,7 +156,7 @@ export default class TabsPage extends Component {
                 <TopBar leftButton={images.profile} centerImage={images.turnup_title} rightButton={images.host_logo}
                     leftButtonHandler={() => this.logout()}
                     rightButtonHandler={() => {this._pushEventCreationPage()}}/>
-                <CurrentTab currentTab={this.state.currentTab}/>
+                <CurrentTab currentTab={this.state.currentTab} navigator={this.props.navigator} />
                 <TabBar tabsBackgroundColor="#FF9800"
                         leftImage={images.hosted_logo} leftTabId={tabPageIds.hostPage} leftActiveBackground="#F28500"
                         centerImage={images.explore_logo} centerTabId={tabPageIds.explorePage} centerActiveBackground="#F28500"

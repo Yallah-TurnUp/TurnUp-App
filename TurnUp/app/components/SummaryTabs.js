@@ -3,11 +3,13 @@ import {
     View,
     TouchableOpacity,
     Text,
+    TextInput,
     ListView,
     Dimensions,
     ScrollView,
     Image
 } from 'react-native';
+import * as firebase from 'firebase';
 import MapPage from './MapPage.js';
 import DateTimePickerPage, { BottomButtons } from './DateTimePickerPage.js';
 import styles from '../config/styles.js';
@@ -79,15 +81,28 @@ const LocationSummary = ({ locationName }) => (
     </View>
 );
 
-const SummaryView = ({ eventName, screenWidth, dates, locationName, onBack, onInvite }) => (
-    <View style={{ justifyContent: 'space-between', flex: 1 }}>
-        <ScrollView contentContainerStyle={{ marginTop: 10 }}>
+const EventNameEditor = ({ eventName, onEventNameChange }) => (
+    <View style={{ marginTop: 10, flexDirection: 'row', alignItems: 'center', height: 50, backgroundColor: 'rgb(231, 231, 231)'}}>
+        <Image style={{width: 35, height: 35, marginLeft: 10, marginRight: 10}} source={images.edit_label} />
+        <TextInput
+            placeholder="Give your event a name!"
+            placeholderTextColor="grey"
+            onChangeText={onEventNameChange}
+            value={eventName}
+            style={{color: 'black', flex: 1}} />
+    </View>
+);
+
+const SummaryView = ({eventName, screenWidth, dates, locationName, onBack, onInvite, onEventNameChange }) => (
+    <View style={{justifyContent: 'space-between', flex: 1}}>
+        <ScrollView contentContainerStyle={{marginTop: 10}}>
             <EventBanner eventName={eventName} screenWidth={screenWidth} />
-            <DateTimeSummary dates={dates} />
+            <DateTimeSummary dates={dates}/>
             <LocationSummary locationName={locationName} />
+            <EventNameEditor eventName={eventName} onEventNameChange={onEventNameChange} />
         </ScrollView>
         <BottomButtons leftImage={images.creation_back} rightImage={images.creation_invite}
-                       leftHandler={onBack} rightHandler={onInvite} />
+                       leftHandler={onBack} rightHandler={onInvite}/>
     </View>
 );
 
@@ -97,9 +112,11 @@ export default class SummaryTabs extends Component {
 
         this.onPop = this.onPop.bind(this);
         this.goToInvitePage = this.goToInvitePage.bind(this);
+        this.onEventNameChange = this.onEventNameChange.bind(this);
 
         this.state = {
-            currentTab: SummaryTabIds.summaryPage
+            currentTab: SummaryTabIds.summaryPage,
+            eventName: null,
         }
     }
 
@@ -108,24 +125,27 @@ export default class SummaryTabs extends Component {
     }
 
     goToInvitePage() {
-        this.props.navigator.push({ id: 14 });
+        const payload = {};
+        payload.name = this.state.eventName;
+        firebase.database().ref().child(`events/${firebase.auth().currentUser.uid}/${this.props.eventKey}`).update(payload);
+        this.props.navigator.push({ id: 14, eventKey: this.props.eventKey });
+    }
+
+    onEventNameChange(eventName) {
+        this.setState({ eventName });
     }
 
     render() {
         const screenWidth = Dimensions.get('window').width;
-        const eventName = 'NCIS \'11 Reunion Dinner';
-        const eventDates = [new Date(2016, 9, 10, 6, 15),
-            new Date(2016, 9, 12, 7, 30),
-            new Date(2016, 10, 16, 15, 0)];
-        const locationName = 'NUS - IDC';
 
         const summaryViewProps = {
             screenWidth,
-            eventName,
+            eventName: this.state.eventName,
             locationName: this.props.eventBlob.locationText,
             dates: this.props.eventBlob.dates.map(({actualDate}) => actualDate),
             onBack: this.onPop,
             onInvite: this.goToInvitePage,
+            onEventNameChange: this.onEventNameChange,
         };
 
         let currentTabView = null;
@@ -144,7 +164,7 @@ export default class SummaryTabs extends Component {
 
         return (
             <View style={styles.tabsContainer}>
-                <TopBar centerImage={images.my_event} />
+                <TopBar centerImage={images.dashboard_label} />
                 <TabBar leftImage={images.inactive_calendar_tab} leftActiveImage={images.calendar_icon} leftTabId={SummaryTabIds.commonAvailability} leftActiveBackground="white"
                         centerImage={images.inactive_location_tab} centerActiveImage={images.map_icon} centerTabId={SummaryTabIds.mapPage} centerActiveBackground="white"
                         rightImage={images.inactive_summary_tab} rightActiveImage={images.summary_icon} rightTabId={SummaryTabIds.summaryPage} rightActiveBackground="white"

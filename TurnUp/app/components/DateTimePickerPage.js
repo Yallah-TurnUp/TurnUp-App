@@ -372,7 +372,7 @@ export default class DateTimePickerPage extends Component {
     navigateToMapPage() {
         const eventBlob = { dates: this.state.dates };
         const payload = {};
-        payload[`/events/${this.props.eventKey}`] = eventBlob;
+        payload[`/events/${firebase.auth().currentUser.uid}/${this.props.eventKey}`] = eventBlob;
         firebase.database().ref().update(payload);
         this.props.navigator.push({id: 17, eventBlob, eventKey: this.props.eventKey});
     }

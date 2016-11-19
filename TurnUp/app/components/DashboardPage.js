@@ -16,6 +16,7 @@ import {
 import Collapsible from 'react-native-collapsible';
 import images from '../config/images.js';
 import { BottomButtons } from './DateTimePickerPage.js';
+import { TopBar } from './TabsPage.js';
 
 const monthNames = {
     0: 'JAN',
@@ -267,6 +268,7 @@ export default class DashboardPage extends Component {
         super(props);
 
         this.pickDate = this.pickDate.bind(this);
+        this.onPop = this.onPop.bind(this);
 
         this.state = {
             pickedDate: this.props.pickedDate,
@@ -292,6 +294,10 @@ export default class DashboardPage extends Component {
             { text: 'Maybe not', null },
             { text: 'Sure!', onPress: () => this.reallyPickDate(date)},
         ]);
+    }
+
+    onPop() {
+        this.props.navigator.pop();
     }
 
     render() {
@@ -326,6 +332,7 @@ export default class DashboardPage extends Component {
 
         return (
             <View style={{flex: 1, alignItems: 'stretch', justifyContent: 'space-between'}}>
+                <TopBar centerImage={images.dashboard_label} />
                 <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
                     <EventBanner screenWidth={screenWidth} eventName={eventName} />
                     {this.state.pickedDate
@@ -337,7 +344,9 @@ export default class DashboardPage extends Component {
                             invitedPeople={invitedPeople} outPeople={outPeople} fencePeople={fencePeople} />}
                     <SummaryLocationView locationName={"NUS Enterprise - Hangar"} />
                 </ScrollView>
-                <BottomButtons leftImage={images.creation_back} rightImage={images.invite_more} rightAspect={5.114}/>
+                <BottomButtons
+                    leftHandler={this.onPop}
+                    leftImage={images.creation_back} rightImage={images.invite_more} rightAspect={5.114}/>
             </View>
         );
     }

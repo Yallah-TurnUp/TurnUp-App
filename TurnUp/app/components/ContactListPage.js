@@ -16,6 +16,7 @@ import {
     TouchableHighlight,
     Alert,
 } from 'react-native';
+import * as firebase from 'firebase';
 import Contacts from 'react-native-contacts';
 import styles from '../config/styles.js';
 import images from '../config/images.js';
@@ -85,7 +86,7 @@ class ContactListView extends Component {
         };
 
         return (
-            <TouchableWithoutFeedback onPress={this.toggle}>
+            <TouchableWithoutFeedback onPress={this.toggle} delayPressOut={0} >
                 <View style={{backgroundColor: 'rgb(242,242,242)' , flexDirection: 'row', height:40, justifyContent: 'center', alignItems: 'center'}}>
                     <View style={{backgroundColor:'transparent', flex:3}}>
                         <Text style={{marginLeft:20, flex: 0, fontSize: 15, fontFamily: "SourceSansPro", color: 'black'}}>{this.props.name}</Text>
@@ -158,7 +159,7 @@ export default class CreateInvitationPage extends Component {
         const getRowData = (dataBlob, sectionId, rowId) => dataBlob[`${rowId}`];
 
         const ds = new ListView.DataSource({
-            rowHasChanged: (r1, r2) => r1 !== r2,
+            rowHasChanged: (r1, r2) => r1.active != r2.active || r1.name !== r2.name,
             sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
             getSectionData,
             getRowData,
@@ -168,6 +169,7 @@ export default class CreateInvitationPage extends Component {
         const {dataBlob, sectionIds, rowIds} = this._formatData(people, selectionState);
         this.state = {
             selectionState,
+            rowIdsLength: rowIds.map((row) => row.length).reduce((r1, r2) => r1 + r2),
             exampleMessage: 'Example: It’s been some time since we’ve last met. Let’s hang out!',
             inviteesDataSource: ds.cloneWithRowsAndSections(dataBlob, sectionIds, rowIds)
         };
@@ -207,6 +209,7 @@ export default class CreateInvitationPage extends Component {
     }
 
     toggle(rowId) {
+        console.log('toggle trigger!');
         const selectionState = { ...this.state.selectionState };
         selectionState[rowId] = !selectionState[rowId];
         const {dataBlob, sectionIds, rowIds} = this._formatData(people, selectionState);
@@ -229,6 +232,15 @@ export default class CreateInvitationPage extends Component {
 
     sendToInvitees(invitees) {
         console.log(invitees);
+        const inviteesWithKeys = invitees.map(invitee => ({
+            ...invitee,
+            key: firebase.database().ref().child(`events/${firebase.auth().currentUser.uid}/${this.props.eventKey}/invitees`).push().key,
+        }));
+        inviteesWithKeys.forEach((invitee) => {
+            const payload = {};
+            payload[invitee.key] = invitee;
+            firebase.database().ref().child(`events/${firebase.auth().currentUser.uid}/${this.props.eventKey}/invitees`).update(payload);
+        });
         const completeArray = invitees.map(() => false);
         SmsSender.sendTexts(invitees.map((invitee, index) => ({
             ...invitee,
@@ -277,7 +289,8 @@ export default class CreateInvitationPage extends Component {
 
                     <View style={styles.ContactListBottomContainer}>
                         <View style={{flex:1, justifyContent: 'center', alignItems: 'center'}}>
-                            <ListView renderRow={(rowData, _, rowId) => <ContactListView name={rowData.name} active={rowData.active} toggle={this.toggle} rowId={rowId} />}
+                            <ListView initialListSize={this.state.rowIdsLength}
+                                      renderRow={(rowData, _, rowId) => <ContactListView name={rowData.name} active={rowData.active} toggle={this.toggle} rowId={rowId} />}
                                       renderSectionHeader={(sectionData) => <SectionHeaderView {...sectionData} />}
                                       renderSeparator={(sectionId, rowId) => <View key={`${sectionId}-${rowId}`} style={styles.ContactlistSeparator} />}
                                       dataSource={this.state.inviteesDataSource}

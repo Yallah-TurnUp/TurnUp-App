@@ -95,9 +95,9 @@ export default class MapPage extends Component {
             locationText: locationTextDirty ? locationText : null,
         };
         const payload = {};
-        payload[`/events/${this.props.eventKey}`] = eventBlob;
+        payload[`/events/${firebase.auth().currentUser.uid}/${this.props.eventKey}`] = eventBlob;
         firebase.database().ref().update(payload);
-        this.props.navigator.push({id: 18, eventBlob});
+        this.props.navigator.push({id: 18, eventBlob, eventKey: this.props.eventKey});
     }
 
     render() {
