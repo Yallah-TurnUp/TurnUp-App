@@ -14,7 +14,6 @@ import {
     Alert,
 } from 'react-native';
 import * as firebase from 'firebase';
-import Collapsible from 'react-native-collapsible';
 import images from '../config/images.js';
 import { BottomButtons } from './DateTimePickerPage.js';
 import { TopBar } from './TabsPage.js';

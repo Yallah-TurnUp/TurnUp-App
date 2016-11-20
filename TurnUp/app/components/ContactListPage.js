@@ -17,6 +17,7 @@ import {
     Alert,
 } from 'react-native';
 import * as firebase from 'firebase';
+import shortid from 'shortid';
 import Contacts from 'react-native-contacts';
 import styles from '../config/styles.js';
 import images from '../config/images.js';
@@ -232,15 +233,28 @@ export default class CreateInvitationPage extends Component {
 
     sendToInvitees(invitees) {
         console.log(invitees);
-        const inviteesWithKeys = invitees.map(invitee => ({
-            ...invitee,
-            key: firebase.database().ref().child(`events/${firebase.auth().currentUser.uid}/${this.props.eventKey}/invitees`).push().key,
-        }));
+        const inviteesWithKeys = invitees.map(invitee => {
+            const key = firebase.database().ref().child(`events/${firebase.auth().currentUser.uid}/${this.props.eventKey}/invitees`).push().key;
+            const generatedShortid = shortid.generate();
+            return {
+                ...invitee,
+                key,
+                shortid: generatedShortid,
+                message: invitee.message + `?id=${generatedShortid}`,
+            };
+        });
+        const shortcutMap = {};
         inviteesWithKeys.forEach((invitee) => {
             const payload = {};
             payload[invitee.key] = invitee;
             firebase.database().ref().child(`events/${firebase.auth().currentUser.uid}/${this.props.eventKey}/invitees`).update(payload);
+            shortcutMap[invitee.shortid] = {
+                u: firebase.auth().currentUser.uid,
+                e: this.props.eventKey,
+                i: invitee.key,
+            };
         });
+        firebase.database().ref().child('shortcutMap').update(shortcutMap);
         const completeArray = invitees.map(() => false);
         SmsSender.sendTexts(invitees.map((invitee, index) => ({
             ...invitee,
