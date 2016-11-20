@@ -98,7 +98,7 @@ const SummaryView = ({eventName, screenWidth, dates, locationName, onBack, onInv
         <ScrollView contentContainerStyle={{marginTop: 10}}>
             <EventBanner eventName={eventName} screenWidth={screenWidth} />
             <DateTimeSummary dates={dates}/>
-            <LocationSummary locationName={locationName} />
+            {locationName && <LocationSummary locationName={locationName} />}
             <EventNameEditor eventName={eventName} onEventNameChange={onEventNameChange} />
         </ScrollView>
         <BottomButtons leftImage={images.creation_back} rightImage={images.creation_invite}

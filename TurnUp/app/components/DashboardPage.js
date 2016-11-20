@@ -13,10 +13,12 @@ import {
     TouchableOpacity,
     Alert,
 } from 'react-native';
+import * as firebase from 'firebase';
 import Collapsible from 'react-native-collapsible';
 import images from '../config/images.js';
 import { BottomButtons } from './DateTimePickerPage.js';
 import { TopBar } from './TabsPage.js';
+import getBannerName from "../utils/getBannerName";
 
 const monthNames = {
     0: 'JAN',
@@ -125,7 +127,7 @@ class SummaryStatisticsView extends Component {
                     </TouchableOpacity>
                 </View>
                 <View>
-                    <Collapsible collapsed={this.state.currentTab === -1}>
+                    {this.state.currentTab !== -1 &&
                         <ListView
                             contentContainerStyle={{flexWrap: 'wrap', width: screenWidth * 0.9, paddingTop: 5, flexDirection: 'row', alignSelf: 'center', backgroundColor: 'white', alignItems: 'flex-start'}}
                             dataSource={dataSource}
@@ -134,8 +136,7 @@ class SummaryStatisticsView extends Component {
                                     <Text style={{textAlign: 'center', fontFamily: 'SourceSansPro-Regular', fontSize: 15, color: 'black'}}>{rowData}</Text>
                                 </View>
                             )}
-                            enableEmptySections />
-                    </Collapsible>
+                            enableEmptySections />}
                 </View>
             </View>
         );
@@ -166,7 +167,7 @@ class InPeopleView extends Component {
                     <Text style={statisticsNumberStyle}>{inCount}</Text>
                     <Text style={statisticsSubtitleStyle}>Are IN!</Text>
                 </TouchableOpacity>
-                <Collapsible collapsed={!(this.state.isOpen && inPeople.length > 0)}>
+                {(this.state.isOpen && inPeople.length > 0) &&
                     <ListView
                         contentContainerStyle={{flexWrap: 'wrap', paddingTop: 5, flexDirection: 'row', backgroundColor: 'white', alignItems: 'flex-start'}}
                         dataSource={dataSource}
@@ -175,8 +176,7 @@ class InPeopleView extends Component {
                                 <Text style={{textAlign: 'center', fontFamily: 'SourceSansPro-Regular', fontSize: 15, color: 'black'}}>{rowData}</Text>
                             </View>
                         )}
-                        enableEmptySections />
-                </Collapsible>
+                        enableEmptySections />}
             </View>
         );
     }
@@ -189,10 +189,17 @@ const CommonAvailabilityDate = ({ datePicked, names, highestAttendance, width, p
     const hour = ('0' + datePicked.getHours()).slice(-2);
     const minute = ('0' + datePicked.getMinutes()).slice(-2);
 
+    let fitWidthHeight = 15;
+    let fitWidthWidth = 121.95;
+    if (width < 121.95) {
+        fitWidthWidth = width;
+        fitWidthHeight = width * (15 / 121.95);
+    }
+
     return (
         <View style={{flex: 1, marginLeft: 2.5, marginRight: 2.5}}>
-            <View style={{height: 15, marginBottom: 2}}>
-                {highestAttendance && <Image style={{height: width / 8.13, width}} source={images.highest_attendance_banner} />}
+            <View style={{height: 15, marginBottom: 2, alignItems: 'center'}}>
+                {highestAttendance && <Image style={{height: fitWidthHeight, width: fitWidthWidth}} source={images.highest_attendance_banner} />}
             </View>
             <View style={{backgroundColor: 'white', borderTopLeftRadius: 8, borderTopRightRadius: 8}}>
                 <Text style={{textAlign: 'center', fontSize: 10, color: 'black'}}>{date} {month} ({day})</Text>
@@ -255,10 +262,16 @@ const RSVPSummaryView = ({ screenWidth, inPeople, invitedPeople, outPeople, fenc
     </View>
 );
 
-const EventBanner = ({ screenWidth, eventName }) => (
-    <Image style={{width: screenWidth, height: screenWidth * 0.457 }} source={images.banner_rocket}>
+const EventBanner = ({ screenWidth, eventName, eventType }) => (
+    <Image style={{width: screenWidth, height: screenWidth * 0.457}} source={images[getBannerName(eventType)]}>
         <View style={{flex: 1, backgroundColor: 'rgba(0,0,0, 0.20)', alignItems: 'center', justifyContent: 'center'}}>
-            <Text style={{fontFamily: 'SourceSansPro-Regular', fontSize: 30, color: 'white', textAlign: 'center', width: screenWidth * 0.9}}>{'\uD83C\uDF89'} {eventName}</Text>
+            <Text style={{
+                fontFamily: 'SourceSansPro-Regular',
+                fontSize: 30,
+                color: 'white',
+                textAlign: 'center',
+                width: screenWidth * 0.9
+            }}>{'\uD83C\uDF89'} {eventName}</Text>
         </View>
     </Image>
 );
@@ -273,6 +286,39 @@ export default class DashboardPage extends Component {
         this.state = {
             pickedDate: this.props.pickedDate,
         }
+    }
+
+    componentWillMount() {
+        firebase.database().ref().child(`events/${firebase.auth().currentUser.uid}/${this.props.eventKey}`).on('value', (updatedEvent) => {
+            const event = updatedEvent.val();
+            const invitees = Object.keys(event.invitees).map((inviteeKey) => event.invitees[inviteeKey]);
+            const attending = invitees.filter(({ attending }) => attending);
+            const saidNo = invitees.filter(({ attending }) => attending === false);
+            const onTheFence = invitees.filter(({ attending }) => attending == null);
+            const eventInfo = event.dates.map((date, index) => ({
+                date: new Date(Date.parse(date.actualDate)),
+                names: attending
+                    .filter(({ commonAvailability }) => commonAvailability &&
+                        Object.keys(commonAvailability).some((commonAvailabilityKey) =>
+                            commonAvailability[commonAvailabilityKey] === String(index + 1)))
+                    .map(({ name }) => name),
+            }));
+            const invitedNames = invitees.map(({ name }) => name);
+            const saidNoNames = saidNo.map(({ name }) => name);
+            const fenceNames = onTheFence.map(({ name }) => name);
+            const eventName = event.name;
+            const locationName = event.locationText;
+            const eventType = event.type;
+            this.setState({
+                invitedPeople: invitedNames,
+                outPeople: saidNoNames,
+                fencePeople: fenceNames,
+                eventInfo,
+                eventName,
+                locationName,
+                eventType,
+            });
+        });
     }
 
     // Highlights the day with the highest attendance
@@ -302,39 +348,14 @@ export default class DashboardPage extends Component {
 
     render() {
         const screenWidth = Dimensions.get('window').width;
-
-        // Common Availability
-
-        const eventInfo = [{
-            date: new Date(2016, 9, 10, 6, 15),
-            names: ['Aaron Khoo', 'Anna Cheng', 'Benny Chong', 'Bryan Lim'],
-        }, {
-            date: new Date(2016, 9, 12, 7, 30),
-            names: ['Aaron Khoo', 'Anna Cheng', 'Bryan Lim'],
-        }, {
-            date: new Date(2016, 10, 16, 15, 0),
-            names: ['Aaron Khoo'],
-        }];
+        const { eventInfo, invitedPeople, outPeople, fencePeople, eventName, locationName, eventType } = this.state;
         const enrichedEventInfo = this.enrichEventInfo(eventInfo);
-
-        // Attendance
-
-        const invitedPeople = ['Aaron Khoo', 'Anna Cheng', 'Benny Chong', 'Bryan Lim', 'Carrie Ash', 'Darius Pan',
-            'Felicia Lim', 'Wei Li', 'Jack Ma', 'Zack Joe', 'Nice Guy'];
-        const outPeople = ['Aaron Khoo', 'Anna Cheng', 'Benny Chong', 'Bryan Lim', 'Carrie Ash', 'Darius Pan'];
-        const fencePeople = ['Felicia Lim', 'Wei Li', 'Jack Ma', 'Zack Joe', 'Nice Guy'];
-        const inPeople = ['Aaron Khoo', 'Anna Cheng', 'Benny Chong', 'Bryan Lim', 'Carrie Ash', 'Darius Pan',
-            'Felicia Lim', 'Wei Li', 'Jack Ma', 'Zack Joe', 'Nice Guy'];
-
-        // Event Banner
-
-        const eventName = 'NCIS \'11 Reunion Dinner';
 
         return (
             <View style={{flex: 1, alignItems: 'stretch', justifyContent: 'space-between'}}>
                 <TopBar centerImage={images.dashboard_label} />
                 <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
-                    <EventBanner screenWidth={screenWidth} eventName={eventName} />
+                    <EventBanner screenWidth={screenWidth} eventName={eventName} eventType={eventType} />
                     {this.state.pickedDate
                         ? <RSVPSummaryView
                             screenWidth={screenWidth} inPeople={inPeople}
@@ -342,7 +363,7 @@ export default class DashboardPage extends Component {
                         : <CommonAvailabilityView
                             screenWidth={screenWidth} enrichedEventInfo={enrichedEventInfo} pickDate={this.pickDate}
                             invitedPeople={invitedPeople} outPeople={outPeople} fencePeople={fencePeople} />}
-                    <SummaryLocationView locationName={"NUS Enterprise - Hangar"} />
+                    <SummaryLocationView locationName={locationName} />
                 </ScrollView>
                 <BottomButtons
                     leftHandler={this.onPop}
