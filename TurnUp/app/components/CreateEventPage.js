@@ -26,6 +26,27 @@ const activityIds = {
     sports: "sports"
 };
 
+const imgBook_1= ['banner_rocket'];
+const imgBook_2= [];
+const imgBeer_1= ['banner_food'];
+const imgBeer_2= [];
+const imgMusic_1= [];
+const imgMusic_2= [];
+const imgSport_1= [];
+const imgSport_2= [];
+const infoMap = {
+    'beer': [
+        {
+            left: 'FOOD',
+        }
+    ],
+    'book': [
+        {
+            left: 'BUSINESS',
+        }
+    ]
+};
+
 const ImageListViewProps = {
     renderRow: (rowData) => <ImageListView
         leftImageTapped={rowData.leftImageTapped}
@@ -48,7 +69,7 @@ class ImageListView extends Component {
                     marginTop: 10, marginBottom: 10}}>
                 <TouchableOpacity style={{width: 140, height: 140, marginRight: -15}}
                                   onPress={() => this.props.leftImageTapped(this.props.index, this.props.activity)}>
-                    <Image source={images[this.props.name_1]} style={{width: 140, height: 140, opacity: this.props.highlightLeft ? 0.5 : 1}}/>
+                    <Image source={images[this.props.name_1]} style={{borderRadius: 25, width: 140, height: 140, opacity: this.props.highlightLeft ? 0.5 : 1}}/>
                 </TouchableOpacity>
                 <TouchableOpacity style={{width: 140, height: 140, marginLeft: -15}}
                                   onPress={() => this.props.rightImageTapped(this.props.index, this.props.activity)}>
@@ -73,8 +94,6 @@ export default class CreateEventPage extends Component {
     }
 
     _beerImages() {
-        var imgBeer_1= ['beer_1', 'beer_5','beer_3','beer_4','beer_2'];
-        var imgBeer_2= ['beer_7', 'beer_8','beer_9','beer_10','beer_6'];
         var photoNames = [];
         for (let i = 0; i < imgBeer_1.length; i++) {
             photoNames[i] = {
@@ -86,8 +105,6 @@ export default class CreateEventPage extends Component {
     }
 
     _bookImages() {
-        var imgBook_1= ['book_1'];
-        var imgBook_2= ['book_2'];
         var photoNames = [];
         for (let i = 0; i < imgBook_1.length; i++) {
             photoNames[i] = {
@@ -99,8 +116,6 @@ export default class CreateEventPage extends Component {
     }
 
     _musicImages() {
-        var imgMusic_1= ['music_1'];
-        var imgMusic_2= ['music_2'];
         var photoNames = [];
         for (let i = 0; i < imgMusic_1.length; i++) {
             photoNames[i] = {
@@ -112,8 +127,6 @@ export default class CreateEventPage extends Component {
     }
 
     _sportsImages() {
-        var imgSport_1= ['sports_1_logo'];
-        var imgSport_2= ['sports_3_logo'];
         var photoNames = [];
         for (let i = 0; i < imgSport_1.length; i++) {
             photoNames[i] = {
@@ -141,6 +154,8 @@ export default class CreateEventPage extends Component {
                 index: index,
                 side: "left"
             }))
+        }, () => {
+            this._navigateToEnrichment(infoMap[activity][index]["left"]);
         });
     }
 
@@ -161,6 +176,8 @@ export default class CreateEventPage extends Component {
                 index: index,
                 side: "right"
             }))
+        }, () => {
+            this._navigateToEnrichment(infoMap[activity][index]["right"]);
         });
     }
 
@@ -200,8 +217,11 @@ export default class CreateEventPage extends Component {
         this.props.navigator.pop();
     }
 
-    _navigateToEnrichment() {
-        const eventKey = firebase.database().ref().child('events').push().key;
+    _navigateToEnrichment(eventType) {
+        const eventKey = firebase.database().ref().child(`/events/${firebase.auth().currentUser.uid}`).push().key;
+        firebase.database().ref().child(`/events/${firebase.auth().currentUser.uid}/${eventKey}`).update({
+            type: eventType,
+        });
         this.props.navigator.push({id: 16, eventKey});
     }
 
@@ -221,8 +241,7 @@ export default class CreateEventPage extends Component {
             <View style={{flex: 1, flexDirection: 'column', justifyContent: 'space-around', alignItems: 'stretch',
                 backgroundColor: '#e6e6e6'}}>
                 <TopBar leftButton={images.back} leftButtonHandler={() => this._popSelf()}
-                        centerImage={images.my_event}
-                        rightButton={images.forward} rightButtonHandler={() => this._navigateToEnrichment()}/>
+                        centerImage={images.my_event} />
                 <View style={styles.eventTypeSelector}>
                     <TouchableOpacity style={{width: 80, height: 80}}
                                       onPress={() => this._setSelectedType(activityIds.beer)}>
@@ -242,7 +261,7 @@ export default class CreateEventPage extends Component {
                     </TouchableOpacity>
                 </View>
                 <View style={{backgroundColor:'white', flex: 1, alignItems: 'stretch'}}>
-                    <ListView {...ImageListViewProps} dataSource={this.state.dataSource} />
+                    <ListView {...ImageListViewProps} dataSource={this.state.dataSource} enableEmptySections />
                 </View>
             </View>
         )
