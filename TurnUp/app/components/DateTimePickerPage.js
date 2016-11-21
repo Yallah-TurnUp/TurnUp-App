@@ -273,6 +273,7 @@ export default class DateTimePickerPage extends Component {
         this.onHourSelect = this.onHourSelect.bind(this);
         this.onMinuteSelect = this.onMinuteSelect.bind(this);
         this.navigateToMapPage = this.navigateToMapPage.bind(this);
+        this.navigateOut = this.navigateOut.bind(this);
 
         const now = new Date();
         this.state = {
@@ -287,6 +288,17 @@ export default class DateTimePickerPage extends Component {
         };
 
         if (Platform.OS === 'android') UIManager.setLayoutAnimationEnabledExperimental(true);
+    }
+
+    componentWillMount() {
+        firebase.database().ref().child(`events/${firebase.auth().currentUser.uid}/${this.props.eventKey}/dates`).on('value', (newDates) => {
+            this.setState({
+                dates: (newDates.val() || []).map((date) => ({
+                    ...date,
+                    actualDate: new Date(Date.parse(date.actualDate)),
+                })),
+            });
+        });
     }
 
     getMonths() {
@@ -370,11 +382,18 @@ export default class DateTimePickerPage extends Component {
     }
 
     navigateToMapPage() {
-        const eventBlob = { dates: this.state.dates };
-        const payload = {};
-        payload[`/events/${firebase.auth().currentUser.uid}/${this.props.eventKey}`] = eventBlob;
-        firebase.database().ref().update(payload);
-        this.props.navigator.push({id: 17, eventBlob, eventKey: this.props.eventKey});
+        this.navigateOut();
+        this.props.navigator.push({id: 17, eventKey: this.props.eventKey});
+    }
+
+    navigateOut() {
+        firebase.database()
+            .ref(`/events/${firebase.auth().currentUser.uid}/${this.props.eventKey}`)
+            .update({ dates: this.state.dates });
+    }
+
+    componentWillUnmount() {
+        this.navigateOut();
     }
 
     render() {

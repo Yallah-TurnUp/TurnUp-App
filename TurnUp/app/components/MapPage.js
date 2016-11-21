@@ -38,15 +38,14 @@ export default class MapPage extends Component {
         this.state = {
             userLocation: null,
             markerTarget: MOUNTAIN_VIEW,
-            locationText: 'Enter event location...',
-            locationTextDirty: false,
+            locationText: null,
         };
 
         this.getRegion = this.getRegion.bind(this);
         this.setMarkerTarget = this.setMarkerTarget.bind(this);
-        this.onLocationTextFocus = this.onLocationTextFocus.bind(this);
         this.changeLocationText = this.changeLocationText.bind(this);
         this.navigateToSummaryTabs = this.navigateToSummaryTabs.bind(this);
+        this.saveLocation = this.saveLocation.bind(this);
     }
 
     componentWillMount() {
@@ -60,6 +59,12 @@ export default class MapPage extends Component {
                 markerTarget: currentPosition
             });
         });
+        firebase.database()
+            .ref(`events/${firebase.auth().currentUser.uid}/${this.props.eventKey}`)
+            .child('locationText')
+            .on('value', (newLocationText) => {
+               this.setState({ locationText: newLocationText.val() })
+            });
     }
 
     getRegion() {
@@ -80,24 +85,23 @@ export default class MapPage extends Component {
         });
     }
 
-    onLocationTextFocus() {
-        if (!this.state.locationTextDirty) this.changeLocationText('');
-    }
-
     changeLocationText(locationText) {
-        this.setState({locationText, locationTextDirty: true});
+        this.setState({locationText});
     }
 
     navigateToSummaryTabs() {
-        const { locationTextDirty, locationText } = this.state;
-        const eventBlob = {
-            ...this.props.eventBlob,
-            locationText: locationTextDirty ? locationText : null,
-        };
-        const payload = {};
-        payload[`/events/${firebase.auth().currentUser.uid}/${this.props.eventKey}`] = eventBlob;
-        firebase.database().ref().update(payload);
-        this.props.navigator.push({id: 18, eventBlob, eventKey: this.props.eventKey});
+        this.saveLocation();
+        this.props.navigator.push({id: 18, eventKey: this.props.eventKey});
+    }
+
+    saveLocation() {
+        firebase.database()
+            .ref(`/events/${firebase.auth().currentUser.uid}/${this.props.eventKey}`)
+            .update({ locationText: this.state.locationText });
+    }
+
+    componentWillUnmount() {
+        this.saveLocation();
     }
 
     render() {
@@ -114,7 +118,8 @@ export default class MapPage extends Component {
                             <Image style={{height:28,width:28}} source={images.location_pin}/>
                         </View>
                         <TextInput
-                            blurOnSubmit onFocus={this.onLocationTextFocus}
+                            placeholder="Enter event location..."
+                            placeholderTextColor="grey"
                             value={this.state.locationText} onChangeText={locationText => this.setState({locationText, locationTextDirty: true})}
                             style={styles.SearchTextContainer} />
                         <TouchableOpacity style={{backgroundColor:'rgb(237,237,237)',flex:0.5, justifyContent:'center', alignItems:'center', height:50}}>

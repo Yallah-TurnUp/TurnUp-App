@@ -120,6 +120,21 @@ export default class SummaryTabs extends Component {
         }
     }
 
+    componentWillMount() {
+        firebase.database()
+            .ref(`/events/${firebase.auth().currentUser.uid}/${this.props.eventKey}`)
+            .child('locationText')
+            .on('value', (newLocation) => {
+                this.setState({ locationText: newLocation.val() })
+            });
+        firebase.database()
+            .ref(`/events/${firebase.auth().currentUser.uid}/${this.props.eventKey}`)
+            .child('dates')
+            .on('value', (newDates) => {
+                this.setState({ dates: newDates.val() || [] })
+            })
+    }
+
     onPop() {
         this.props.navigator.pop();
     }
@@ -141,21 +156,23 @@ export default class SummaryTabs extends Component {
         const summaryViewProps = {
             screenWidth,
             eventName: this.state.eventName,
-            locationName: this.props.eventBlob.locationText,
-            dates: this.props.eventBlob.dates.map(({actualDate}) => actualDate),
+            locationName: this.state.locationText,
+            dates: this.state.dates.map(({actualDate}) => new Date(Date.parse(actualDate))),
             onBack: this.onPop,
             onInvite: this.goToInvitePage,
             onEventNameChange: this.onEventNameChange,
         };
 
+        console.log(summaryViewProps);
+
         let currentTabView = null;
 
         switch (this.state.currentTab) {
             case SummaryTabIds.commonAvailability:
-                currentTabView = <DateTimePickerPage hideNav/>;
+                currentTabView = <DateTimePickerPage hideNav eventKey={this.props.eventKey} />;
                 break;
             case SummaryTabIds.mapPage:
-                currentTabView = <MapPage hideNav/>;
+                currentTabView = <MapPage hideNav eventKey={this.props.eventKey} />;
                 break;
             case SummaryTabIds.summaryPage:
                 currentTabView = <SummaryView {...summaryViewProps}/>;
