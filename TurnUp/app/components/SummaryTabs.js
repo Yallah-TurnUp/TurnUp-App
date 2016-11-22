@@ -14,6 +14,7 @@ import MapPage from './MapPage.js';
 import DateTimePickerPage, { BottomButtons } from './DateTimePickerPage.js';
 import styles from '../config/styles.js';
 import images from '../config/images.js';
+import getBannerName from '../utils/getBannerName.js';
 
 import { TopBar, TabBar } from './TabsPage.js';
 
@@ -47,8 +48,8 @@ const SummaryTabIds = {
     summaryPage: 'summaryPage',
 };
 
-const EventBanner = ({ eventName, screenWidth }) => (
-    <Image style={{width: screenWidth, height: screenWidth * 0.457 }} source={images.banner_rocket}>
+const EventBanner = ({ eventName, screenWidth, imageSource }) => (
+    <Image style={{width: screenWidth, height: screenWidth * 0.457 }} source={images[imageSource]}>
         <View style={{flex: 1, backgroundColor: 'rgba(0,0,0, 0.20)', alignItems: 'center', justifyContent: 'center'}}>
             <Text style={{fontFamily: 'SourceSansPro-Regular', fontSize: 30, color: 'white', textAlign: 'center', width: screenWidth * 0.9}}>{'\uD83C\uDF89'} {eventName}</Text>
         </View>
@@ -93,10 +94,10 @@ const EventNameEditor = ({ eventName, onEventNameChange }) => (
     </View>
 );
 
-const SummaryView = ({eventName, screenWidth, dates, locationName, onBack, onInvite, onEventNameChange }) => (
+const SummaryView = ({eventName, screenWidth, dates, locationName, onBack, onInvite, onEventNameChange, imageSource }) => (
     <View style={{justifyContent: 'space-between', flex: 1}}>
         <ScrollView contentContainerStyle={{marginTop: 10}}>
-            <EventBanner eventName={eventName} screenWidth={screenWidth} />
+            <EventBanner eventName={eventName} screenWidth={screenWidth} imageSource={imageSource} />
             <DateTimeSummary dates={dates}/>
             {locationName && <LocationSummary locationName={locationName} />}
             <EventNameEditor eventName={eventName} onEventNameChange={onEventNameChange} />
@@ -132,7 +133,13 @@ export default class SummaryTabs extends Component {
             .child('dates')
             .on('value', (newDates) => {
                 this.setState({ dates: newDates.val() || [] })
-            })
+            });
+        firebase.database()
+            .ref(`/events/${firebase.auth().currentUser.uid}/${this.props.eventKey}`)
+            .child('type')
+            .on('value', (newEventType) => {
+                this.setState({ eventType: newEventType.val() || [] })
+            });
     }
 
     onPop() {
@@ -161,9 +168,8 @@ export default class SummaryTabs extends Component {
             onBack: this.onPop,
             onInvite: this.goToInvitePage,
             onEventNameChange: this.onEventNameChange,
+            imageSource: getBannerName(this.state.eventType),
         };
-
-        console.log(summaryViewProps);
 
         let currentTabView = null;
 

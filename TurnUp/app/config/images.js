@@ -82,6 +82,7 @@ const images = {
 
     banner_rocket: require('../images/banner_rocket.png'),
     banner_food: require('../images/banner_food.png'),
+    banner_pitching: require('../images/banner_pitching.png'),
     map_icon: require('../images/Map_Icon.png'),
     common_availability_label: require('../images/common_availability_label.png'),
     rsvp_summary_label: require('../images/rsvp_summary_label.png'),

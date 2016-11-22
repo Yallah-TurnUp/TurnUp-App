@@ -27,7 +27,7 @@ const activityIds = {
 };
 
 const imgBook_1= ['banner_rocket'];
-const imgBook_2= [];
+const imgBook_2= ['banner_pitching'];
 const imgBeer_1= ['banner_food'];
 const imgBeer_2= [];
 const imgMusic_1= [];
@@ -43,6 +43,7 @@ const infoMap = {
     'book': [
         {
             left: 'BUSINESS',
+            right: 'PITCHING',
         }
     ]
 };
@@ -73,7 +74,7 @@ class ImageListView extends Component {
                 </TouchableOpacity>
                 <TouchableOpacity style={{width: 140, height: 140, marginLeft: -15}}
                                   onPress={() => this.props.rightImageTapped(this.props.index, this.props.activity)}>
-                    <Image source={images[this.props.name_2]} style={{width: 140, height: 140, opacity: this.props.highlightRight ? 0.5 : 1}}/>
+                    <Image source={images[this.props.name_2]} style={{borderRadius: 25, width: 140, height: 140, opacity: this.props.highlightRight ? 0.5 : 1}}/>
                 </TouchableOpacity>
             </View>
         )
