@@ -25,28 +25,7 @@ import SmsSender from '../native/SmsSender.js';
 import { TopBar } from './TabsPage.js';
 import { BottomButtons } from './DateTimePickerPage.js';
 
-var people= [
-    {'name':'Alice'},
-    {'name': 'Batman'},
-    {'name':'Dats'},
-    {'name':'General'},
-    {'name':'Superman'},
-    {'name': 'Teddy'},
-    {'name':'Dats'},
-    {'name':'Stalin'},
-    {'name':'Ham Lon'},
-    {'name': 'Batman'},
-    {'name':'Dats'},
-    {'name':'Shicen'},
-    {'name':'Superman'},
-    {'name': 'Batman'},
-    {'name':'Joseph'} ,
-    {'name':'General'},
-    {'name':'Sexy'},
-    {'name': 'Batman'},
-    {'name':'Darius'} ,
-    {'name':'General'}
-];
+var people = [];
 
 Contacts.getAll((err, contacts) => {
     if (err) {
@@ -56,16 +35,17 @@ Contacts.getAll((err, contacts) => {
     people = contacts
         .filter(contact => contact.phoneNumbers && contact.phoneNumbers.length > 0)
         .map(contact => {
-            if (contact.givenName === 'Darius' || contact.givenName === 'Dat') {
-                console.log(contact);
-            }
-            const mobileNumbers = contact.phoneNumbers.filter(phone => phone.label && phone.label === 'mobile');
+            const { phoneNumbers, emailAddresses, givenName, middleName, familyName } = contact;
+            const mobileNumbers = (phoneNumbers || []).filter(phone => phone.label && phone.label === 'mobile');
             return ({
-                name: [contact.givenName, contact.middleName, contact.familyName]
+                name: [givenName, middleName, familyName]
                     .filter(name => name)
                     .join(' '),
-                firstName: contact.givenName,
-                number: (mobileNumbers.length > 0 ? mobileNumbers : contact.phoneNumbers)[0].number,
+                firstName: givenName,
+                number: mobileNumbers.length > 0
+                    ? mobileNumbers[0].number
+                    : (phoneNumbers && phoneNumbers.length > 0 ? phoneNumbers[0] : null),
+                email: (emailAddresses && emailAddresses.length > 0) ? emailAddresses[0].email : null,
             });
         });
 });
