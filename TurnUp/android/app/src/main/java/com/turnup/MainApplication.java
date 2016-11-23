@@ -4,7 +4,7 @@ import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
 import co.apptailor.googlesignin.RNGoogleSigninPackage;
-
+import com.rt2zz.reactnativecontacts.ReactNativeContacts;
 
 import android.app.Application;
 import android.util.Log;
@@ -38,7 +38,9 @@ public class MainApplication extends Application implements ReactApplication {
               new MapsPackage(),
               new FBSDKPackage(mCallbackManager),
               new RNGoogleSigninPackage(),
-              new IntentSenderPackage()
+              new ReactNativeContacts(),
+              new IntentSenderPackage(),
+              new SmsSenderPackage()
           );
       }
   };

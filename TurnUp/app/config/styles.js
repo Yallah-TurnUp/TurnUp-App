@@ -358,7 +358,8 @@ export default styles = StyleSheet.create({
     topContainer: {
         flex: -1,
         alignItems: 'stretch',
-        backgroundColor: "#F28500"
+        backgroundColor: "black"
+        //#F28500
     },
 
     topTabButtonsContainer: {
@@ -425,7 +426,140 @@ export default styles = StyleSheet.create({
 
     eventCells: {
        height: 180
-    }
+    },
+
+
+
+    // ContactList
+
+   ContactListTopContainer: {
+        marginTop: 15,
+        marginBottom: 15,
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        backgroundColor: 'white',
+        flexDirection: 'row',
+    },
+
+    MessageIcon: {
+        width: 50,
+        height: 50,
+        backgroundColor: 'transparent',
+        alignItems:'center',
+        justifyContent: 'center'
+
+    },
+
+    TickBox:{
+        width: 30,
+        height: 30,
+        backgroundColor: 'transparent'
+    },
+
+    ContactlistSeparator: {
+        height: 1,
+        backgroundColor: '#8E8E8E',
+    },
+
+    MessageContainer:{
+        width: 280,
+        height: 180,
+        justifyContent: 'space-around',
+        alignItems:'stretch',
+        backgroundColor: 'rgb(242,242,242)',
+        flexDirection: 'column',
+        borderRadius: 10
+    },
+
+
+    ContactListBottomContainer:{
+        flex: 1,
+        justifyContent: 'space-between',
+        alignItems: 'flex-start',
+        flexDirection: 'row'
+    },
+
+    MessageMultiline: {
+        flex: 1,
+        fontSize: 13,
+        height: 80,
+        padding: 4,
+        marginHorizontal:5,
+        marginVertical:5,
+        backgroundColor:'white'
+    },
+
+    UneditableText:{
+        fontSize: 12,
+        textAlign: 'left',
+        marginLeft: 8
+    },
+
+    ContactListViewContainer: {
+        flex:1,
+        marginTop: 20
+    },
+
+    ContactListViewRowContainer:{
+        flex:1,
+        padding:20,
+        flexDirection:'row',
+        alignItems: 'center'
+    },
+
+    ContactListViewText:{
+        marginLeft:12,
+        fontSize: 16
+    },
+
+    //Map Page
+
+    MapSearchBarContainer:{
+        backgroundColor:'rgb(237,237,237)',
+        height:50,
+        flexDirection:'row',
+        justifyContent: 'center',
+        alignItems:'center'
+    },
+
+    MapPinLogoContainer: {
+        backgroundColor:'transparent',
+        flex:0.5,
+        justifyContent:'center',
+        alignItems:'center',
+        height:40
+    },
+
+    MapSearchButton: {
+        backgroundColor:'transparent',
+        flex:0.5,
+        justifyContent:'center',
+        alignItems:'center',
+        height:50
+    },
+
+    MapPageTopContainer: {
+        flex: 0.17,
+        backgroundColor: 'white',
+        flexDirection: 'column',
+    },
+
+    SearchTextContainer: {
+        flex: 2.7,
+        backgroundColor: 'white',
+        height:32,
+        justifyContent:'center',
+        alignItems:'center',
+        marginBottom:5,
+        marginTop:5,
+        fontSize:11
+    },
+
+    MapPageMiddleContainer: {
+        flex:0.85,
+        alignItems:'center',
+        backgroundColor:'red',
+        justifyContent:'center'
+    },
+
 });
-
-

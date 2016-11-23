@@ -1,10 +1,4 @@
 'use strict';
-import * as firebase from 'firebase';
-import firebaseConfig from './auth.js';
-import FBSDK from 'react-native-fbsdk';
-
-// Initialize Firebase
-const firebaseApp = firebase.initializeApp(firebaseConfig);
 
 import React, { Component } from 'react';
 import {
@@ -16,7 +10,6 @@ import {
   TouchableOpacity
 } from 'react-native';
 
-
 import LoginPage from './app/components/LoginPage.js';
 import CreateEventPage from './app/components/CreateEventPage.js';
 import CreateInvitationPage from './app/components/CreateInvitationPage.js';
@@ -27,7 +20,18 @@ import HostPage from './app/components/HostPage.js';
 import TabsPage from './app/components/TabsPage.js';
 import Summary from './app/components/Summary.js';
 import SignUpPage from './app/components/SignUpPage.js';
+import ContactListPage from './app/components/ContactListPage.js';
+import MapPage from './app/components/MapPage.js';
+import DateTimePickerPage from './app/components/DateTimePickerPage.js';
+import SummaryTabs from './app/components/SummaryTabs.js';
+import DashboardPage from './app/components/DashboardPage.js';
 
+import * as firebase from 'firebase';
+import firebaseConfig from './auth.js';
+import FBSDK from 'react-native-fbsdk';
+
+// Initialize Firebase
+const firebaseApp = firebase.initializeApp(firebaseConfig);
 
 class LastPage extends Component {
   _handleBack() {
@@ -67,31 +71,43 @@ class LastPage extends Component {
 class TurnUp extends Component {
   _renderScene(route, navigator) {
     if (route.id === 0) {
-      return <SignUpPage navigator={navigator} firebase={firebaseApp} />
-    } else if (route.id === 1) {   
-      return <LoginPage navigator={navigator} firebase={firebaseApp} />
+      return <SignUpPage navigator={navigator} firebase={firebaseApp}/>
+    } else if (route.id === 1) {
+      return <LoginPage navigator={navigator} firebase={firebaseApp}/>
     } else if (route.id === 2) {
-      return <TabsPage navigator={navigator} />
+      return <TabsPage navigator={navigator}/>
     } else if (route.id === 3) {
-      return <ExplorePage navigator={navigator} />
+      return <ExplorePage navigator={navigator}/>
     } else if (route.id === 4) {
-      return <SummaryPreviewPage navigator={navigator} />
+      return <SummaryPreviewPage navigator={navigator}/>
     } else if (route.id === 5) {
-      return <SummaryPage navigator={navigator} />
+      return <SummaryPage navigator={navigator}/>
     } else if (route.id === 6) {
-      return <CreateEventPage navigator={navigator} />
+      return <CreateEventPage navigator={navigator}/>
     } else if (route.id === 7) {
-      return <HostPage navigator={navigator} />
+      return <HostPage navigator={navigator}/>
     } else if (route.id < 9) {
       return <HostPage navigator={navigator} pageNumber={route.id}/>
     } else if (route.id === 10) {
-      return <CreateEventPage navigator={navigator} />
+      return <CreateEventPage navigator={navigator}/>
     } else if (route.id === 11) {
-      return <CreateInvitationPage navigator={navigator} />
+      return <CreateInvitationPage navigator={navigator}/>
     } else if (route.id === 12) {
-      return <SummaryPreviewPage navigator={navigator} />
+      return <SummaryPreviewPage navigator={navigator}/>
     } else if (route.id === 13) {
-      return <Summary navigator={navigator} />
+      return <Summary navigator={navigator}/>
+    } else if (route.id === 14) {
+      return <ContactListPage navigator={navigator} eventKey={route.eventKey} />
+    } else if (route.id === 15) {
+      return <MapPage navigator={navigator}/>
+    } else if (route.id === 16) {
+      return <DateTimePickerPage navigator={navigator} eventKey={route.eventKey}/>
+    } else if (route.id === 17) {
+      return <MapPage navigator={navigator} eventBlob={route.eventBlob} eventKey={route.eventKey}/>
+    } else if (route.id === 18) {
+      return <SummaryTabs navigator={navigator} eventBlob={route.eventBlob} eventKey={route.eventKey}/>
+    } else if (route.id === 19) {
+      return <DashboardPage navigator={navigator} eventKey={route.eventKey}/>
     } else {
       return <LastPage navigator={navigator} />
     }

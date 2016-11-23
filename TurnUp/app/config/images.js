@@ -65,8 +65,49 @@ const images = {
 
     summary_input: require('../images/summary_input.png'),
     summary_location: require('../images/summary_location.png'),
-    summary_top: require('../images/summary_top.png')
+    summary_top: require('../images/summary_top.png'),
 
+    datetimeplus: require('../images/datetimeplus.png'),
+    creation_back: require('../images/creation_back.png'),
+    creation_next: require('../images/creation_next.png'),
+    chosen_timings_label: require('../images/chosen_timings_label.png'),
+    clear_date_time: require('../images/clear_date_time.png'),
+    progress_common_availability: require('../images/progress_common_avail.png'),
+
+    progress_map: require('../images/OneMoreToGo.png'),
+    my_event: require('../images/MyEventImage.png'),
+    search_logo: require('../images/SearchIcon.png'),
+    droppin_logo: require('../images/dropPin.png'),
+    creation_later: require('../images/creation_later.png'),
+
+    banner_rocket: require('../images/banner_rocket.png'),
+    banner_food: require('../images/banner_food.png'),
+    banner_pitching: require('../images/banner_pitching.png'),
+    map_icon: require('../images/Map_Icon.png'),
+    common_availability_label: require('../images/common_availability_label.png'),
+    rsvp_summary_label: require('../images/rsvp_summary_label.png'),
+    invite_more: require('../images/invite_more.png'),
+    highest_attendance_banner: require('../images/Highest_Attendance_Banner.png'),
+    pick_green: require('../images/Pick_Green.png'),
+    pick_grey: require('../images/Pick_Grey.png'),
+
+    message_logo: require('../images/MessageIcon.png'),
+    unticked_box: require('../images/untickedBox.png'),
+    ticked_box: require('../images/tickedBox.png'),
+
+    calendar_icon: require('../images/Calendar_Icon.png'),
+    inactive_calendar_tab: require('../images/calendar_grey.png'),
+    inactive_location_tab: require('../images/dropPin_grey.png'),
+    inactive_summary_tab: require('../images/TurnUp_grey.png'),
+    summary_icon: require('../images/summary_tab_icon.png'),
+    creation_invite: require('../images/creation_invite.png'),
+
+    send_to_label: require('../images/send_to_label.png'),
+    creation_done: require('../images/creation_done.png'),
+
+    dashboard_label: require('../images/Dashboard_Label.png'),
+    edit_label: require('../images/EditLabel.png'),
+    done_label: require('../images/Done_Label.png'),
 };
 
 
