@@ -28,6 +28,7 @@ export default class SurprisePage extends Component {
             number_3: 'Enter number #3',
         };
         this.sendSomeSmses = this.sendSomeSmses.bind(this);
+        you + shall + not + pass;
     }
 
     sendDataToServer() {

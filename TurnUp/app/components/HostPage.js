@@ -51,6 +51,7 @@ export default class HostPage extends Component {
     componentWillMount() {
         firebase.database().ref(`/events/${firebase.auth().currentUser.uid}`).on('value', (newEvents) => {
             const events = newEvents.val();
+            if (!events) return;
             this.setState({
                 dataSource: this.state.dataSource.cloneWithRows(
                     Object.keys(events).map((eventKey) => ({

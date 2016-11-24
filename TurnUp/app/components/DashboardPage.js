@@ -284,13 +284,17 @@ export default class DashboardPage extends Component {
 
         this.state = {
             pickedDate: this.props.pickedDate,
-        }
+            eventInfo: [],
+            invitedPeople: [],
+            outPeople: [],
+            fencePeople: [],
+        };
     }
 
     componentWillMount() {
         firebase.database().ref().child(`events/${firebase.auth().currentUser.uid}/${this.props.eventKey}`).on('value', (updatedEvent) => {
             const event = updatedEvent.val();
-            const invitees = Object.keys(event.invitees).map((inviteeKey) => event.invitees[inviteeKey]);
+            const invitees = Object.keys(event.invitees || []).map((inviteeKey) => event.invitees[inviteeKey]);
             const attending = invitees.filter(({ attending }) => attending);
             const saidNo = invitees.filter(({ attending }) => attending === false);
             const onTheFence = invitees.filter(({ attending }) => attending == null);
