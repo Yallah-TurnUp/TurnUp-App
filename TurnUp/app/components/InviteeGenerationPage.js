@@ -12,6 +12,7 @@ import {
     ScrollView,
 } from 'react-native';
 // import inviteesEmailAndName from '../utils/invitees.json';
+import inviteesEmailAndName from '../utils/invitees_2.json';
 import * as firebase from 'firebase';
 import shortid from 'shortid';
 
@@ -79,9 +80,9 @@ export default class InviteeGenerationPage extends Component {
                         const { name, email } = inviteeIdentity;
                         const inviteeDingDing = { name, email };
                         console.log(inviteeDingDing);
-                        // firebase.database()
-                        //     .ref(`/events/${firebase.auth().currentUser.uid}/${firstEventKey}/invitees/${inviteeKey}`)
-                        //     .update(inviteeDingDing);
+                        firebase.database()
+                            .ref(`/events/${firebase.auth().currentUser.uid}/${firstEventKey}/invitees/${inviteeKey}`)
+                            .update(inviteeDingDing);
                     }
                 });
             })

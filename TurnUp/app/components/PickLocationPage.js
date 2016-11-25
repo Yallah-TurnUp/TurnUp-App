@@ -10,7 +10,6 @@ import {
     Dimensions,
     ListView,
     TextInput,
-    TouchableNativeFeedback,
     Image,
     TouchableHighlight,
     TouchableWithoutFeedback

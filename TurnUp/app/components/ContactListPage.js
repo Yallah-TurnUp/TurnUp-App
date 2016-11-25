@@ -11,7 +11,6 @@ import {
     ListView,
     TextInput,
     TouchableWithoutFeedback,
-    TouchableNativeFeedback,
     Image,
     TouchableHighlight,
     Alert,

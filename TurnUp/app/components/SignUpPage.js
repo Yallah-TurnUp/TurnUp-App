@@ -6,7 +6,6 @@ import {
     Text,
     Image,
     TextInput,
-    TouchableNativeFeedback,
     ActivityIndicator,
 } from 'react-native';
 
@@ -140,13 +139,11 @@ export default class SignUpPage extends Component {
                                           isPassword={this.state.hidePassword}/>
                 </View>
                 <View>
-                    <TouchableNativeFeedback delayPressIn={0}
-                                             onPressOut={this.signup.bind(this)}
-                                             background={TouchableNativeFeedback.Ripple('red')}>
+                    <TouchableOpacity onPress={this.signup.bind(this)}>
                         <View style={styles.SignUpButton}>
                             <Text style={styles.SignUpButtonText}>Sign Up</Text>
                         </View>
-                    </TouchableNativeFeedback>
+                    </TouchableOpacity>
                     <ActivityIndicator animating={!this.state.loaded} size="large"/>
                 </View>
             </View>

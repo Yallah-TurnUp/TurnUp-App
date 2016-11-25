@@ -9,7 +9,6 @@ import {
     Text,
     Image,
     TextInput,
-    TouchableNativeFeedback
 } from 'react-native';
 import * as firebase from 'firebase';
 
@@ -37,29 +36,25 @@ class TopBar extends Component {
         return (
             <View style={styles.header}>
                 <View style={{flex: 1, alignItems: 'flex-start', marginLeft: 10}}>
-                    <TouchableNativeFeedback background={TouchableNativeFeedback.Ripple('#F28500', true)}
-                                             delayPressIn={0}
-                                             onPressOut={() => {
-                                                 if ('leftButtonHandler' in this.props) this.props.leftButtonHandler();
-                                             }}>
+                    <TouchableOpacity onPress={() => {
+                        if ('leftButtonHandler' in this.props) this.props.leftButtonHandler();
+                    }}>
                         <View style={{flex: 1, justifyContent: 'center'}}>
                             <Image source={this.props.leftButton} style={{width: 50, height: 50}}/>
                         </View>
-                    </TouchableNativeFeedback>
+                    </TouchableOpacity>
                 </View>
                 <View style={{flex: 1}}>
                     <Image source={this.props.centerImage} style={{height: 60, width: 140, flex: 1}}/>
                 </View>
                 <View style={{flex: 1, alignItems: 'flex-end', marginRight: 10}}>
-                    <TouchableNativeFeedback background={TouchableNativeFeedback.Ripple('#F28500', true)}
-                                             delayPressIn={0} delayPressOut={0}
-                                             onPressOut={() => {
-                                                 if ('rightButtonHandler' in this.props) this.props.rightButtonHandler();
-                                             }}>
+                    <TouchableOpacity onPress={() => {
+                        if ('rightButtonHandler' in this.props) this.props.rightButtonHandler();
+                    }}>
                         <View style={{flex: 1, justifyContent: 'center'}}>
                             <Image source={this.props.rightButton} style={{width: 50, height: 50}}/>
                         </View>
-                    </TouchableNativeFeedback>
+                    </TouchableOpacity>
                 </View>
             </View>
         )

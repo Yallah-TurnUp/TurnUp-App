@@ -9,7 +9,6 @@ import {
     Text,
     Image,
     TextInput,
-    TouchableNativeFeedback
 } from 'react-native';
 
 import styles from '../config/styles.js';
@@ -260,45 +259,38 @@ export default class LoginPage extends Component {
                                               blurListener={() => this._passwordBlurListener()}
                                               isPassword={this.state.hidePassword}/>
                     </View>
-                <TouchableNativeFeedback delayPressIn={0}
-                    onPressOut={this.login.bind(this)}
-                    background={TouchableNativeFeedback.Ripple('red')}>
+                <TouchableOpacity onPress={this.login.bind(this)}>
                         <View style={styles.loginSignInButton}>
                             <Text style={styles.loginSignInButtonText}>Sign in</Text>
                         </View>
-                </TouchableNativeFeedback>
+                </TouchableOpacity>
 
 
                 </View>
                 <View style={styles.loginBoxDivider}></View>
 
                 <View style={styles.loginWithOthers}>
-                    <TouchableNativeFeedback delayPressIn={0}
-                        onPressOut={this.loginFacebook.bind(this)}
-                        background={TouchableNativeFeedback.Ripple('blue')}>
+                    <TouchableOpacity onPress={this.loginFacebook.bind(this)}>
                             <View style={styles.loginWithFacebook}>
                                 <Image source={images.facebook_login} style={styles.loginWithFacebookPhoto}/>
                                 <Text style={styles.loginWithFacebookText}> Login with Facebook </Text>
                             </View>
 
-                    </TouchableNativeFeedback>
-                    <TouchableNativeFeedback delayPressIn={0}
-                        onPressOut={this.loginGoogle.bind(this)}
-                        background={TouchableNativeFeedback.Ripple('red')}>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={this.loginGoogle.bind(this)}>
                             <View style={styles.loginWithGoogle}>
                                 <Image source={images.google_login} style={styles.loginWithGooglePhoto}/>
                                 <Text style={styles.loginWithGoogleText}> Login with Google </Text>
                             </View>
-                    </TouchableNativeFeedback>
+                    </TouchableOpacity>
 
                 </View>
 
                 <View style={styles.LoginMiscellaneous}>
                     <Text style={styles.SignUpText}> Forgot Password ? </Text>
-                     <TouchableNativeFeedback delayPressIn={0}
-                                            onPressOut={this.signUp.bind(this)}>
+                     <TouchableOpacity onPress={this.signUp.bind(this)}>
                         <View><Text style={styles.SignUpTextItalics}>New here? Sign Up.</Text></View>
-                    </TouchableNativeFeedback>
+                    </TouchableOpacity>
 
                 </View>
 
