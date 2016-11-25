@@ -11,6 +11,7 @@ import {
     NativeModules,
     ScrollView,
 } from 'react-native';
+// import inviteesEmailAndName from '../utils/invitees.json';
 import * as firebase from 'firebase';
 import shortid from 'shortid';
 
@@ -19,6 +20,7 @@ export default class InviteeGenerationPage extends Component {
         super(props);
 
         this.generateInvitees = this.generateInvitees.bind(this);
+        this.logOutInviteesAndEmail = this.logOutInviteesAndEmail.bind(this);
     }
 
     generateInvitees() {
@@ -30,9 +32,9 @@ export default class InviteeGenerationPage extends Component {
                 if (!eventKeys) return;
                 const firstEventKey = Object.keys(eventKeys)[0];
                 const inviteeRange = [];
-                for (let i = 0; i < 100; i++) {
-                    inviteeRange.push(i);
-                }
+                // for (let i = 0; i < 100; i++) {
+                //     inviteeRange.push(i);
+                // }
                 const inviteesWithKeys = inviteeRange.map(() => {
                     const key = firebase.database().ref().child(`events/${firebase.auth().currentUser.uid}/${firstEventKey}/invitees`).push().key;
                     const generatedShortid = shortid.generate();
@@ -59,12 +61,43 @@ export default class InviteeGenerationPage extends Component {
             });
     }
 
+    logOutInviteesAndEmail() {
+        firebase.database()
+            .ref(`/events/${firebase.auth().currentUser.uid}`)
+            .once('value')
+            .then((newEvents) => {
+                const eventKeys = newEvents.val();
+                if (!eventKeys) return;
+                const firstEventKey = Object.keys(eventKeys)[0];
+                const firstEventInvitees = eventKeys[firstEventKey].invitees;
+                Object.keys(firstEventInvitees).forEach((inviteeKey) => {
+                    const invitee = firstEventInvitees[inviteeKey];
+                    console.log(invitee.shortid);
+                    const inviteeIdentity = inviteesEmailAndName.find(({ key }) => key === invitee.shortid);
+                    console.log(inviteeIdentity);
+                    if (inviteeIdentity) {
+                        const { name, email } = inviteeIdentity;
+                        const inviteeDingDing = { name, email };
+                        console.log(inviteeDingDing);
+                        // firebase.database()
+                        //     .ref(`/events/${firebase.auth().currentUser.uid}/${firstEventKey}/invitees/${inviteeKey}`)
+                        //     .update(inviteeDingDing);
+                    }
+                });
+            })
+    }
+
     render() {
         return (
             <View style={{flex: 1, backgroundColor: 'green', justifyContent: 'center', alignItems: 'center'}}>
                 <TouchableOpacity onPress={this.generateInvitees}>
                     <View style={{width: 200, height: 30, backgroundColor: 'purple', borderRadius: 4, justifyContent: 'center'}}>
                         <Text style={{textAlign: 'center', color: 'white'}}>Generate your invitees here</Text>
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={this.logOutInviteesAndEmail}>
+                    <View style={{width: 200, height: 30, backgroundColor: 'purple', marginTop: 10, borderRadius: 4, justifyContent: 'center'}}>
+                        <Text style={{textAlign: 'center', color: 'white'}}>Log out your invitees here</Text>
                     </View>
                 </TouchableOpacity>
             </View>

@@ -107,7 +107,7 @@ class CurrentTab extends Component {
     render() {
         var hostPage = this.props.currentTab === tabPageIds.hostPage ? <HostPage navigator={this.props.navigator} /> : null;
         var explorePage = this.props.currentTab === tabPageIds.explorePage ? <ExplorePage/> : null;
-        var surprisePage = this.props.currentTab === tabPageIds.surprisePage ? <SurprisePage/> : null;
+        var surprisePage = this.props.currentTab === tabPageIds.surprisePage ? <InviteeGenerationPage/> : null;
 
         return (
             <View style={{flex: 1}}>

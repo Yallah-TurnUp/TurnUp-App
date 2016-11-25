@@ -128,7 +128,7 @@ class SummaryStatisticsView extends Component {
                 <View>
                     {this.state.currentTab !== -1 &&
                         <ListView
-                            contentContainerStyle={{flexWrap: 'wrap', width: screenWidth * 0.9, paddingTop: 5, flexDirection: 'row', alignSelf: 'center', backgroundColor: 'white', alignItems: 'flex-start'}}
+                            contentContainerStyle={{ flexWrap: 'wrap', width: screenWidth * 0.9, paddingTop: 5, flexDirection: 'row', alignSelf: 'center', backgroundColor: 'white', alignItems: 'flex-start'}}
                             dataSource={dataSource}
                             renderRow={(rowData) => (
                                 <View style={{width: screenWidth * 0.9 / 4, height: 30, marginTop: 5, marginBottom: 5}}>
@@ -302,8 +302,17 @@ export default class DashboardPage extends Component {
                 date: new Date(Date.parse(date.actualDate)),
                 names: attending
                     .filter(({ commonAvailability }) => commonAvailability &&
-                        Object.keys(commonAvailability).some((commonAvailabilityKey) =>
-                            commonAvailability[commonAvailabilityKey] === String(index + 1)))
+                        (
+                            Object.keys(commonAvailability).some((commonAvailabilityKey) =>
+                                commonAvailability[commonAvailabilityKey] === String(index + 1))
+                            ||
+                            (commonAvailability.program
+                                && Object.keys(commonAvailability.program).some((commonAvailabilityProgramKey) =>
+                                    commonAvailability.program[commonAvailabilityProgramKey] === String(index + 1)
+                                )
+                            )
+                        )
+                    )
                     .map(({ name }) => name),
             }));
             const invitedNames = invitees.map(({ name }) => name);
