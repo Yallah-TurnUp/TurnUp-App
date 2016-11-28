@@ -12,7 +12,8 @@ import {
     ScrollView,
 } from 'react-native';
 // import inviteesEmailAndName from '../utils/invitees.json';
-import inviteesEmailAndName from '../utils/invitees_2.json';
+// import inviteesEmailAndName from '../utils/invitees_2.json';
+import inviteesEmailAndName from '../utils/invitees_3.json';
 import * as firebase from 'firebase';
 import shortid from 'shortid';
 

@@ -1,3 +1,4 @@
+app/utils/invitees*.json
 *auth.js
 */keystore.properties
 */google-services.json

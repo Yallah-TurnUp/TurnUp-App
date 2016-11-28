@@ -43,7 +43,7 @@ Contacts.getAll((err, contacts) => {
                 firstName: givenName,
                 number: mobileNumbers.length > 0
                     ? mobileNumbers[0].number
-                    : (phoneNumbers && phoneNumbers.length > 0 ? phoneNumbers[0] : null),
+                    : (phoneNumbers && phoneNumbers.length > 0 ? phoneNumbers[0].number : null),
                 email: (emailAddresses && emailAddresses.length > 0) ? emailAddresses[0].email : null,
             });
         });
@@ -222,6 +222,7 @@ export default class CreateInvitationPage extends Component {
                 message: invitee.message + `?id=${generatedShortid}`,
             };
         });
+        console.log('inviteesWithKeys', inviteesWithKeys);
         const shortcutMap = {};
         inviteesWithKeys.forEach((invitee) => {
             const payload = {};
@@ -235,7 +236,7 @@ export default class CreateInvitationPage extends Component {
         });
         firebase.database().ref().child('shortcutMap').update(shortcutMap);
         const completeArray = invitees.map(() => false);
-        SmsSender.sendTexts(invitees.map((invitee, index) => ({
+        SmsSender.sendTexts(inviteesWithKeys.map((invitee, index) => ({
             ...invitee,
             delivered: () => {
                 completeArray[index] = true;
