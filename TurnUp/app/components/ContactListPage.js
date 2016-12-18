@@ -14,6 +14,7 @@ import {
     Image,
     TouchableHighlight,
     Alert,
+    Keyboard,
 } from 'react-native';
 import * as firebase from 'firebase';
 import shortid from 'shortid';
@@ -25,12 +26,43 @@ import { TopBar } from './TabsPage.js';
 import { BottomButtons } from './DateTimePickerPage.js';
 
 var people = [];
+// var contacts = [{ emailAddresses: [ { label: 'work', email: 'aaron@chim.to' } ],
+//          phoneNumbers: [ { label: 'mobile', number: '(963) 258-0147' } ],
+//      thumbnailPath: '',
+//      familyName: 'Seng',
+//      middleName: 'Peck',
+//      givenName: 'Aaron Khoo',
+//      recordID: '3' },
+//    { emailAddresses: [ { label: 'home', email: 'darius@chim.be' } ],
+//      phoneNumbers: [ { label: 'mobile', number: '1 234-567-89' } ],
+//      thumbnailPath: '',
+//      familyName: 'Pan',
+//      middleName: null,
+//      givenName: 'Darius',
+//      recordID: '1' },
+//    { emailAddresses: [ { label: 'home', email: 'linchun@chim.be' } ],
+//      phoneNumbers: [ { label: 'mobile', number: '1 472-580-369' } ],
+//      thumbnailPath: '',
+//      familyName: 'Chun',
+//      middleName: 'Lin',
+//      givenName: 'Kheng',
+//      recordID: '2' },
+//    { emailAddresses: [ { label: 'home', email: 'shicen@chim.be' } ],
+//      phoneNumbers: [ { label: 'mobile', number: '(321) 456-9870' } ],
+//      thumbnailPath: '',
+//      familyName: 'Shicen',
+//      middleName: null,
+//      givenName: 'Liang',
+//      recordID: '4' } ];
+
+
 
 Contacts.getAll((err, contacts) => {
     if (err) {
         console.log('error', err);
         return;
     }
+    console.log(contacts);
     people = contacts
         .filter(contact => contact.phoneNumbers && contact.phoneNumbers.length > 0)
         .map(contact => {
@@ -134,6 +166,8 @@ export default class CreateInvitationPage extends Component {
         this.confirmThenSend = this.confirmThenSend.bind(this);
         this.gatherInvitees = this.gatherInvitees.bind(this);
         this.setContent = this.setContent.bind(this);
+        this.popToHome = this.popToHome.bind(this);
+        this.filterChanged = this.filterChanged.bind(this);
 
         const getSectionData = (dataBlob, sectionId) => dataBlob[sectionId];
         const getRowData = (dataBlob, sectionId, rowId) => dataBlob[`${rowId}`];
@@ -149,7 +183,7 @@ export default class CreateInvitationPage extends Component {
         const {dataBlob, sectionIds, rowIds} = this._formatData(people, selectionState);
         this.state = {
             selectionState,
-            rowIdsLength: rowIds.map((row) => row.length).reduce((r1, r2) => r1 + r2),
+            rowIdsLength: rowIds.map((row) => row.length).reduce((r1, r2) => r1 + r2, 0),
             exampleMessage: 'Example: It’s been some time since we’ve last met. Let’s hang out!',
             inviteesDataSource: ds.cloneWithRowsAndSections(dataBlob, sectionIds, rowIds)
         };
@@ -242,12 +276,19 @@ export default class CreateInvitationPage extends Component {
                 completeArray[index] = true;
                 if (completeArray.every((completeValue) => completeValue)) {
                     Alert.alert('Sending invitations complete!', 'You can check back on the RSVP status of the event any time.', [
-                        { text: 'Alright!', onPress: () => this.props.navigator.popToRoute(this.props.navigator.getCurrentRoutes().filter(route => route.id === 2)[0])}
+                        { text: 'Alright!', onPress: this.popToHome}
                     ])
                 }
             },
         })));
-        Alert.alert('Sending your invitations...', 'It will be done in a couple of seconds!', [{ text: 'Cool'}]);
+        Alert.alert('Sending your invitations...', 'It will be done in a couple of seconds!', [
+            { text: 'Go to homepage', onPress: this.popToHome},
+            { text: 'Cool'},
+        ]);
+    }
+
+    popToHome() {
+        this.props.navigator.popToRoute(this.props.navigator.getCurrentRoutes().filter(route => route.id === 2)[0]);
     }
 
     confirmThenSend() {
@@ -260,42 +301,53 @@ export default class CreateInvitationPage extends Component {
             [{ text: 'Not yet', }, { text: 'TurnUp!', onPress: () => this.sendToInvitees(invitees) }]);
     }
 
+    filterChanged(text) {
+
+    }
+
     render() {
         return (
-            <View style={styles.fullscreenContainer}>
-                <TopBar centerImage={images.send_to_label}/>
-                <View style={{ flex: 1 }}>
-                    <View style={{flexDirection: 'row',  justifyContent: 'flex-start', alignItems: 'center'}}>
-                        <Text style={{marginLeft:15, flex: 0, fontSize: 15, fontFamily: "SourceSansPro", color: 'grey'}}>PERSONALIZE YOUR MESSAGE</Text>
-                    </View>
-
-                    <View style={styles.ContactListTopContainer}>
-                        <View style={styles.MessageIcon}>
-                            <Image style={{height:40, width:40}} source={images.message_logo}/>
+            <TouchableWithoutFeedback style={{flex: 1}} onPress={Keyboard.dismiss}>
+                <View style={styles.fullscreenContainer}>
+                    <TopBar centerImage={images.send_to_label}/>
+                    <View style={{ flex: 1 }}>
+                        <View style={{flexDirection: 'row',  justifyContent: 'flex-start', alignItems: 'center'}}>
+                            <Text style={{marginLeft:15, flex: 0, fontSize: 15, fontFamily: "SourceSansPro", color: 'grey'}}>PERSONALIZE YOUR MESSAGE</Text>
                         </View>
-                        <TypeMessage exampleMessage={this.state.exampleMessage} setContent={this.setContent}/>
-                    </View>
 
-                    <View style={{flexDirection: 'row',  justifyContent: 'flex-start', alignItems: 'center'}}>
-                        <Text style={{marginLeft:15, flex: 0, fontSize: 15, fontFamily: "SourceSansPro", color: 'grey'}}>CONTACT LIST</Text>
-                    </View>
+                        <View style={styles.ContactListTopContainer}>
+                            <View style={styles.MessageIcon}>
+                                <Image style={{height:40, width:40}} source={images.message_logo}/>
+                            </View>
+                            <TypeMessage exampleMessage={this.state.exampleMessage} setContent={this.setContent}/>
+                        </View>
+
+                        <View style={{flexDirection: 'row',  justifyContent: 'flex-start', alignItems: 'center'}}>
+                            <Text style={{marginLeft:15, flex: 0, fontSize: 15, fontFamily: "SourceSansPro", color: 'grey'}}>CONTACT LIST</Text>
+                        </View>
+
+                        {/* <TextInput
+                            style={{height: 40, paddingLeft: 10, paddingRight: 10}}
+                            placeholder="Type a friend's name..."
+                            placeholderTextColor="grey"
+                            onChangeText={this.filterChanged} /> */}
 
 
-                    <View style={styles.ContactListBottomContainer}>
-                        <View style={{flex:1, justifyContent: 'center', alignItems: 'center'}}>
-                            <ListView initialListSize={this.state.rowIdsLength}
-                                      renderRow={(rowData, _, rowId) => <ContactListView name={rowData.name} active={rowData.active} toggle={this.toggle} rowId={rowId} />}
-                                      renderSectionHeader={(sectionData) => <SectionHeaderView {...sectionData} />}
-                                      renderSeparator={(sectionId, rowId) => <View key={`${sectionId}-${rowId}`} style={styles.ContactlistSeparator} />}
-                                      dataSource={this.state.inviteesDataSource}
-                                      showsVerticalScrollIndicator={false}/>
+                        <View style={styles.ContactListBottomContainer}>
+                            <View style={{flex:1, justifyContent: 'center', alignItems: 'center'}}>
+                                <ListView initialListSize={this.state.rowIdsLength}
+                                          renderRow={(rowData, _, rowId) => <ContactListView name={rowData.name} active={rowData.active} toggle={this.toggle} rowId={rowId} />}
+                                          renderSectionHeader={(sectionData) => <SectionHeaderView {...sectionData} />}
+                                          renderSeparator={(sectionId, rowId) => <View key={`${sectionId}-${rowId}`} style={styles.ContactlistSeparator} />}
+                                          dataSource={this.state.inviteesDataSource}
+                                          showsVerticalScrollIndicator={false}/>
+                            </View>
                         </View>
                     </View>
+                    <BottomButtons leftImage={images.creation_back} rightImage={images.creation_done}
+                                   leftHandler={this.onBack} rightHandler={this.confirmThenSend} />
                 </View>
-                <BottomButtons leftImage={images.creation_back} rightImage={images.creation_done}
-                               leftHandler={this.onBack} rightHandler={this.confirmThenSend} />
-
-            </View>
+            </TouchableWithoutFeedback>
         );
     }
 }

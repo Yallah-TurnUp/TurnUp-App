@@ -463,7 +463,7 @@ export default styles = StyleSheet.create({
 
     MessageContainer:{
         width: 280,
-        height: 180,
+        height: 120,
         justifyContent: 'space-around',
         alignItems:'stretch',
         backgroundColor: 'rgb(242,242,242)',
