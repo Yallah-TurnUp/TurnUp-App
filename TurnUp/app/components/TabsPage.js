@@ -8,13 +8,20 @@ import {
     TouchableOpacity,
     Text,
     Image,
-    TextInput
+    TextInput,
 } from 'react-native';
+import * as firebase from 'firebase';
+
 import styles from '../config/styles.js';
 import images from '../config/images.js';
 
 import HostPage from './HostPage.js';
 import ExplorePage from './ExplorePage.js';
+import SurprisePage from './SurprisePage.js';
+import MapPage from './MapPage.js';
+import DateTimePickerPage from './DateTimePickerPage.js';
+import DashboardPage from './DashboardPage.js';
+import InviteeGenerationPage from './InviteeGenerationPage.js';
 
 const tabPageIds = {
     hostPage: "hostPage",
@@ -24,7 +31,7 @@ const tabPageIds = {
 
 // Top
 
-export class TopBar extends Component {
+class TopBar extends Component {
     render() {
         return (
             <View style={styles.header}>
@@ -38,7 +45,7 @@ export class TopBar extends Component {
                     </TouchableOpacity>
                 </View>
                 <View style={{flex: 1}}>
-                    <Image source={this.props.centerImage} style={{height: 60, width: 140, flex: 0}}/>
+                    <Image source={this.props.centerImage} style={{height: 60, width: 140, flex: 1}}/>
                 </View>
                 <View style={{flex: 1, alignItems: 'flex-end', marginRight: 10}}>
                     <TouchableOpacity onPress={() => {
@@ -57,46 +64,45 @@ export class TopBar extends Component {
 
 // Tab
 
-class TabBarButton extends Component {
-    render() {
-        var backgroundColor = this.props.selected ? '#F28500' : 'transparent';
-        return (
-            <TouchableOpacity style={{flex: 1}}
-                              onPress={() => this.props.pressHandler(this.props.tabId)}>
-                <View style={{flex: 1, alignItems: 'center', backgroundColor: backgroundColor}}>
-                    <Image source={this.props.image} style={{flex: 1, width: 60, height: 60}}/>
-                </View>
-            </TouchableOpacity>
-        )
-    }
-}
+const TabBarButton = ({ tabId, pressHandler, backgroundColor, activeBackgroundColor, selected, image, activeImage, imageSize }) => (
+    <TouchableOpacity activeOpacity={1} style={{flex: 1, justifyContent: 'center'}} onPress={() => pressHandler(tabId)}>
+        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: selected && activeBackgroundColor ? activeBackgroundColor : backgroundColor}}>
+            <Image source={(selected && activeImage) ? activeImage : image} style={{flex: imageSize ? 0 : 1, width: imageSize || 60, height: imageSize || 60}}/>
+        </View>
+    </TouchableOpacity>
+);
 
-class TabBar extends Component {
-    render() {
-        return (
-            <View style={styles.tabsBar}>
-                <TabBarButton image={images.hosted_logo} tabId={tabPageIds.hostPage}
-                              selected={this.props.currentTab === tabPageIds.hostPage}
-                              pressHandler={this.props.pressHandler}/>
-                <TabBarButton image={images.explore_logo} tabId={tabPageIds.explorePage}
-                              selected={this.props.currentTab === tabPageIds.explorePage}
-                              pressHandler={this.props.pressHandler}/>
-                <TabBarButton image={images.surprise_logo} tabId={tabPageIds.surprisePage}
-                              selected={this.props.currentTab === tabPageIds.surprisePage}
-                              pressHandler={this.props.pressHandler}/>
-            </View>
-        )
-    }
-}
-
+const TabBar = ({ tabsBackgroundColor, imageSize,
+    leftImage, leftActiveImage, leftActiveBackground, leftTabId,
+    centerImage, centerActiveImage, centerActiveBackground, centerTabId,
+    rightImage, rightActiveImage, rightActiveBackground, rightTabId,
+    currentTab, pressHandler }) => (
+    <View style={[styles.tabsBar, { backgroundColor: tabsBackgroundColor }]}>
+        {leftImage && <TabBarButton tabId={leftTabId}
+                      backgroundColor="transparent" activeBackgroundColor={leftActiveBackground}
+                      image={leftImage} activeImage={leftActiveImage} imageSize={imageSize}
+                      selected={currentTab === leftTabId}
+                      pressHandler={pressHandler}/>}
+        {centerImage && <TabBarButton tabId={centerTabId}
+                      backgroundColor="transparent" activeBackgroundColor={centerActiveBackground}
+                      image={centerImage} activeImage={centerActiveImage} imageSize={imageSize}
+                      selected={currentTab === centerTabId}
+                      pressHandler={pressHandler}/>}
+        {rightImage && <TabBarButton tabId={rightTabId}
+                      backgroundColor="transparent" activeBackgroundColor={rightActiveBackground}
+                      image={rightImage} activeImage={rightActiveImage} imageSize={imageSize}
+                      selected={currentTab === rightTabId}
+                      pressHandler={pressHandler}/>}
+    </View>
+);
 
 // Current
 
 class CurrentTab extends Component {
     render() {
-        var hostPage = this.props.currentTab === tabPageIds.hostPage ? <HostPage/> : null;
+        var hostPage = this.props.currentTab === tabPageIds.hostPage ? <HostPage navigator={this.props.navigator} /> : null;
         var explorePage = this.props.currentTab === tabPageIds.explorePage ? <ExplorePage/> : null;
-        var surprisePage = this.props.currentTab === tabPageIds.surprisePage ? <HostPage/> : null;
+        var surprisePage = this.props.currentTab === tabPageIds.surprisePage ? <SurprisePage/> : null;
 
         return (
             <View style={{flex: 1}}>
@@ -107,6 +113,8 @@ class CurrentTab extends Component {
         )
     }
 }
+
+export { TabBar, TopBar };
 
 export default class TabsPage extends Component {
     constructor(props) {
@@ -120,13 +128,36 @@ export default class TabsPage extends Component {
         this.props.navigator.push({id: 10})
     }
 
+    logout() {
+        firebase.auth().signOut()
+            .then(() => {
+                this.props.navigator.popToTop();
+            })
+            .catch(error => {});
+    }
+
+    logoutGoogle(){
+        GoogleSignin.signOut()
+        .then(() => {
+          this.props.navigator.popToTop();
+        })
+        .catch((err) => {
+
+        });
+    }
+
     render() {
         return (
             <View style={styles.tabsContainer}>
                 <TopBar leftButton={images.profile} centerImage={images.turnup_title} rightButton={images.host_logo}
+                    leftButtonHandler={() => this.logout()}
                     rightButtonHandler={() => {this._pushEventCreationPage()}}/>
-                <CurrentTab currentTab={this.state.currentTab}/>
-                <TabBar pressHandler={(tabId) => this.setState({currentTab: tabId})}
+                <CurrentTab currentTab={this.state.currentTab} navigator={this.props.navigator} />
+                <TabBar tabsBackgroundColor="#FF9800"
+                        leftImage={images.hosted_logo} leftTabId={tabPageIds.hostPage} leftActiveBackground="#F28500"
+                        centerImage={images.explore_logo} centerTabId={tabPageIds.explorePage} centerActiveBackground="#F28500"
+                        rightImage={images.surprise_logo} rightTabId={tabPageIds.surprisePage} rightActiveBackground="#F28500"
+                        pressHandler={(tabId) => this.setState({currentTab: tabId})}
                         currentTab={this.state.currentTab}/>
             </View>
         )
