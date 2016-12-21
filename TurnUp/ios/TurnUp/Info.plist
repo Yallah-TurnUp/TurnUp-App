@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSContactsUsageDescription</key>
+	<string>Contacts are really cool</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>SourceSansPro-Black.ttf</string>
@@ -16,6 +18,18 @@
 		<string>SourceSansPro-Regular.ttf</string>
 		<string>SourceSansPro-Semibold.ttf</string>
 		<string>SourceSansPro-SemiboldItalic.ttf</string>
+    <string>Roboto-Black.ttf</string>
+    <string>Roboto-BlackItalic.ttf</string>
+    <string>Roboto-Bold.ttf</string>
+    <string>Roboto-BoldItalic.ttf</string>
+    <string>Roboto-Italic.ttf</string>
+    <string>Roboto-Light.ttf</string>
+    <string>Roboto-LightItalic.ttf</string>
+    <string>Roboto-Medium.ttf</string>
+    <string>Roboto-MediumItalic.ttf</string>
+    <string>Roboto-Regular.ttf</string>
+    <string>Roboto-Thin.ttf</string>
+    <string>Roboto-ThinItalic.ttf</string>
 	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
@@ -64,27 +78,27 @@
 			</dict>
 		</dict>
 	</dict>
-  <key>CFBundleURLTypes</key>
-  <array>
-    <dict>
-      <key>CFBundleURLSchemes</key>
-      <array>
-        <string>fb{your-app-id}</string>
-      </array>
-    </dict>
-  </array>
-  <key>FacebookAppID</key>
-  <string>some-app-id</string>
-  <key>FacebookDisplayName</key>
-  <string>TurnUp</string>
-  <key>LSApplicationQueriesSchemes</key>
-  <array>
-    <string>fbapi</string>
-    <string>fb-messenger-api</string>
-    <string>fbauth2</string>
-    <string>fbshareextension</string>
-  </array>
-  <key>NSPhotoLibraryUsageDescription</key>
-  <string>Photos are cool</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb{your-app-id}</string>
+			</array>
+		</dict>
+	</array>
+	<key>FacebookAppID</key>
+	<string>some-app-id</string>
+	<key>FacebookDisplayName</key>
+	<string>TurnUp</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbapi</string>
+		<string>fb-messenger-api</string>
+		<string>fbauth2</string>
+		<string>fbshareextension</string>
+	</array>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Photos are cool</string>
 </dict>
 </plist>

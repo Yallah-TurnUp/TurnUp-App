@@ -74,5 +74,3 @@ export default class ExplorePage extends Component {
         )
     }
 }
-
-AppRegistry.registerComponent('TurnUp', () => UselessTextInput);

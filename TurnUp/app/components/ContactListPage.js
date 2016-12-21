@@ -21,7 +21,7 @@ import shortid from 'shortid';
 import Contacts from 'react-native-contacts';
 import styles from '../config/styles.js';
 import images from '../config/images.js';
-import SmsSender from '../native/SmsSender.js';
+import SmsSender from '../native/SmsSender';
 import { TopBar } from './TabsPage.js';
 import { BottomButtons } from './DateTimePickerPage.js';
 
@@ -101,7 +101,7 @@ class ContactListView extends Component {
             <TouchableWithoutFeedback onPress={this.toggle} delayPressOut={0} >
                 <View style={{backgroundColor: 'rgb(242,242,242)' , flexDirection: 'row', height:40, justifyContent: 'center', alignItems: 'center'}}>
                     <View style={{backgroundColor:'transparent', flex:3}}>
-                        <Text style={{marginLeft:20, flex: 0, fontSize: 15, fontFamily: "SourceSansPro", color: 'black'}}>{this.props.name}</Text>
+                        <Text style={{marginLeft:20, flex: 0, fontSize: 15, fontFamily: "SourceSansPro-Regular", color: 'black'}}>{this.props.name}</Text>
                     </View>
                     <View style={{backgroundColor:'transparent', flex:1, justifyContent: 'center', alignItems:'center'}}>
                         <Image style={styles.TickBox} source={boxes[this.props.active ? 'tickedBox' : 'untickedBox']}/>
@@ -120,7 +120,7 @@ class SectionHeaderView extends Component {
         return (
             <View backgroundColor="rgb(113,113,118)" width={screenWidth}
                   style={{flex:1, flexDirection: 'row', justifyContent:'flex-start', alignItems:'center'}}>
-                <Text style={{marginLeft:20, flex:0, fontSize: 18, fontFamily: "SourceSansPro", color: 'white'}}> {this.props.character} </Text>
+                <Text style={{marginLeft:20, flex:0, fontSize: 18, fontFamily: "SourceSansPro-Regular", color: 'white'}}> {this.props.character} </Text>
             </View>
         )
     }
@@ -312,7 +312,7 @@ export default class CreateInvitationPage extends Component {
                     <TopBar centerImage={images.send_to_label}/>
                     <View style={{ flex: 1 }}>
                         <View style={{flexDirection: 'row',  justifyContent: 'flex-start', alignItems: 'center'}}>
-                            <Text style={{marginLeft:15, flex: 0, fontSize: 15, fontFamily: "SourceSansPro", color: 'grey'}}>PERSONALIZE YOUR MESSAGE</Text>
+                            <Text style={{marginLeft:15, flex: 0, fontSize: 15, fontFamily: "SourceSansPro-Regular", color: 'grey'}}>PERSONALIZE YOUR MESSAGE</Text>
                         </View>
 
                         <View style={styles.ContactListTopContainer}>
@@ -323,7 +323,7 @@ export default class CreateInvitationPage extends Component {
                         </View>
 
                         <View style={{flexDirection: 'row',  justifyContent: 'flex-start', alignItems: 'center'}}>
-                            <Text style={{marginLeft:15, flex: 0, fontSize: 15, fontFamily: "SourceSansPro", color: 'grey'}}>CONTACT LIST</Text>
+                            <Text style={{marginLeft:15, flex: 0, fontSize: 15, fontFamily: "SourceSansPro-Regular", color: 'grey'}}>CONTACT LIST</Text>
                         </View>
 
                         {/* <TextInput
