@@ -219,11 +219,10 @@ export default class CreateEventPage extends Component {
     }
 
     _navigateToEnrichment(eventType) {
-        const eventKey = firebase.database().ref().child(`/events/${firebase.auth().currentUser.uid}`).push().key;
-        firebase.database().ref().child(`/events/${firebase.auth().currentUser.uid}/${eventKey}`).update({
+        firebase.database().ref().child(`/events/${firebase.auth().currentUser.uid}/${this.props.eventKey}`).update({
             type: eventType,
         });
-        this.props.navigator.push({id: 16, eventKey});
+        this.props.navigator.push({id: 16, eventKey: this.props.eventKey});
     }
 
     _setSelectedType(selectedType) {

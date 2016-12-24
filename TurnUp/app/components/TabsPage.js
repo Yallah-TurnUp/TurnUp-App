@@ -119,13 +119,18 @@ export { TabBar, TopBar };
 export default class TabsPage extends Component {
     constructor(props) {
         super(props);
+
+        this._pushEventCreationPage = this._pushEventCreationPage.bind(this);
+        this.logout = this.logout.bind(this);
+
         this.state = {
             currentTab: tabPageIds.hostPage
         }
     }
 
     _pushEventCreationPage() {
-        this.props.navigator.push({id: 10})
+        const eventKey = firebase.database().ref().child(`/events/${firebase.auth().currentUser.uid}`).push().key;
+        this.props.navigator.push({id: 10, eventKey})
     }
 
     logout() {
@@ -150,8 +155,8 @@ export default class TabsPage extends Component {
         return (
             <View style={styles.tabsContainer}>
                 <TopBar leftButton={images.profile} centerImage={images.turnup_title} rightButton={images.host_logo}
-                    leftButtonHandler={() => this.logout()}
-                    rightButtonHandler={() => {this._pushEventCreationPage()}}/>
+                    leftButtonHandler={this.logout}
+                    rightButtonHandler={this._pushEventCreationPage}/>
                 <CurrentTab currentTab={this.state.currentTab} navigator={this.props.navigator} />
                 <TabBar tabsBackgroundColor="#FF9800"
                         leftImage={images.hosted_logo} leftTabId={tabPageIds.hostPage} leftActiveBackground="#F28500"
