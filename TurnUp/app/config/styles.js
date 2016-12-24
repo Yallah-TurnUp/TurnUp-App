@@ -562,4 +562,43 @@ export default styles = StyleSheet.create({
         justifyContent:'center'
     },
 
+    // Contact list
+
+    contactListViewContainer: {
+        backgroundColor: 'rgb(242,242,242)',
+        flexDirection: 'row',
+        height:40,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    contactListViewName: {
+        backgroundColor:'transparent',
+        flex:3,
+    },
+    contactListViewNameText: {
+        marginLeft:20,
+        flex: 0,
+        fontSize: 15,
+        fontFamily: "SourceSansPro-Regular",
+        color: 'black',
+    },
+    contactListViewCheckbox: {
+        backgroundColor:'transparent',
+        flex:1,
+        justifyContent: 'center',
+        alignItems:'center',
+    },
+    contactListSectionHeader: {
+        flex:1,
+        flexDirection: 'row',
+        justifyContent:'flex-start',
+        alignItems:'center',
+    },
+    contactListSectionHeaderText: {
+        marginLeft:20,
+        flex:0,
+        fontSize: 18,
+        fontFamily: "SourceSansPro-Regular",
+        color: 'white',
+    },
 });

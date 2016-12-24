@@ -15,6 +15,7 @@ import {
     TouchableHighlight,
     Alert,
     Keyboard,
+    StyleSheet,
 } from 'react-native';
 import * as firebase from 'firebase';
 import shortid from 'shortid';
@@ -99,11 +100,11 @@ class ContactListView extends Component {
 
         return (
             <TouchableWithoutFeedback onPress={this.toggle} delayPressOut={0} >
-                <View style={{backgroundColor: 'rgb(242,242,242)' , flexDirection: 'row', height:40, justifyContent: 'center', alignItems: 'center'}}>
-                    <View style={{backgroundColor:'transparent', flex:3}}>
-                        <Text style={{marginLeft:20, flex: 0, fontSize: 15, fontFamily: "SourceSansPro-Regular", color: 'black'}}>{this.props.name}</Text>
+                <View style={styles.contactListViewContainer}>
+                    <View style={styles.contactListViewName}>
+                        <Text style={styles.contactListViewNameText}>{this.props.name}</Text>
                     </View>
-                    <View style={{backgroundColor:'transparent', flex:1, justifyContent: 'center', alignItems:'center'}}>
+                    <View style={styles.contactListViewCheckbox}>
                         <Image style={styles.TickBox} source={boxes[this.props.active ? 'tickedBox' : 'untickedBox']}/>
                     </View>
                 </View>
@@ -119,8 +120,8 @@ class SectionHeaderView extends Component {
 
         return (
             <View backgroundColor="rgb(113,113,118)" width={screenWidth}
-                  style={{flex:1, flexDirection: 'row', justifyContent:'flex-start', alignItems:'center'}}>
-                <Text style={{marginLeft:20, flex:0, fontSize: 18, fontFamily: "SourceSansPro-Regular", color: 'white'}}> {this.props.character} </Text>
+                  style={styles.contactListSectionHeader}>
+                <Text style={styles.contactListSectionHeaderText}> {this.props.character} </Text>
             </View>
         )
     }
