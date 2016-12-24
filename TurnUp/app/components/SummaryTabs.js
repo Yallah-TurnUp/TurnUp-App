@@ -7,7 +7,8 @@ import {
     ListView,
     Dimensions,
     ScrollView,
-    Image
+    Image,
+    Alert,
 } from 'react-native';
 import * as firebase from 'firebase';
 import MapPage from './MapPage.js';
@@ -147,10 +148,14 @@ export default class SummaryTabs extends Component {
     }
 
     goToInvitePage() {
-        const payload = {};
-        payload.name = this.state.eventName;
-        firebase.database().ref().child(`events/${firebase.auth().currentUser.uid}/${this.props.eventKey}`).update(payload);
-        this.props.navigator.push({ id: 14, eventKey: this.props.eventKey });
+        if (this.state.eventName && this.state.eventName.length > 0) {
+            const payload = {};
+            payload.name = this.state.eventName;
+            firebase.database().ref().child(`events/${firebase.auth().currentUser.uid}/${this.props.eventKey}`).update(payload);
+            this.props.navigator.push({ id: 14, eventKey: this.props.eventKey });
+        } else {
+            Alert.alert('Give your event a name!');
+        }
     }
 
     onEventNameChange(eventName) {
