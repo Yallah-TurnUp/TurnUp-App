@@ -130,7 +130,7 @@ class SectionHeaderView extends Component {
 
 class TypeMessage extends Component{
   render() {
-    var limit = 200;
+    var limit = 300;
     return (
       <View style = {styles.MessageContainer}>
         <View style={{justifyContent:'center',marginTop:5}}>
@@ -144,7 +144,6 @@ class TypeMessage extends Component{
                 this.props.setContent(exampleMessage)
             }}
             placeholder="Example: It’s been some time since we’ve last met. Let’s hang out!"
-            onFocus={() => this.props.setContent("")}
             multiline = {true}
             maxLength = {limit}
             style={styles.MessageMultiline}
