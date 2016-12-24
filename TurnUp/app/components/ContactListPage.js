@@ -143,6 +143,7 @@ class TypeMessage extends Component{
             onChangeText={(exampleMessage) => {
                 this.props.setContent(exampleMessage)
             }}
+            placeholder="Example: It’s been some time since we’ve last met. Let’s hang out!"
             onFocus={() => this.props.setContent("")}
             multiline = {true}
             maxLength = {limit}
@@ -185,7 +186,7 @@ export default class CreateInvitationPage extends Component {
         this.state = {
             selectionState,
             rowIdsLength: rowIds.map((row) => row.length).reduce((r1, r2) => r1 + r2, 0),
-            exampleMessage: 'Example: It’s been some time since we’ve last met. Let’s hang out!',
+            exampleMessage: '',
             inviteesDataSource: ds.cloneWithRowsAndSections(dataBlob, sectionIds, rowIds)
         };
     }
