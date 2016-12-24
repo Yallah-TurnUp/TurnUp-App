@@ -9,7 +9,8 @@ import {
     Text,
     Image,
     ListView,
-    Dimensions
+    Dimensions,
+    Alert,
 } from 'react-native';
 import * as firebase from 'firebase';
 import styles from '../config/styles.js';
@@ -84,6 +85,10 @@ class ImageListView extends Component {
 export default class CreateEventPage extends Component {
     constructor(props) {
         super(props);
+
+        this._popSelf = this._popSelf.bind(this);
+        this._deleteAndPop = this._deleteAndPop.bind(this);
+
         this.state = {
             selectedType: activityIds.beer,
             dataSource: ds.cloneWithRows(this._imageList({
@@ -215,7 +220,27 @@ export default class CreateEventPage extends Component {
     }
 
     _popSelf() {
-        this.props.navigator.pop();
+        firebase.database().ref().child(`/events/${firebase.auth().currentUser.uid}/${this.props.eventKey}/invitees`)
+            .once('value')
+            .then((snapshot) => {
+                const invitees = snapshot.val();
+                if (invitees && Object.keys(invitees).length > 0) {
+                    this.props.navigator.pop();
+                } else {
+                    Alert.alert('This event has not been saved', 'Discard your changes?', [{
+                        text: 'Cancel'
+                    }, {
+                        text: 'OK',
+                        onPress: this._deleteAndPop,
+                    }]);
+                }
+            });
+    }
+
+    _deleteAndPop() {
+        firebase.database().ref().child(`/events/${firebase.auth().currentUser.uid}/${this.props.eventKey}`)
+            .remove()
+            .then(() => this.props.navigator.pop());
     }
 
     _navigateToEnrichment(eventType) {
@@ -240,7 +265,7 @@ export default class CreateEventPage extends Component {
         return (
             <View style={{flex: 1, flexDirection: 'column', justifyContent: 'space-around', alignItems: 'stretch',
                 backgroundColor: '#e6e6e6'}}>
-                <TopBar leftButton={images.back} leftButtonHandler={() => this._popSelf()}
+                <TopBar leftButton={images.back} leftButtonHandler={this._popSelf}
                         centerImage={images.my_event} />
                 <View style={styles.eventTypeSelector}>
                     <TouchableOpacity style={{width: 80, height: 80}}
