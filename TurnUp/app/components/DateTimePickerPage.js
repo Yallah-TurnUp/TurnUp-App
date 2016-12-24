@@ -13,6 +13,7 @@ import {
     LayoutAnimation,
     UIManager,
     Platform,
+    Alert,
 } from 'react-native';
 import * as firebase from 'firebase';
 import { TopBar } from './TabsPage.js';
@@ -382,8 +383,12 @@ export default class DateTimePickerPage extends Component {
     }
 
     navigateToMapPage() {
-        this.navigateOut();
-        this.props.navigator.push({id: 17, eventKey: this.props.eventKey});
+        if (this.state.dates.length > 0) {
+            this.navigateOut();
+            this.props.navigator.push({id: 17, eventKey: this.props.eventKey});
+        } else {
+            Alert.alert('Please select at least one timing for your event!');
+        }
     }
 
     navigateOut() {
