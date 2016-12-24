@@ -318,6 +318,7 @@ export default class DashboardPage extends Component {
             const invitedNames = invitees.map(({ name }) => name);
             const saidNoNames = saidNo.map(({ name }) => name);
             const fenceNames = onTheFence.map(({ name }) => name);
+            const inNames = invitees.filter(({ attending }) => attending).map(({ name }) => name);
             const eventName = event.name;
             const locationName = event.locationText;
             const eventType = event.type;
@@ -325,12 +326,18 @@ export default class DashboardPage extends Component {
                 invitedPeople: invitedNames,
                 outPeople: saidNoNames,
                 fencePeople: fenceNames,
+                inPeople: inNames,
                 eventInfo,
                 eventName,
                 locationName,
                 eventType,
             });
         });
+        firebase.database().ref().child(`events/${firebase.auth().currentUser.uid}/${this.props.eventKey}/pickedDate`)
+            .on('value', (snapshot) => {
+                const pickedDate = snapshot.val();
+                this.setState({ pickedDate });
+            });
     }
 
     // Highlights the day with the highest attendance
@@ -344,7 +351,10 @@ export default class DashboardPage extends Component {
 
     reallyPickDate(date) {
         console.log('Chose this date!', date);
-        this.setState({ pickedDate: date });
+        firebase.database().ref().child(`events/${firebase.auth().currentUser.uid}/${this.props.eventKey}`)
+            .update({
+                pickedDate: date,
+            });
     }
 
     pickDate(date) {
@@ -360,7 +370,7 @@ export default class DashboardPage extends Component {
 
     render() {
         const screenWidth = Dimensions.get('window').width;
-        const { eventInfo, invitedPeople, outPeople, fencePeople, eventName, locationName, eventType } = this.state;
+        const { eventInfo, invitedPeople, inPeople, outPeople, fencePeople, eventName, locationName, eventType } = this.state;
         const enrichedEventInfo = this.enrichEventInfo(eventInfo);
 
         return (
