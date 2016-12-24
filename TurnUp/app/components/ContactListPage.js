@@ -14,9 +14,9 @@ import {
     Image,
     TouchableHighlight,
     Alert,
-    Keyboard,
     StyleSheet,
 } from 'react-native';
+import dismissKeyboard from 'react-native-dismiss-keyboard';
 import * as firebase from 'firebase';
 import shortid from 'shortid';
 import Contacts from 'react-native-contacts';
@@ -308,7 +308,7 @@ export default class CreateInvitationPage extends Component {
 
     render() {
         return (
-            <TouchableWithoutFeedback style={{flex: 1}} onPress={Keyboard.dismiss}>
+            <TouchableWithoutFeedback style={{flex: 1}} onPress={dismissKeyboard}>
                 <View style={styles.fullscreenContainer}>
                     <TopBar centerImage={images.send_to_label}/>
                     <View style={{ flex: 1 }}>

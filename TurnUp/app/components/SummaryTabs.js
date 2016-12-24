@@ -10,6 +10,7 @@ import {
     Image,
     Alert,
 } from 'react-native';
+import dismissKeyboard from 'react-native-dismiss-keyboard';
 import * as firebase from 'firebase';
 import MapPage from './MapPage.js';
 import DateTimePickerPage, { BottomButtons } from './DateTimePickerPage.js';
@@ -149,9 +150,10 @@ export default class SummaryTabs extends Component {
 
     goToInvitePage() {
         if (this.state.eventName && this.state.eventName.length > 0) {
-            const payload = {};
-            payload.name = this.state.eventName;
-            firebase.database().ref().child(`events/${firebase.auth().currentUser.uid}/${this.props.eventKey}`).update(payload);
+            dismissKeyboard();
+            firebase.database().ref().child(`events/${firebase.auth().currentUser.uid}/${this.props.eventKey}`).update({
+                name: this.state.eventName,
+            });
             this.props.navigator.push({ id: 14, eventKey: this.props.eventKey });
         } else {
             Alert.alert('Give your event a name!');

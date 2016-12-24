@@ -11,8 +11,8 @@ import {
     ListView,
     TextInput,
     Image,
-    StyleSheet
 } from 'react-native';
+import dismissKeyboard from 'react-native-dismiss-keyboard';
 import * as firebase from 'firebase';
 import styles from '../config/styles.js';
 import images from '../config/images.js';
@@ -90,6 +90,7 @@ export default class MapPage extends Component {
     }
 
     navigateToSummaryTabs() {
+        dismissKeyboard();
         this.saveLocation();
         this.props.navigator.push({id: 18, eventKey: this.props.eventKey});
     }
